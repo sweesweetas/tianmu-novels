@@ -1227,15 +1227,297 @@ nav {
 .novel-card:nth-child(5) { animation-delay: 0.28s; }
 .novel-card:nth-child(6) { animation-delay: 0.35s; }
 
+/* ── HAMBURGER ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── SEARCH + FILTER BAR ── */
+.filter-bar {
+  padding: 0 1.5rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 360px;
+}
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #8a7a60;
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 30px;
+  padding: 0.65rem 2.5rem 0.65rem 2.5rem;
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.95rem;
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.search-input:focus { border-color: var(--coral); box-shadow: var(--shadow-lg); }
+.search-clear {
+  position: absolute;
+  right: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #8a7a60;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.2rem;
+}
+.filter-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.filter-tag {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--border);
+  transition: all 0.15s;
+  color: var(--ink);
+}
+.filter-tag:hover { background: var(--cream-dark); transform: translate(-1px,-1px); }
+.filter-tag.active { background: var(--ink); color: var(--cream); box-shadow: none; transform: translate(1px,1px); }
+
+/* ── NO RESULTS ── */
+.no-results {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.no-results-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
+.no-results-text { font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 900; text-transform: uppercase; color: var(--ink); }
+.no-results-sub { font-style: italic; color: #8a7a60; margin-top: 0.3rem; }
+
+/* ── DARK READING MODE ── */
+body.dark-read #readingView { background: #16130e; }
+body.dark-read .reading-nav { background: #1e1a14; border-color: #2a2418; }
+body.dark-read .back-btn { background: #2a2418; color: var(--cream-dark); border-color: #3a3020; }
+body.dark-read .chapter-select { background: #2a2418; color: var(--cream-dark); border-color: #3a3020; }
+body.dark-read .chapter-list { }
+body.dark-read .chapter-list-title { color: var(--cream-dark); }
+body.dark-read .chapter-item { background: #1e1a14; border-color: #2a2418; }
+body.dark-read .chapter-item:hover { background: #2a2418; }
+body.dark-read .ch-title { color: var(--cream-dark); }
+body.dark-read .chapter-reader { }
+body.dark-read .reader-chapter-title { color: var(--cream-dark); }
+body.dark-read .reader-epigraph { background: #1e1a14; border-color: #2a2418; }
+body.dark-read .reader-text { color: #c8bfb0; }
+body.dark-read .reader-nav { border-color: #2a2418; }
+body.dark-read .reader-nav-btn { background: #1e1a14; color: var(--cream-dark); border-color: #2a2418; }
+body.dark-read .reader-nav-btn:hover { background: var(--olive); color: var(--cream); }
+body.dark-read .font-btn { background: #1e1a14; border-color: #2a2418; color: var(--cream-dark); }
+body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
+
+/* ── READ MODE BUTTON ── */
+.read-mode-btn {
+  width: 36px; height: 36px;
+  background: var(--cream-dark);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-shadow: 2px 2px 0 var(--border);
+  transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.read-mode-btn:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--border); }
+
+/* ── SCROLL TO TOP ── */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 1.5rem;
+  width: 44px; height: 44px;
+  background: var(--ink);
+  color: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  z-index: 80;
+  transition: all 0.2s;
+  opacity: 0;
+  transform: translateY(20px);
+  display: flex; align-items: center; justify-content: center;
+}
+.scroll-top-btn.visible { opacity: 1; transform: translateY(0); }
+.scroll-top-btn:hover { background: var(--coral); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+/* ── RESUME BANNER ── */
+.resume-banner {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--ink);
+  border: 2px solid var(--coral);
+  border-radius: 40px;
+  padding: 0.7rem 1rem 0.7rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  z-index: 90;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  white-space: nowrap;
+}
+.resume-banner.show { transform: translateX(-50%) translateY(0); }
+.resume-text {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--cream-dark);
+}
+.resume-btn {
+  background: var(--coral);
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.resume-btn:hover { background: #c0503a; }
+.resume-dismiss {
+  background: none;
+  border: none;
+  color: #665544;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.2rem;
+  transition: color 0.15s;
+}
+.resume-dismiss:hover { color: var(--cream); }
+
+/* ── PAGE TRANSITIONS ── */
+.view-transition {
+  animation: viewIn 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── READING PROGRESS CHAPTER ── */
+.reader-progress-wrap {
+  background: var(--cream-dark);
+  border-bottom: 2px solid var(--border);
+  padding: 0.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.reader-progress-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a7a60;
+  white-space: nowrap;
+}
+.reader-progress-track {
+  flex: 1;
+  height: 4px;
+  background: #d8d0b8;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.reader-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--coral), var(--yellow));
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.2s;
+}
+
+/* ── IMPROVED MOBILE ── */
 @media (max-width: 600px) {
-  nav { margin: 0 0.8rem 1rem; padding: 0.6rem 1rem; }
+  nav { margin: 0 0.8rem 1rem; padding: 0.65rem 1.2rem; }
+  .hamburger { display: flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0; right: 0;
+    background: var(--cream);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0;
+    box-shadow: var(--shadow-lg);
+    z-index: 300;
+  }
+  .nav-links.open { display: flex; }
+  .nav-link {
+    padding: 0.8rem 0.5rem;
+    border-bottom: 1px solid var(--cream-dark);
+    font-size: 0.85rem;
+  }
+  .nav-link:last-of-type { border-bottom: none; }
   .hero { margin: 0 0.8rem 1rem; padding: 2rem 1.5rem; grid-template-columns: 1fr; }
   .hero::after { display: none; }
   .hero-deco { display: none; }
-  .novel-grid { padding: 0 0.8rem 2rem; }
+  .novel-grid { padding: 0 0.8rem 2rem; grid-template-columns: 1fr 1fr; }
   .section-head { padding: 0 0.8rem; }
   .trans-bar { margin: 0 0.8rem 1rem; }
   .font-controls { display: none; }
+  .filter-bar { padding: 0 0.8rem 1rem; }
+  .search-wrap { max-width: 100%; }
+  .reading-nav { padding: 0.6rem 1rem; flex-wrap: nowrap; gap: 0.5rem; }
+  .reading-title { display: none; }
+  .resume-banner { left: 1rem; right: 1rem; transform: translateX(0) translateY(100px); bottom: 1rem; white-space: normal; }
+  .resume-banner.show { transform: translateX(0) translateY(0); }
+  .scroll-top-btn { bottom: 1rem; right: 1rem; }
+}
+@media (max-width: 400px) {
+  .novel-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1251,14 +1533,17 @@ nav {
     <div class="dot"></div><div class="dot"></div>
   </div>
 
-  <nav>
-    <div class="nav-logo">甜慕 Tián Mù</div>
-    <div class="nav-links">
-      <span class="nav-link" onclick="scrollToLibrary()">Library</span>
-      <span class="nav-link" onclick="showAboutPage()">About</span>
-      <span class="nav-link" onclick="openAdmin()" style="color:#887766;font-size:0.65rem">⚙</span>
+  <nav id="mainNav">
+    <div class="nav-logo" onclick="scrollToTop()">甜慕 Tián Mù</div>
+    <div class="nav-links" id="navLinks">
+      <span class="nav-link" onclick="scrollToLibrary();closeMenu()">Library</span>
+      <span class="nav-link" onclick="showAboutPage();closeMenu()">About</span>
+      <span class="nav-link" onclick="openAdmin();closeMenu()" style="color:#887766;font-size:0.65rem" title="Admin Panel">⚙</span>
       <div id="google_translate_element"></div>
     </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
   <div class="hero">
@@ -1292,6 +1577,27 @@ nav {
     <div class="section-count" id="novelCount"></div>
   </div>
 
+  <!-- SEARCH + FILTER BAR -->
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input class="search-input" id="searchInput" placeholder="Search novels..." oninput="filterNovels()">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()" style="display:none">✕</button>
+    </div>
+    <div class="filter-tags" id="filterTags">
+      <button class="filter-tag active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-tag" onclick="setFilter('active',this)">Available</button>
+      <button class="filter-tag" onclick="setFilter('coming-soon',this)">Coming Soon</button>
+      <button class="filter-tag" onclick="setFilter('idea',this)">Ideas</button>
+    </div>
+  </div>
+
+  <div class="no-results" id="noResults" style="display:none">
+    <div class="no-results-emoji">🔍</div>
+    <div class="no-results-text">No novels found</div>
+    <div class="no-results-sub">Try a different search or filter</div>
+  </div>
+
   <div class="novel-grid" id="novelGrid"></div>
 
 </div><!-- /libraryView -->
@@ -1300,10 +1606,19 @@ nav {
 <div id="readingView">
 
   <div class="reading-nav">
-    <button class="back-btn" onclick="goBack()" data-i18n="back-btn">← Back to Library</button>
+    <button class="back-btn" onclick="goBack()">← Library</button>
     <div class="reading-title" id="readingNavTitle"></div>
-    <select class="chapter-select" id="chapterJumpSelect" onchange="jumpToChapter(this.value)"></select>
-  
+    <div style="display:flex;gap:0.5rem;align-items:center">
+      <select class="chapter-select" id="chapterJumpSelect" onchange="jumpToChapter(this.value)"></select>
+      <button class="read-mode-btn" id="darkModeBtn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+
+  <div class="reader-progress-wrap" id="readerProgressWrap" style="display:none">
+    <span class="reader-progress-label" id="readerProgressLabel">Ch. 1</span>
+    <div class="reader-progress-track">
+      <div class="reader-progress-fill" id="readerProgressFill"></div>
+    </div>
   </div>
 
   <div class="reading-hero" id="readingHero">
@@ -1353,6 +1668,16 @@ nav {
       <div class="about-sig">— 甜慕, somewhere between midnight and morning ✿</div>
     </div>
   </div>
+</div>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<!-- LAST READ RESUME BANNER -->
+<div class="resume-banner" id="resumeBanner" style="display:none">
+  <span class="resume-text" id="resumeText">Continue reading?</span>
+  <button class="resume-btn" id="resumeBtn">Resume →</button>
+  <button class="resume-dismiss" onclick="dismissResume()">✕</button>
 </div>
 
 <!-- FONT CONTROLS -->
@@ -1873,6 +2198,7 @@ function openNovel(idx) {
 
   renderChapterList(idx);
   showChapterList();
+  animateView(document.getElementById('readingView'));
   window.scrollTo(0,0);
 }
 
@@ -1899,6 +2225,7 @@ function showChapterList() {
   document.getElementById('chapterListView').style.display = 'block';
   document.getElementById('chapterReaderView').classList.remove('active');
   document.getElementById('fontControls').style.display = 'none';
+  document.getElementById('readerProgressWrap').style.display = 'none';
   document.getElementById('chapterJumpSelect').value = '-1';
   window.scrollTo(0,0);
 }
@@ -1929,6 +2256,14 @@ function openChapter(idx) {
   document.getElementById('nextChBtn').disabled = idx === novel.chapters.length - 1;
   document.getElementById('chapterJumpSelect').value = idx;
 
+  // save last read position
+  if (currentNovel !== null) saveLastRead(currentNovel, idx);
+
+  // show chapter progress bar
+  document.getElementById('readerProgressWrap').style.display = 'flex';
+  document.getElementById('readerProgressLabel').textContent = `Ch. ${idx+1} of ${novel.chapters.length}`;
+
+  animateView(document.getElementById('chapterReaderView'));
   window.scrollTo(0,0);
 }
 
@@ -1947,7 +2282,9 @@ function goBack() {
   document.getElementById('readingView').style.display = 'none';
   document.getElementById('libraryView').style.display = 'block';
   document.getElementById('fontControls').style.display = 'none';
+  document.getElementById('readerProgressWrap').style.display = 'none';
   currentNovel = null;
+  animateView(document.getElementById('libraryView'));
   window.scrollTo(0,0);
 }
 
@@ -2289,10 +2626,143 @@ window.addEventListener('scroll', () => {
 });
 
 // ═══════════════════════════════════════════════
+// UX IMPROVEMENTS
+// ═══════════════════════════════════════════════
+
+// ── SEARCH & FILTER ──
+let activeFilter = 'all';
+
+function filterNovels() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const clear = document.getElementById('searchClear');
+  clear.style.display = q ? 'block' : 'none';
+  applyFilter(q, activeFilter);
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').style.display = 'none';
+  applyFilter('', activeFilter);
+}
+
+function setFilter(filter, btn) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  applyFilter(q, filter);
+}
+
+function applyFilter(q, filter) {
+  const cards = document.querySelectorAll('.novel-card');
+  let visible = 0;
+  cards.forEach((card, idx) => {
+    const n = NOVELS[idx];
+    if (!n) return;
+    const title = (n.titles.en || '').toLowerCase();
+    const desc = (n.descs.en || '').toLowerCase();
+    const genre = (n.genre || '').toLowerCase();
+    const ideaNote = (n.ideaNote || '').toLowerCase();
+    const matchQ = !q || title.includes(q) || desc.includes(q) || genre.includes(q) || ideaNote.includes(q);
+    const matchF = filter === 'all' ||
+      (filter === 'active' && (!n.status || n.status === 'active')) ||
+      (filter === 'coming-soon' && n.status === 'coming-soon') ||
+      (filter === 'idea' && n.status === 'idea');
+    const show = matchQ && matchF;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+  document.getElementById('novelCount').textContent = `${visible} novels`;
+}
+
+// ── HAMBURGER MENU ──
+function toggleMenu() {
+  const links = document.getElementById('navLinks');
+  const btn = document.getElementById('hamburger');
+  links.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('navLinks').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+// close menu on outside click
+document.addEventListener('click', e => {
+  const nav = document.getElementById('mainNav');
+  if (nav && !nav.contains(e.target)) closeMenu();
+});
+
+// ── DARK READING MODE ──
+let isDark = false;
+function toggleDarkMode() {
+  isDark = !isDark;
+  document.body.classList.toggle('dark-read', isDark);
+  document.getElementById('darkModeBtn').textContent = isDark ? '☀️' : '🌙';
+}
+
+// ── SCROLL TO TOP + PROGRESS ──
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+window.addEventListener('scroll', () => {
+  const d = document.documentElement;
+  const pct = d.scrollTop / (d.scrollHeight - d.clientHeight) || 0;
+  document.getElementById('progressBar').style.width = (pct * 100) + '%';
+  document.getElementById('scrollTopBtn').classList.toggle('visible', d.scrollTop > 400);
+  const fill = document.getElementById('readerProgressFill');
+  if (fill) fill.style.width = (pct * 100) + '%';
+});
+
+// ── LAST READ MEMORY ──
+function saveLastRead(novelIdx, chapterIdx) {
+  try {
+    const n = NOVELS[novelIdx];
+    localStorage.setItem('tm_last', JSON.stringify({
+      n: novelIdx, c: chapterIdx,
+      title: n.titles.en,
+      ch: n.chapters[chapterIdx]?.title || ''
+    }));
+  } catch(e) {}
+}
+
+function loadLastRead() {
+  try {
+    const saved = localStorage.getItem('tm_last');
+    if (!saved) return;
+    const { n, c, title, ch } = JSON.parse(saved);
+    if (!NOVELS[n] || !NOVELS[n].chapters[c]) return;
+    const banner = document.getElementById('resumeBanner');
+    const shortTitle = title.length > 20 ? title.slice(0,20)+'…' : title;
+    document.getElementById('resumeText').textContent = `Continue "${shortTitle}"`;
+    document.getElementById('resumeBtn').onclick = () => {
+      dismissResume();
+      openNovel(n);
+      setTimeout(() => openChapter(c), 80);
+    };
+    banner.style.display = 'flex';
+    setTimeout(() => banner.classList.add('show'), 600);
+  } catch(e) {}
+}
+
+function dismissResume() {
+  const b = document.getElementById('resumeBanner');
+  b.classList.remove('show');
+  setTimeout(() => b.style.display = 'none', 400);
+}
+
+// ── VIEW TRANSITIONS ──
+function animateView(el) {
+  el.classList.remove('view-transition');
+  void el.offsetWidth;
+  el.classList.add('view-transition');
+}
+
+// ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
 buildMarquee();
 renderGrid();
+loadLastRead();
 </script>
 
 <!-- ADMIN OVERLAY -->
