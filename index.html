@@ -2437,6 +2437,7 @@ body.dark-read .dot-strip { background: #141210; }
 // ═══════════════════════════════════════════════════
 // NOVEL DATA — Edit this section to add your novels!
 // ═══════════════════════════════════════════════════
+/*NOVELS_START*/
 const NOVELS = [
   {
     id: 'crimson-veil',
@@ -2708,6 +2709,7 @@ const NOVELS = [
     descs: { en: 'In a kingdom that outlawed sound, silence is power. She forgot to be silent.', zh: '在一个将声音列为非法的王国，沉默即是权力。她忘记了保持沉默。', ms: 'Dalam sebuah kerajaan yang mengharamkan bunyi, senyap adalah kuasa. Dia terlupa untuk berdiam diri.', ja: '音が違法とされる王国で、沈黙は力だ。彼女は黙ることを忘れた。', ko: '소리를 불법화한 왕국에서 침묵은 권력이다. 그녀는 침묵하는 것을 잊었다.', es: 'En un reino que prohibió el sonido, el silencio es poder. Ella olvidó guardar silencio.', fr: 'Dans un royaume qui a banni le son, le silence est pouvoir. Elle a oublié de se taire.' }
   }
 ];
+/*NOVELS_END*/
 
 // ═══════════════════════════════════════════════
 // STATE
@@ -3216,7 +3218,7 @@ async function changePassword() {
 }
 
 // ── Site config (editable via admin) ──
-var SITE_CONFIG = {
+let SITE_CONFIG = {
   siteTitle: '甜慕 Tián Mù — Novel Library',
   authorName: '甜慕 Tián Mù',
   navLogo: '甜慕 Tián Mù',
@@ -3224,7 +3226,7 @@ var SITE_CONFIG = {
   heroBtn: 'Browse All Novels'
 };
 
-var ABOUT_CONFIG = {
+let ABOUT_CONFIG = {
   eyebrow: 'The Mind Behind the Stories',
   name: '甜慕',
   namesub: 'Tián Mù — Sweet Longing',
@@ -4469,21 +4471,33 @@ function applyAboutConfig() {
 // ═══════════════════════════════════════════════
 // EXPORT — download updated HTML file
 // ═══════════════════════════════════════════════
-function exportSite() {
-  // Get the current page source
-  const src = document.documentElement.outerHTML;
+async function exportSite() {
+  showToast('\u23f3 Preparing export\u2026');
 
-  // Replace the NOVELS array in source with current data
+  // Fetch the original page source — reliable, avoids outerHTML mangling
+  let src;
+  try {
+    const resp = await fetch(location.href);
+    src = await resp.text();
+  } catch(e) {
+    src = document.documentElement.outerHTML;
+  }
+
   const novelsJson = JSON.stringify(NOVELS, null, 2);
   const siteJson   = JSON.stringify(SITE_CONFIG, null, 2);
   const aboutJson  = JSON.stringify(ABOUT_CONFIG, null, 2);
   const pwHash     = `'${_ap}'`;
 
   let updated = src
-    .replace(/const NOVELS = \[[\s\S]*?\n\];/, `const NOVELS = ${novelsJson};`)
-    .replace(/var SITE_CONFIG = \{[\s\S]*?\};/, `let SITE_CONFIG = ${siteJson};`)
-    .replace(/var ABOUT_CONFIG = \{[\s\S]*?\};/, `let ABOUT_CONFIG = ${aboutJson};`)
+    .replace(/\/\*NOVELS_START\*\/\nconst NOVELS = \[[\s\S]*?\n\];\n\/\*NOVELS_END\*\//, `/*NOVELS_START*/\nconst NOVELS = ${novelsJson};\n/*NOVELS_END*/`)
+    .replace(/let SITE_CONFIG = \{[\s\S]*?\};/, `let SITE_CONFIG = ${siteJson};`)
+    .replace(/let ABOUT_CONFIG = \{[\s\S]*?\};/, `let ABOUT_CONFIG = ${aboutJson};`)
     .replace(/let _ap = '[^']*';/, `let _ap = ${pwHash};`);
+
+  if (updated === src) {
+    showToast('\u2717 Export failed: markers not found. Re-save content first.');
+    return;
+  }
 
   const blob = new Blob([updated], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -4492,7 +4506,7 @@ function exportSite() {
   a.download = 'tianmu-library.html';
   a.click();
   URL.revokeObjectURL(url);
-  showToast('✓ Site exported! Upload to GitHub to publish.');
+  showToast('\u2713 Site exported! Upload to GitHub to publish.');
 }
 
 // ═══════════════════════════════════════════════
