@@ -3108,6 +3108,10 @@ let _lockUntil = 0;
 const _MAX_ATTEMPTS = 3;
 const _LOCK_DURATION = 60000; // 1 minute
 
+// Admin editor state
+let adminNovelIdx = null;
+let adminChapterIdx = null;
+
 // SHA-256 hash function (Web Crypto API)
 async function _hash(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
@@ -4560,7 +4564,6 @@ function importData() {
         applySiteConfig();
         applyAboutConfig();
         renderGrid();
-        populateAdminForms();
         saveAllData();
 
         showToast(`\u2713 Imported ${novelCount} novel${novelCount !== 1 ? 's' : ''} successfully!`);
