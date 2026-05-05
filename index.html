@@ -4272,7 +4272,7 @@ async function renderComments(novelId) {
   const list = document.getElementById('commentList');
   const countEl = document.getElementById('commentsCount');
   if (!list) return;
-  list.innerHTML = '<div style="font-family:'Instrument Serif',serif;font-style:italic;color:#8a7a60;padding:0.5rem 0">Loading comments…</div>';
+  list.innerHTML = '<div style="font-family:&quot;Instrument Serif&quot;,serif;font-style:italic;color:#8a7a60;padding:0.5rem 0">Loading comments…</div>';
   const comments = await _fetchComments(novelId);
   countEl.textContent = `${comments.length} comment${comments.length !== 1 ? 's' : ''}`;
   if (comments.length === 0) {
@@ -4298,8 +4298,8 @@ async function renderAdminComments() {
   const approvedEl = document.getElementById('adminApprovedComments');
   if (!pendingEl) return;
 
-  pendingEl.innerHTML = '<p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">Loading…</p>';
-  approvedEl.innerHTML = '<p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">Loading…</p>';
+  pendingEl.innerHTML = '<p style="font-family:&quot;Instrument Serif&quot;,serif;font-style:italic;color:#665;padding:0.5rem 0">Loading…</p>';
+  approvedEl.innerHTML = '<p style="font-family:&quot;Instrument Serif&quot;,serif;font-style:italic;color:#665;padding:0.5rem 0">Loading…</p>';
 
   const all = await _fetchAllCommentsAdmin();
 
@@ -4329,11 +4329,11 @@ async function renderAdminComments() {
 
   pendingEl.innerHTML = pending.length > 0
     ? pending.map(makeCard).join('')
-    : '<p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">No pending comments. ✦</p>';
+    : '<p style="font-family:&quot;Instrument Serif&quot;,serif;font-style:italic;color:#665;padding:0.5rem 0">No pending comments. ✦</p>';
 
   approvedEl.innerHTML = approved.length > 0
     ? approved.map(makeCard).join('')
-    : '<p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">No approved comments yet.</p>';
+    : '<p style="font-family:&quot;Instrument Serif&quot;,serif;font-style:italic;color:#665;padding:0.5rem 0">No approved comments yet.</p>';
 }
 
 async function approveComment(commentId) {
