@@ -4492,6 +4492,88 @@ function exportSite() {
 }
 
 // ═══════════════════════════════════════════════
+// IMPORT / EXPORT DATA (JSON backup)
+// ═══════════════════════════════════════════════
+function exportData() {
+  const date = new Date().toISOString().slice(0, 10);
+  const payload = {
+    _version: 1,
+    exportedAt: new Date().toISOString(),
+    novels: NOVELS,
+    siteConfig: SITE_CONFIG,
+    aboutConfig: ABOUT_CONFIG,
+    passwordHash: _ap
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `tianmu-backup-${date}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('\u2713 Data exported as JSON backup!');
+}
+
+function importData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,application/json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+
+        // Validate structure
+        if (!data.novels || !Array.isArray(data.novels))
+          throw new Error('Invalid backup: missing novels array.');
+        if (typeof data.siteConfig !== 'object' || typeof data.aboutConfig !== 'object')
+          throw new Error('Invalid backup: missing config objects.');
+
+        const novelCount = data.novels.length;
+        const exportDate = data.exportedAt
+          ? new Date(data.exportedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+          : 'unknown date';
+
+        if (!confirm(
+          `Import backup from ${exportDate}?\n\n` +
+          `\u2022 ${novelCount} novel${novelCount !== 1 ? 's' : ''}\n` +
+          `\u2022 Site & about config\n` +
+          (data.passwordHash ? `\u2022 Password hash included\n` : '') +
+          `\nThis will REPLACE all current content. Continue?`
+        )) return;
+
+        // Apply novels
+        NOVELS.length = 0;
+        data.novels.forEach(n => NOVELS.push(n));
+
+        // Apply configs
+        if (data.siteConfig) Object.assign(SITE_CONFIG, data.siteConfig);
+        if (data.aboutConfig) Object.assign(ABOUT_CONFIG, data.aboutConfig);
+
+        // Apply password hash if present
+        if (data.passwordHash) _ap = data.passwordHash;
+
+        // Re-render everything
+        applySiteConfig();
+        applyAboutConfig();
+        renderGrid();
+        populateAdminForms();
+        saveAllData();
+
+        showToast(`\u2713 Imported ${novelCount} novel${novelCount !== 1 ? 's' : ''} successfully!`);
+      } catch (err) {
+        alert('Import failed: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
 loadSavedData();       // Load any saved admin edits from localStorage
@@ -4951,14 +5033,21 @@ try { history.replaceState({ view: 'library' }, '', window.location.pathname + w
           </div>
 
           <div class="admin-section" style="background:#0a1a08;border-color:rgba(120,180,60,0.3)">
-            <div class="admin-section-title" style="color:#78b43c">💾 Save & Export Your Site</div>
+            <div class="admin-section-title" style="color:#78b43c">📦 Import / Export Data</div>
             <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#5a7a40;line-height:1.7;margin-bottom:1rem">
-              Your edits are <strong style="color:var(--yellow)">auto-saved to this browser's localStorage</strong> — they survive page refreshes on this device. But if you clear your browser or visit from another device, changes will be lost.
+              <strong style="color:var(--yellow)">Export Data</strong> downloads a <code style="color:var(--yellow);background:#1a1610;padding:0.1rem 0.4rem;border-radius:4px">.json</code> backup of all your novels, config, and password. Use <strong style="color:var(--yellow)">Import Data</strong> to restore it on any device — no GitHub needed.
             </p>
-            <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#5a7a40;line-height:1.7;margin-bottom:1rem">
-              To <strong style="color:var(--yellow)">permanently save</strong> your novels, click Export — it downloads a new HTML file with all your content baked in. Upload that to GitHub to publish.
-            </p>
-            <button class="admin-btn admin-btn-primary" style="background:#78b43c;border-color:#a0c060;font-size:0.75rem;padding:0.8rem 2rem" onclick="exportSite()">⬇ Export & Download Site</button>
+            <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1.2rem">
+              <button class="admin-btn admin-btn-primary" style="background:#78b43c;border-color:#a0c060;font-size:0.75rem;padding:0.8rem 1.6rem" onclick="exportData()">⬇ Export Data (JSON)</button>
+              <button class="admin-btn admin-btn-primary" style="background:#3a6a8a;border-color:#5a90b0;font-size:0.75rem;padding:0.8rem 1.6rem" onclick="importData()">⬆ Import Data (JSON)</button>
+            </div>
+            <div style="border-top:1px solid rgba(120,180,60,0.2);padding-top:1rem">
+              <div class="admin-section-title" style="color:#78b43c;margin-bottom:0.6rem">🌐 Publish to GitHub</div>
+              <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#5a7a40;line-height:1.7;margin-bottom:1rem">
+                To update your <strong style="color:var(--yellow)">live website</strong>, export the full HTML and upload it to GitHub Pages.
+              </p>
+              <button class="admin-btn admin-btn-primary" style="background:#556b2f;border-color:#78b43c;font-size:0.75rem;padding:0.8rem 1.6rem" onclick="exportSite()">⬇ Export HTML for GitHub</button>
+            </div>
           </div>
 
           <div class="admin-section" style="background:#0a0808">
