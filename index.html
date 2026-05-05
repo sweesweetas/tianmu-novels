@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>甜慕 Tián Mù — Novel Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --olive: #5a6e2c;
+  --olive-light: #7a9040;
+  --coral: #e8745a;
+  --pink: #f2a8a0;
+  --pink-bg: #f5c8c0;
+  --cream: #f5f0e0;
+  --cream-dark: #ede5cc;
+  --ink: #1a1a10;
+  --border: #1a1a10;
+  --yellow: #e8d060;
+  --tag-bg: #d4c870;
+  --radius: 14px;
+  --shadow: 4px 4px 0px var(--border);
+  --shadow-lg: 6px 6px 0px var(--border);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--pink-bg);
+  font-family: 'Instrument Serif', Georgia, serif;
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── DOTS HEADER STRIP ── */
+.dot-strip {
+  background: var(--pink-bg);
+  padding: 10px 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dot { width: 10px; height: 10px; background: var(--ink); border-radius: 50%; }
+
+/* ── NAV ── */
+nav {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  margin: 0 1.5rem 1.5rem;
+  padding: 0.75rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 10px;
+  z-index: 200;
+  box-shadow: var(--shadow);
+}
+
+.nav-logo {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+.nav-link {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--coral); }
+
+.lang-select {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: var(--olive);
+  color: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--border);
+  transition: all 0.15s;
+}
+.lang-select:hover { background: var(--coral); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--border); }
+
+/* ── HERO ── */
+.hero {
+  margin: 0 1.5rem 1.5rem;
+  background: var(--olive);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 3.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0;
+  width: 50%;
+  height: 100%;
+  background: var(--pink);
+  clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+  z-index: 0;
+}
+
+.hero-text { position: relative; z-index: 1; }
+
+.hero-eyebrow {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.hero-sub {
+  font-size: 1rem;
+  color: var(--cream-dark);
+  opacity: 0.85;
+  line-height: 1.5;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+}
+
+.hero-btn {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.8rem;
+  border-radius: 50px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.hero-btn:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-lg); }
+
+.hero-deco {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-flower {
+  font-size: 5rem;
+  animation: spin 20s linear infinite;
+  filter: drop-shadow(0 0 20px rgba(232,208,96,0.4));
+  color: var(--yellow);
+  line-height: 1;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── MARQUEE ── */
+.marquee-wrap {
+  background: var(--cream-dark);
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  overflow: hidden;
+  padding: 0.6rem 0;
+  margin-bottom: 2rem;
+}
+.marquee-inner {
+  display: flex;
+  gap: 2rem;
+  animation: marquee 25s linear infinite;
+  width: max-content;
+}
+.marquee-item {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.marquee-dot { color: var(--coral); font-size: 1.2rem; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── SECTION HEADING ── */
+.section-head {
+  padding: 0 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.section-count {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--olive);
+  letter-spacing: 0.1em;
+}
+
+/* ── NOVEL GRID ── */
+.novel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.2rem;
+  padding: 0 1.5rem 3rem;
+}
+
+.novel-card {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+}
+.novel-card:hover { transform: translate(-3px,-3px); box-shadow: var(--shadow-lg); }
+
+.card-cover {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid var(--border);
+}
+
+.card-cover-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 1;
+  line-height: 1.1;
+}
+
+.card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--yellow);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.2;
+  box-shadow: 2px 2px 0 var(--border);
+  z-index: 2;
+}
+
+.card-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+
+.card-genre {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--olive);
+}
+
+.card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.card-desc {
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.9rem;
+  color: #5a5040;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  border-top: 2px solid var(--border);
+  background: var(--cream-dark);
+}
+
+.card-chapters {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a6a50;
+}
+
+.card-read-btn {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.45rem 1rem;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--border);
+  transition: all 0.15s;
+}
+.card-read-btn:hover { background: var(--coral); transform: translate(-1px,-1px); }
+
+/* ── READING VIEW ── */
+#readingView {
+  display: none;
+  background: var(--cream);
+  min-height: 100vh;
+}
+
+.reading-nav {
+  background: var(--cream);
+  border-bottom: 2px solid var(--border);
+  padding: 0.8rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.back-btn {
+  background: var(--olive);
+  color: var(--cream);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--border);
+  transition: all 0.15s;
+}
+.back-btn:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--border); }
+
+.reading-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.chapter-select {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--cream-dark);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--border);
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--coral), var(--yellow));
+  z-index: 300;
+  width: 0%;
+  transition: width 0.1s;
+}
+
+/* ── READING CONTENT ── */
+.reading-hero {
+  padding: 4rem 2rem 3rem;
+  background: var(--olive);
+  border-bottom: 2px solid var(--border);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.reading-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(232,208,96,0.15) 0%, transparent 70%);
+}
+
+.reading-hero-eyebrow {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.reading-hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 900;
+  color: var(--cream);
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  position: relative;
+  margin-bottom: 0.8rem;
+}
+
+.reading-hero-author {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--pink);
+  position: relative;
+}
+
+/* ── CHAPTER LIST ── */
+.chapter-list {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.chapter-list-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.chapter-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 0.6rem;
+  background: var(--cream);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--border);
+  transition: all 0.15s;
+}
+.chapter-item:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--border); background: var(--pink-bg); }
+
+.ch-num {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--olive);
+  min-width: 2.5rem;
+  line-height: 1;
+}
+
+.ch-info { flex: 1; }
+.ch-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+.ch-desc {
+  font-size: 0.82rem;
+  color: #8a7a60;
+  font-style: italic;
+}
+
+.ch-arrow {
+  font-size: 1.2rem;
+  color: var(--coral);
+  transition: transform 0.15s;
+}
+.chapter-item:hover .ch-arrow { transform: translateX(4px); }
+
+/* ── CHAPTER READER ── */
+.chapter-reader {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+  display: none;
+}
+.chapter-reader.active { display: block; }
+
+.reader-chapter-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 0.8rem;
+}
+
+.reader-chapter-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.reader-divider {
+  width: 60px;
+  height: 4px;
+  background: var(--coral);
+  border-radius: 2px;
+  margin-bottom: 2rem;
+}
+
+.reader-epigraph {
+  background: var(--cream-dark);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.4rem;
+  font-style: italic;
+  font-size: 1rem;
+  color: #6a5a40;
+  margin-bottom: 2rem;
+  box-shadow: 3px 3px 0 var(--border);
+  line-height: 1.6;
+}
+
+.reader-text {
+  font-size: clamp(1.05rem, 2vw, 1.18rem);
+  line-height: 2;
+  color: #2a2018;
+}
+.reader-text p { margin-bottom: 1.5em; text-indent: 2em; }
+.reader-text p:first-child { text-indent: 0; }
+.reader-text p:first-child::first-letter {
+  font-family: 'Fraunces', serif;
+  font-size: 3.8em;
+  font-weight: 900;
+  color: var(--coral);
+  float: left;
+  line-height: 0.8;
+  margin: 0.1em 0.1em 0 0;
+}
+
+.scene-break {
+  text-align: center;
+  color: var(--olive);
+  font-size: 1.3rem;
+  margin: 2rem 0;
+  letter-spacing: 0.6rem;
+}
+
+.reader-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--border);
+}
+
+.reader-nav-btn {
+  background: var(--cream-dark);
+  color: var(--ink);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.4rem;
+  border-radius: 30px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: all 0.15s;
+}
+.reader-nav-btn:hover { background: var(--olive); color: var(--cream); transform: translate(-2px,-2px); box-shadow: var(--shadow-lg); }
+.reader-nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+/* ── FONT SIZE CONTROLS ── */
+.font-controls {
+  position: fixed;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  z-index: 50;
+}
+.font-btn {
+  width: 38px; height: 38px;
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  box-shadow: 2px 2px 0 var(--border);
+  transition: all 0.15s;
+  color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}
+.font-btn:hover { background: var(--coral); color: white; transform: translate(-1px,-1px); }
+
+/* ── TRANSLATION OVERLAY ── */
+.trans-bar {
+  background: var(--yellow);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  margin: 0 1.5rem 1.5rem;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow);
+  flex-wrap: wrap;
+}
+.trans-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.trans-opts { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.trans-btn {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 0.35rem 0.9rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--border);
+  transition: all 0.15s;
+  color: var(--ink);
+}
+.trans-btn:hover, .trans-btn.active { background: var(--olive); color: var(--cream); transform: translate(-1px,-1px); }
+
+/* ── ABOUT OVERLAY ── */
+#aboutOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(26,20,16,0.6);
+  backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+#aboutOverlay.open { display: flex; }
+
+.about-card {
+  background: var(--olive);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  max-width: 560px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  animation: aboutSlideUp 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+
+@keyframes aboutSlideUp {
+  from { opacity:0; transform: translateY(30px) scale(0.97); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+
+.about-header {
+  background: var(--ink);
+  padding: 2rem 2rem 1.5rem;
+  position: relative;
+  border-bottom: 2px solid var(--border);
+  overflow: hidden;
+}
+
+.about-header::before {
+  content: '✿';
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 5rem;
+  color: var(--yellow);
+  opacity: 0.12;
+  line-height: 1;
+}
+
+.about-eyebrow {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 0.6rem;
+}
+
+.about-name {
+  font-family: 'Fraunces', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--cream);
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.about-name-sub {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--pink);
+  margin-top: 0.3rem;
+  opacity: 0.8;
+}
+
+.about-body {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.about-quote {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--yellow);
+  line-height: 1.7;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+}
+
+.about-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1rem;
+  color: var(--cream-dark);
+  line-height: 1.85;
+  opacity: 0.9;
+}
+
+.about-text p { margin-bottom: 0.8em; }
+.about-text p:last-child { margin-bottom: 0; }
+
+.about-sig {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--pink);
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 1rem;
+  margin-top: 0.3rem;
+}
+
+.about-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  color: var(--cream);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+.about-close:hover { background: var(--coral); border-color: var(--coral); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.novel-card { animation: fadeIn 0.4s ease both; }
+.novel-card:nth-child(2) { animation-delay: 0.07s; }
+.novel-card:nth-child(3) { animation-delay: 0.14s; }
+.novel-card:nth-child(4) { animation-delay: 0.21s; }
+.novel-card:nth-child(5) { animation-delay: 0.28s; }
+.novel-card:nth-child(6) { animation-delay: 0.35s; }
+
+@media (max-width: 600px) {
+  nav { margin: 0 0.8rem 1rem; padding: 0.6rem 1rem; }
+  .hero { margin: 0 0.8rem 1rem; padding: 2rem 1.5rem; grid-template-columns: 1fr; }
+  .hero::after { display: none; }
+  .hero-deco { display: none; }
+  .novel-grid { padding: 0 0.8rem 2rem; }
+  .section-head { padding: 0 0.8rem; }
+  .trans-bar { margin: 0 0.8rem 1rem; }
+  .font-controls { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- LIBRARY VIEW -->
+<div id="libraryView">
+
+  <div class="dot-strip">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div>
+  </div>
+
+  <nav>
+    <div class="nav-logo">甜慕 Tián Mù</div>
+    <div class="nav-links">
+      <span class="nav-link" onclick="scrollToLibrary()">Library</span>
+      <span class="nav-link" onclick="showAboutPage()">About</span>
+      <div id="google_translate_element"></div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow" data-i18n="hero-eyebrow">✦ Original Stories by</div>
+      <div class="hero-title">甜慕<br>Tián Mù</div>
+      <p class="hero-sub" data-i18n="hero-sub">Stories of longing, magic, and the spaces between hearts. Updated regularly.</p>
+      <span class="hero-btn" onclick="scrollToLibrary()" data-i18n="hero-btn">Browse All Novels</span>
+    </div>
+    <div class="hero-deco">
+      <div class="hero-flower">✿</div>
+    </div>
+  </div>
+
+  <div class="marquee-wrap">
+    <div class="marquee-inner" id="marqueeInner">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <!-- TRANSLATION NOTE -->
+  <div class="trans-bar">
+    <span class="trans-label">🌐 Auto-Translation:</span>
+    <div class="trans-opts">
+      <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:#5a4a30;">Use the Translate button in the nav bar to read in any language — powered by Google Translate.</span>
+    </div>
+  </div>
+
+  <div class="section-head" id="libraryAnchor">
+    <div class="section-title" data-i18n="library-title">Novel Library</div>
+    <div class="section-count" id="novelCount"></div>
+  </div>
+
+  <div class="novel-grid" id="novelGrid"></div>
+
+</div><!-- /libraryView -->
+
+<!-- READING VIEW -->
+<div id="readingView">
+
+  <div class="reading-nav">
+    <button class="back-btn" onclick="goBack()" data-i18n="back-btn">← Back to Library</button>
+    <div class="reading-title" id="readingNavTitle"></div>
+    <select class="chapter-select" id="chapterJumpSelect" onchange="jumpToChapter(this.value)"></select>
+  
+  </div>
+
+  <div class="reading-hero" id="readingHero">
+    <div class="reading-hero-eyebrow" data-i18n="reading-eyebrow">A Novel by</div>
+    <div class="reading-hero-title" id="readingHeroTitle"></div>
+    <div class="reading-hero-author">甜慕 Tián Mù</div>
+  </div>
+
+  <div class="chapter-list" id="chapterListView">
+    <div class="chapter-list-title" data-i18n="chapters-title">Chapters</div>
+    <div id="chapterListItems"></div>
+  </div>
+
+  <div class="chapter-reader" id="chapterReaderView">
+    <div class="reader-chapter-label" id="readerChLabel"></div>
+    <div class="reader-chapter-title" id="readerChTitle"></div>
+    <div class="reader-divider"></div>
+    <div class="reader-epigraph" id="readerEpigraph" style="display:none"></div>
+    <div class="reader-text" id="readerText"></div>
+    <div class="reader-nav">
+      <button class="reader-nav-btn" id="prevChBtn" onclick="prevChapter()" data-i18n="prev-ch">← Previous</button>
+      <button class="reader-nav-btn" id="backToListBtn" onclick="showChapterList()" data-i18n="all-ch">All Chapters</button>
+      <button class="reader-nav-btn" id="nextChBtn" onclick="nextChapter()" data-i18n="next-ch">Next →</button>
+    </div>
+  </div>
+
+</div><!-- /readingView -->
+
+<!-- ABOUT OVERLAY -->
+<div id="aboutOverlay" onclick="closeAbout(event)">
+  <div class="about-card">
+    <button class="about-close" onclick="document.getElementById('aboutOverlay').classList.remove('open')">✕</button>
+    <div class="about-header">
+      <div class="about-eyebrow">The Mind Behind the Stories</div>
+      <div class="about-name">甜慕</div>
+      <div class="about-name-sub">Tián Mù — Sweet Longing</div>
+    </div>
+    <div class="about-body">
+      <div class="about-quote">
+        "I don't write stories. I open a door — and whatever has been collecting in the dark comes through."
+      </div>
+      <div class="about-text">
+        <p>甜慕 is a pen name for a mind that refuses to stay quiet. These pages are where the overflow goes — the characters who wouldn't leave, the worlds that arrived without invitation, the feelings too strange and too specific to fit anywhere else.</p>
+        <p>There is no grand method here. No outline, no blueprint. Only imagination, unfiltered and unashamed, poured out until the container is empty — and then filled again.</p>
+        <p>If something here feels familiar in a way you cannot explain, that is not coincidence. It means we share a particular kind of wildness.</p>
+      </div>
+      <div class="about-sig">— 甜慕, somewhere between midnight and morning ✿</div>
+    </div>
+  </div>
+</div>
+
+<!-- FONT CONTROLS -->
+<div class="font-controls" id="fontControls" style="display:none">
+  <button class="font-btn" onclick="changeFontSize(1)">A+</button>
+  <button class="font-btn" onclick="changeFontSize(-1)">A−</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// NOVEL DATA — Edit this section to add your novels!
+// ═══════════════════════════════════════════════════
+const NOVELS = [
+  {
+    id: 'crimson-veil',
+    genre: 'Fantasy Romance',
+    color: '#8b3a2a',
+    coverAccent: '#c96050',
+    badge: 'NEW',
+    chapters: [
+      {
+        title: 'The Girl Who Swallowed Stars',
+        desc: 'A chance encounter beneath a lantern-lit bridge.',
+        epigraph: '"Some meetings are not accidents — they are appointments the universe kept."',
+        content: `<p>The night Shen Wei discovered she could swallow stars, she was standing barefoot on the cold stone of the Wulong Bridge, trying very hard not to cry.</p>
+<p>It had been three years since her mother disappeared into the mountains and twelve days since she had last eaten a proper meal. The city stretched behind her, brilliant with light she could not afford, and ahead of her the river ran dark and indifferent between its banks.</p>
+<p>She tilted her head back. The sky was clear. One star — small, orange, almost hesitant — seemed to lean toward her.</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>She did not remember opening her mouth. She remembered only the warmth, like swallowing a sip of the tea her mother used to make, sweet with dried longan and rock sugar. The star settled in her chest like a small coal. She felt the crying ease. She felt, for the first time in months, that she was not entirely alone in her own body.</p>
+<p>"That's an unusual thing to do," said a voice behind her.</p>
+<p>She turned. A young man leaned against the bridge railing with an expression that managed to be both deeply unimpressed and intensely curious. He wore a grey coat two sizes too large for him and he was looking at her the way one looks at something that has just broken an important law of physics.</p>
+<p>"You can see that?" she said.</p>
+<p>"Only people with star-debt can see star-eating," he said. "Which means we have a problem." He paused. "My name is Lu Mianchen. And I'm afraid the star you just swallowed belongs to someone else."</p>`
+      },
+      {
+        title: 'The Debt of Light',
+        desc: 'Every star has an owner. Every owner has a price.',
+        epigraph: '"Borrowed light must be returned — but the interest is paid in something far more precious than gold."',
+        content: `<p>The Star Bureau occupied the top three floors of a building that did not appear on any city map and could only be entered by people who already knew where it was. Shen Wei followed Lu Mianchen through a door disguised as a boarded-up noodle shop, up stairs that smelled of incense and old paper, and into an office that contained more filing cabinets than she had ever seen in one place.</p>
+<p>An elderly woman sat behind a desk the size of a small boat. She was reading a ledger through spectacles that were, Shen Wei noticed, made of what appeared to be compressed moonlight.</p>
+<p>"Unauthorized ingestion," said Lu Mianchen. "Star class minor, orange spectrum, Cassiopeia cluster."</p>
+<p>The woman looked up. Her eyes were the color of an overcast sky and contained approximately the same amount of weather.</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>"Shen Wei," she said. It was not a question. "We've been expecting you."</p>
+<p>Shen Wei looked at Lu Mianchen. He had the expression of a person who has been keeping a secret for a long time and is beginning to find it heavy.</p>
+<p>"The star you swallowed," said the old woman, setting down her ledger, "was registered to a young man who died before he could collect his warmth debt. When a star goes unclaimed, it seeks the person with the most compatible grief." She folded her hands. "It found you."</p>
+<p>"What does that mean?" Shen Wei asked.</p>
+<p>"It means," said Lu Mianchen quietly, "that you've inherited both the light and the obligation that came with it." He did not look at her. "Which means you'll be working with me until we settle the account."</p>`
+      },
+      {
+        title: 'What the River Keeps',
+        desc: 'Some secrets run deeper than water.',
+        epigraph: '"The river does not explain itself. Neither does the heart."',
+        content: `<p>Three weeks into her employment at the Star Bureau, Shen Wei learned three things: that Lu Mianchen took his tea without sugar, that he had not slept in what appeared to be a very long time, and that he was lying about something important.</p>
+<p>She could not have said how she knew. Perhaps it was the way he paused before answering questions about his own history. Perhaps it was the photograph she had found by accident in his desk drawer — a girl who looked like him, younger, laughing, in front of a river she didn't recognize.</p>
+<p>She did not ask. She had her own secrets. She thought this was perhaps why they managed to work together without too much friction: two people with things they did not say, moving carefully around the shape of them.</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>But the river did not stay quiet forever.</p>
+<p>On the night of the autumn equinox, when the star inventory was conducted and the sky was briefly audible if you stood in the right silence, she heard him say a name to himself that was not her name and not his own. She heard it and filed it away the way she was learning to file everything: carefully, in the dark, for later.</p>
+<p>The warmth in her chest, the borrowed star, pulsed once. Like a question.</p>`
+      }
+    ],
+    titles: {
+      en: 'The Crimson Veil',
+      zh: '绯红面纱',
+      ms: 'Tirai Merah Padam',
+      ja: '深紅のヴェール',
+      ko: '진홍빛 베일',
+      es: 'El Velo Carmesí',
+      fr: 'Le Voile Cramoisi'
+    },
+    descs: {
+      en: 'A girl who can swallow stars. A boy who keeps the accounts of light. A debt that was never supposed to be hers.',
+      zh: '一个能吞噬星星的女孩，一个守护光之账册的男孩，一段本不属于她的债。',
+      ms: 'Seorang gadis yang boleh menelan bintang. Seorang pemuda yang menjaga catatan cahaya. Hutang yang sepatutnya bukan miliknya.',
+      ja: '星を飲み込む少女。光の帳簿を管理する少年。本来は彼女のものではなかった借り。',
+      ko: '별을 삼킬 수 있는 소녀. 빛의 장부를 지키는 소년. 원래 그녀의 것이 아니었던 빚.',
+      es: 'Una chica que puede tragarse estrellas. Un chico que lleva las cuentas de la luz. Una deuda que nunca debió ser suya.',
+      fr: 'Une fille qui peut avaler des étoiles. Un garçon qui tient les comptes de la lumière. Une dette qui n\'aurait jamais dû être la sienne.'
+    }
+  },
+  {
+    id: 'paper-crane',
+    genre: 'Literary Romance',
+    color: '#2a5a6e',
+    coverAccent: '#4a8aa0',
+    badge: 'ONGOING',
+    chapters: [
+      {
+        title: 'A Thousand Unwritten Letters',
+        desc: 'She writes letters she never sends. He finds the first one.',
+        epigraph: '"Every unsent letter is a conversation with a braver version of yourself."',
+        content: `<p>Yun Lihua had been writing letters to nobody for six years. She kept them in a lacquered box beneath her bed — one hundred and forty-seven of them, unsent, unsealed, addressed in her careful handwriting to a person who did not exist or had not yet arrived or was somewhere she could not reach.</p>
+<p>On the morning of her twenty-seventh birthday, she dropped one.</p>
+<p>She did not know she had dropped it. She walked to work through the grey October streets, past the dumpling stall and the florist who always put chrysanthemums in the window in autumn, and she did not look back. The letter lay on the pavement in the wind, open like a small confession.</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>Jiang Zeyu almost walked past it. He was already late and his coffee was going cold and he had approximately seventeen things to think about. But something in the handwriting — the careful loops, the ink that had gone slightly silver where it had been exposed to air — made him stop.</p>
+<p>He picked it up. He read the first line. He stood on the pavement for a long time after that, very still, while the city moved around him, reading a letter that was not addressed to him and that contained, inexplicably, a description of a feeling he had always had and never found words for.</p>
+<p>He folded it carefully. He put it in his inside pocket, where it sat against his chest all day like something that needed to be returned but also, he thought, like something that had always been meant to arrive.</p>`
+      },
+      {
+        title: 'The Language of Margins',
+        desc: 'Two readers. One secondhand book. Notes in different inks.',
+        epigraph: '"To annotate is to leave proof that someone was here, thinking, feeling, alive."',
+        content: `<p>The book was called <em>Atlas of Small Distances</em> and it had been owned, evidently, by at least three people before Yun Lihua found it in the secondhand section of a shop that smelled of damp and possibility.</p>
+<p>The first owner had used pencil. Light, tentative marks — question marks beside passages she apparently found unclear, the occasional underline, two words in the margin of chapter four: <em>this. exactly.</em></p>
+<p>The second owner had used red ink. More decisive. Crossings-out, disagreements argued in small handwriting, a long note on the final page that began: <em>I don't think that's what he meant at all.</em></p>
+<p>The third owner had used blue. And the third owner, Yun Lihua realized with a feeling she could not immediately name, had been responding to the second.</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>She read the whole book that night with her heart doing something irregular. The conversation in the margins was — she searched for the word and found only this: <em>intimate</em>. Two people who had never met, disagreeing and agreeing and pushing back and yielding, across a hundred and sixty pages, about love and distance and whether it was possible to truly know another person.</p>
+<p>She turned to the last page. The blue ink had written, below the red ink's final note: <em>I think you're wrong about this. I'd like to discuss it. If you ever find this — I'm serious.</em></p>
+<p>Below that, a name. Jiang Zeyu. And a number.</p>`
+      }
+    ],
+    titles: {
+      en: 'Paper Crane Letters',
+      zh: '纸鹤书信',
+      ms: 'Surat Burung Kertas',
+      ja: '折り鶴の手紙',
+      ko: '종이학 편지',
+      es: 'Cartas de Grulla de Papel',
+      fr: 'Lettres de Grue en Papier'
+    },
+    descs: {
+      en: 'Six years of unsent letters. One dropped page. The beginning of everything.',
+      zh: '六年未寄出的信。一页飘落的纸。一切的开始。',
+      ms: 'Enam tahun surat yang tidak dihantar. Satu halaman yang jatuh. Permulaan segalanya.',
+      ja: '6年間の未送信の手紙。落とした一枚の紙。すべての始まり。',
+      ko: '6년간의 보내지 않은 편지들. 떨어진 한 장. 모든 것의 시작.',
+      es: 'Seis años de cartas sin enviar. Una página caída. El comienzo de todo.',
+      fr: 'Six ans de lettres non envoyées. Une page tombée. Le début de tout.'
+    }
+  },
+  {
+    id: 'midnight-garden',
+    genre: 'Dark Fantasy',
+    color: '#2d1a4a',
+    coverAccent: '#6a3a8a',
+    badge: 'COMPLETE',
+    chapters: [
+      {
+        title: 'The Garden That Blooms at the End of the World',
+        desc: 'She tends flowers that should not exist.',
+        epigraph: '"Every impossible thing begins as someone\'s refusal to accept the possible."',
+        content: `<p>The garden existed in the hour between midnight and one, and only Mei Ruolan could find it.</p>
+<p>She had discovered it the winter she turned nineteen, following a smell she could not name — not quite jasmine, not quite rain, not quite the particular silence that falls after someone leaves. She had pushed through a gap in a stone wall behind the old pharmacy and found: flowers. Dozens of them. All varieties that had been extinct for a hundred years or had never been catalogued or existed only in the imagination of painters who had never left their studios.</p>
+<p>She became the garden's keeper the way one becomes anything important: accidentally, then devotedly, then absolutely.</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>The first time Xiao Shang appeared, he was sitting on a stone bench in the middle of the night garden eating a tangerine with an air of complete ownership.</p>
+<p>"You're trespassing," said Mei Ruolan.</p>
+<p>"You're both trespassing," he said. "This garden belongs to someone who hasn't been born yet." He peeled another segment. "I've been waiting for you to find it. You took longer than expected."</p>
+<p>"Who are you?"</p>
+<p>He looked at her the way a person looks at someone they have known a very long time across a distance of time that cannot be adequately described.</p>
+<p>"That," he said, "is the question the garden brought you here to answer."</p>`
+      },
+      {
+        title: 'What Flowers Know',
+        desc: 'Plants that remember. A boy who sees tomorrow.',
+        epigraph: '"The root does not know the flower. The flower does not know the fruit. And yet they are the same continuous thing."',
+        content: `<p>The flowers in the midnight garden were not merely decorative. Mei Ruolan understood this in her second month as keeper, when the black iris in the eastern corner began to hum.</p>
+<p>It was not the humming of something mechanical. It was the humming of something remembering — low, rhythmic, in a key that did not correspond to any note on any instrument she knew. She pressed her ear to the soil beside its roots and heard, or felt, the vibration of very old grief.</p>
+<p>"The flowers are archives," Xiao Shang told her. He had taken to appearing without announcement at hours she could not predict, and she had taken to no longer being surprised by this. "Every feeling a person has suppressed long enough passes into the ground and eventually into a root." He crouched beside the iris. "This one has been holding someone's sorrow for approximately sixty years."</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>"Can it be released?" she asked.</p>
+<p>"That's why you're here," he said simply.</p>
+<p>She looked at him. "You keep saying I was brought here for a reason. But you won't tell me what the reason is."</p>
+<p>"Because," he said, and for the first time she heard something beneath his composure — something careful and private and worn smooth with long keeping — "if I tell you the ending, you might not take the steps that lead to it." He stood. "And I have worked very hard," he said quietly, "to make sure you arrive."</p>`
+      },
+      {
+        title: 'The Last Bloom',
+        desc: 'Some endings are also beginnings. Some losses are also gifts.',
+        content: `<p>The garden bloomed one final time on the night of the winter solstice, and every flower in it opened simultaneously, which was not a thing that happened in nature or in magic, but happened then.</p>
+<p>Mei Ruolan stood in the center of it and felt the accumulated grief of sixty years move through her like a tide going out — not painless, but purposeful. She understood, standing there, that she had been a vessel for something she had not chosen, in the way that all important things arrive unchosen.</p>
+<p>Xiao Shang stood at the edge of the garden. She looked at him across the blooming and the light.</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>"You're leaving," she said. It was not a question.</p>
+<p>"The garden is complete," he said. "The debt is settled. The grief is released." He paused. "I was only ever here to bring you to the moment where you could do what you were meant to do."</p>
+<p>"And what was that?"</p>
+<p>He smiled. It was the first time, she realized, that she had seen him smile without the weight of knowing behind it. Just a smile. Just a person, briefly, in a garden at the end of a winter, glad.</p>
+<p>"You let things be held," he said. "You let old sorrow become something that could finally breathe." He stepped back toward the gap in the wall. "Not everyone can do that. Almost no one can." He paused once more. "The garden will be here. It will have a new keeper. But it will remember you."</p>
+<p>She watched him go. The flowers held their light a little longer, and then, one by one, in the slow and dignified way of things that have completed their purpose, they closed.</p>
+<p style="text-align:center; font-family:'Syne',sans-serif; font-size:0.7rem; letter-spacing:0.4em; color:var(--coral); opacity:0.7; margin-top:3rem; text-transform:uppercase;">— Complete —</p>`
+      }
+    ],
+    titles: {
+      en: 'The Midnight Garden',
+      zh: '午夜花园',
+      ms: 'Taman Tengah Malam',
+      ja: '真夜中の庭園',
+      ko: '한밤중의 정원',
+      es: 'El Jardín de Medianoche',
+      fr: 'Le Jardin de Minuit'
+    },
+    descs: {
+      en: 'A garden that only exists at midnight. Flowers that archive grief. A keeper who must learn to let things go.',
+      zh: '一座只在午夜存在的花园。储存悲伤的花朵。一位必须学会放手的守护者。',
+      ms: 'Sebuah taman yang hanya wujud di tengah malam. Bunga-bunga yang menyimpan kesedihan. Seorang penjaga yang perlu belajar melepaskan.',
+      ja: '真夜中だけに存在する庭。悲しみを記録する花々。手放すことを学ばなければならない番人。',
+      ko: '자정에만 존재하는 정원. 슬픔을 기록하는 꽃들. 놓아주는 법을 배워야 하는 수호자.',
+      es: 'Un jardín que solo existe a medianoche. Flores que archivan el dolor. Una guardiana que debe aprender a soltar.',
+      fr: 'Un jardin qui n\'existe qu\'à minuit. Des fleurs qui archivent le chagrin. Une gardienne qui doit apprendre à lâcher prise.'
+    }
+  },
+  {
+    id: 'salt-silk',
+    genre: 'Historical Drama',
+    color: '#5a4020',
+    coverAccent: '#8a6030',
+    badge: 'ONGOING',
+    chapters: [
+      {
+        title: 'The Merchant\'s Daughter',
+        desc: 'She was taught to be invisible. She refused.',
+        epigraph: '"A woman who knows the price of silk knows the price of everything — including herself."',
+        content: `<p>In the fourth year of the Minghua reign, when the silk trade ran from the eastern ports to the desert crossings and back again in a river of coin and cloth and carefully managed debt, Zhou Yinghua did her father's accounts in secret and better than he did them himself.</p>
+<p>She was twenty-two. She had been taught to pour tea, to embroider, to walk with the particular contained grace expected of a merchant's daughter of good family. She had learned all of these things and performed them when required and found them, in honest moments, insufficient.</p>
+<p>The accounts were different. The accounts were a language she had taught herself from her father's discarded ledgers, and in them she had found something that felt less like a skill and more like a native tongue returned to after long absence.</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>She was rewriting a particularly egregious miscalculation when the door opened and a voice said: "Those numbers are wrong."</p>
+<p>She looked up. A man she did not know stood in the doorway — dusty from travel, plainly dressed, with the particular quality of stillness that belongs to people who have spent long periods of time in places where movement is unwise.</p>
+<p>"I know," she said. "I'm correcting them."</p>
+<p>He looked at the ledger. He looked at her. Something shifted in his expression — not surprise exactly, but the adjustment a person makes when the situation turns out to be more interesting than expected.</p>
+<p>"Your father sent me to review the accounts," he said.</p>
+<p>"Then we'll be working together," said Zhou Yinghua, and turned back to the columns, and did not let him see that her hands were shaking, not from fear but from the feeling — unfamiliar, extraordinary — of being caught doing something true.</p>`
+      },
+      {
+        title: 'Silk Road Arithmetic',
+        desc: 'The mathematics of trade, trust, and risk.',
+        epigraph: '"Every calculation is also a wager. The wise merchant knows which is which."',
+        content: `<p>His name was Wei Congming and he had been, variously, a soldier, an inspector, a translator, and a man who could calculate the true value of a shipment by smell alone. He did not say these things. Zhou Yinghua learned them the way she learned most important things: by watching, cataloguing, and drawing conclusions that she kept to herself until they were certain.</p>
+<p>They worked together for three weeks before either of them said anything that wasn't strictly about the accounts. In those three weeks, she corrected four of his calculations (tactfully) and he acknowledged three of the corrections (tersely) and they developed between them, without discussion, a system for dividing the work that was more efficient than anything her father had previously managed.</p>
+<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+<p>"Why do you do it in secret?" he asked on the seventeenth evening, without looking up from his column.</p>
+<p>She did not pretend to misunderstand. "Because if my father knew I was better at this than he is, he would stop letting me do it."</p>
+<p>Wei Congming set down his brush. He looked at her with an expression she couldn't read — not quite admiration, not quite recognition, something more complicated than either.</p>
+<p>"That," he said, "is the most pragmatic thing I've heard in three months."</p>
+<p>She looked at him. "Is that a compliment?"</p>
+<p>"In my experience," he said, picking up his brush again, "pragmatism is the highest compliment there is."</p>`
+      }
+    ],
+    titles: {
+      en: 'Salt & Silk',
+      zh: '盐与丝',
+      ms: 'Garam & Sutera',
+      ja: '塩と絹',
+      ko: '소금과 비단',
+      es: 'Sal y Seda',
+      fr: 'Sel et Soie'
+    },
+    descs: {
+      en: 'A merchant\'s daughter who keeps the books in secret. An auditor sent to find the errors. A dynasty-era love story built on trust and ledgers.',
+      zh: '一个秘密记账的商人之女。一个被派来查账的审计员。一段以信任与账本为基础的朝代爱情故事。',
+      ms: 'Seorang anak perempuan saudagar yang merahsiakan pembukuan. Seorang juruaudit yang dihantar mencari kesilapan. Kisah cinta era dinasti yang dibina atas kepercayaan dan lejar.',
+      ja: '秘密で帳簿をつける商人の娘。誤りを見つけるために派遣された検査官。信頼と台帳で築かれた王朝時代の恋愛物語。',
+      ko: '비밀리에 장부를 적는 상인의 딸. 오류를 찾기 위해 파견된 감사관. 신뢰와 원장으로 세워진 왕조 시대 러브스토리.',
+      es: 'La hija de un mercader que lleva los libros en secreto. Un auditor enviado a encontrar los errores. Una historia de amor de la era dinástica construida sobre confianza y libros contables.',
+      fr: 'La fille d\'un marchand qui tient les livres en secret. Un auditeur envoyé pour trouver les erreurs. Une histoire d\'amour de l\'ère dynastique construite sur la confiance et les registres.'
+    }
+  }
+];
+
+// ═══════════════════════════════════════════════
+// TRANSLATIONS
+// ═══════════════════════════════════════════════
+const i18n = {
+  en: {
+    'hero-eyebrow': '✦ Original Stories by',
+    'hero-sub': 'Stories of longing, magic, and the spaces between hearts. Updated regularly.',
+    'hero-btn': 'Browse All Novels',
+    'read-in': 'Read in:',
+    'library-title': 'Novel Library',
+    'back-btn': '← Back to Library',
+    'reading-eyebrow': 'A Novel by',
+    'chapters-title': 'Chapters',
+    'prev-ch': '← Previous',
+    'next-ch': 'Next →',
+    'all-ch': 'All Chapters',
+    'read-now': 'Read Now',
+    'chapters': 'chapters',
+    'chapter': 'Chapter'
+  },
+  zh: {
+    'hero-eyebrow': '✦ 甜慕原创故事',
+    'hero-sub': '关于渴望、魔法与心灵之间的故事，持续更新中。',
+    'hero-btn': '浏览全部小说',
+    'read-in': '阅读语言：',
+    'library-title': '小说书库',
+    'back-btn': '← 返回书库',
+    'reading-eyebrow': '甜慕著',
+    'chapters-title': '章节',
+    'prev-ch': '← 上一章',
+    'next-ch': '下一章 →',
+    'all-ch': '全部章节',
+    'read-now': '立即阅读',
+    'chapters': '章节',
+    'chapter': '第'
+  },
+  ms: {
+    'hero-eyebrow': '✦ Cerita Asal oleh',
+    'hero-sub': 'Kisah-kisah tentang rindu, sihir, dan ruang di antara hati. Dikemaskini kerap.',
+    'hero-btn': 'Semak Semua Novel',
+    'read-in': 'Baca dalam:',
+    'library-title': 'Perpustakaan Novel',
+    'back-btn': '← Kembali ke Perpustakaan',
+    'reading-eyebrow': 'Novel oleh',
+    'chapters-title': 'Bab-bab',
+    'prev-ch': '← Sebelumnya',
+    'next-ch': 'Seterusnya →',
+    'all-ch': 'Semua Bab',
+    'read-now': 'Baca Sekarang',
+    'chapters': 'bab',
+    'chapter': 'Bab'
+  },
+  ja: {
+    'hero-eyebrow': '✦ 甜慕オリジナル作品',
+    'hero-sub': '切望、魔法、そして心と心の間の空間についての物語。定期更新中。',
+    'hero-btn': 'すべての小説を見る',
+    'read-in': '言語を選択：',
+    'library-title': '小説ライブラリ',
+    'back-btn': '← ライブラリに戻る',
+    'reading-eyebrow': '著: 甜慕',
+    'chapters-title': '章一覧',
+    'prev-ch': '← 前の章',
+    'next-ch': '次の章 →',
+    'all-ch': '全章',
+    'read-now': '今すぐ読む',
+    'chapters': '章',
+    'chapter': '第'
+  },
+  ko: {
+    'hero-eyebrow': '✦ 甜慕 오리지널 스토리',
+    'hero-sub': '그리움, 마법, 마음 사이의 공간에 관한 이야기. 정기 업데이트.',
+    'hero-btn': '모든 소설 보기',
+    'read-in': '언어 선택:',
+    'library-title': '소설 라이브러리',
+    'back-btn': '← 도서관으로 돌아가기',
+    'reading-eyebrow': '저자: 甜慕',
+    'chapters-title': '챕터 목록',
+    'prev-ch': '← 이전',
+    'next-ch': '다음 →',
+    'all-ch': '전체 챕터',
+    'read-now': '지금 읽기',
+    'chapters': '챕터',
+    'chapter': '챕터'
+  },
+  es: {
+    'hero-eyebrow': '✦ Historias Originales de',
+    'hero-sub': 'Historias de anhelo, magia y los espacios entre corazones. Actualizado regularmente.',
+    'hero-btn': 'Explorar Todas las Novelas',
+    'read-in': 'Leer en:',
+    'library-title': 'Biblioteca de Novelas',
+    'back-btn': '← Volver a la Biblioteca',
+    'reading-eyebrow': 'Una Novela de',
+    'chapters-title': 'Capítulos',
+    'prev-ch': '← Anterior',
+    'next-ch': 'Siguiente →',
+    'all-ch': 'Todos los Capítulos',
+    'read-now': 'Leer Ahora',
+    'chapters': 'capítulos',
+    'chapter': 'Capítulo'
+  },
+  fr: {
+    'hero-eyebrow': '✦ Histoires Originales de',
+    'hero-sub': 'Des histoires de désir, de magie et des espaces entre les cœurs. Mis à jour régulièrement.',
+    'hero-btn': 'Parcourir Tous les Romans',
+    'read-in': 'Lire en:',
+    'library-title': 'Bibliothèque de Romans',
+    'back-btn': '← Retour à la Bibliothèque',
+    'reading-eyebrow': 'Un Roman de',
+    'chapters-title': 'Chapitres',
+    'prev-ch': '← Précédent',
+    'next-ch': 'Suivant →',
+    'all-ch': 'Tous les Chapitres',
+    'read-now': 'Lire Maintenant',
+    'chapters': 'chapitres',
+    'chapter': 'Chapitre'
+  }
+};
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let currentLang = 'en';
+let currentNovel = null;
+let currentChapterIdx = 0;
+let fontSize = 1.1;
+
+// ═══════════════════════════════════════════════
+// LANGUAGE
+// ═══════════════════════════════════════════════
+function t(key) { return (i18n[currentLang] || i18n.en)[key] || i18n.en[key] || key; }
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('.lang-select').forEach(s => s.value = lang);
+  document.querySelectorAll('.trans-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang || b.onclick?.toString().includes(`'${lang}'`));
+  });
+  renderGrid();
+  if (currentNovel !== null) {
+    renderChapterList(currentNovel);
+    document.getElementById('readingNavTitle').textContent = NOVELS[currentNovel].titles[lang] || NOVELS[currentNovel].titles.en;
+    document.getElementById('readingHeroTitle').textContent = NOVELS[currentNovel].titles[lang] || NOVELS[currentNovel].titles.en;
+  }
+}
+
+// ═══════════════════════════════════════════════
+// MARQUEE
+// ═══════════════════════════════════════════════
+function buildMarquee() {
+  const genres = ['Fantasy Romance','Literary Fiction','Dark Fantasy','Historical Drama','Mystery','Coming of Age','Slow Burn'];
+  let html = '';
+  for (let i=0; i<2; i++) genres.forEach(g => {
+    html += `<span class="marquee-item">${g} <span class="marquee-dot">✿</span></span>`;
+  });
+  document.getElementById('marqueeInner').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════
+// GRID
+// ═══════════════════════════════════════════════
+function renderGrid() {
+  const grid = document.getElementById('novelGrid');
+  document.getElementById('novelCount').textContent = `${NOVELS.length} ${t('chapters')}`.replace('chapters','novels');
+  grid.innerHTML = NOVELS.map((n, idx) => {
+    const title = n.titles[currentLang] || n.titles.en;
+    const desc = n.descs[currentLang] || n.descs.en;
+    return `
+    <div class="novel-card" onclick="openNovel(${idx})">
+      <div class="card-cover" style="background:linear-gradient(135deg,${n.color},${n.coverAccent})">
+        <div class="card-cover-title">${title}</div>
+        ${n.badge ? `<div class="card-badge">${n.badge}</div>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-genre">${n.genre}</div>
+        <div class="card-title">${title}</div>
+        <div class="card-desc">${desc}</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-chapters">${n.chapters.length} ${t('chapters')}</div>
+        <button class="card-read-btn">${t('read-now')}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// OPEN NOVEL
+// ═══════════════════════════════════════════════
+function openNovel(idx) {
+  currentNovel = idx;
+  const novel = NOVELS[idx];
+  const title = novel.titles[currentLang] || novel.titles.en;
+
+  document.getElementById('libraryView').style.display = 'none';
+  document.getElementById('readingView').style.display = 'block';
+  document.getElementById('fontControls').style.display = 'flex';
+
+  document.getElementById('readingNavTitle').textContent = title;
+  document.getElementById('readingHeroTitle').textContent = title;
+  document.getElementById('readingHero').style.background = `linear-gradient(135deg,${novel.color},${novel.coverAccent})`;
+
+  renderChapterList(idx);
+  showChapterList();
+  window.scrollTo(0,0);
+}
+
+function renderChapterList(idx) {
+  const novel = NOVELS[idx];
+  const items = document.getElementById('chapterListItems');
+  const jump = document.getElementById('chapterJumpSelect');
+
+  items.innerHTML = novel.chapters.map((ch, i) => `
+    <div class="chapter-item" onclick="openChapter(${i})">
+      <div class="ch-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="ch-info">
+        <div class="ch-title">${ch.title}</div>
+        ${ch.desc ? `<div class="ch-desc">${ch.desc}</div>` : ''}
+      </div>
+      <div class="ch-arrow">→</div>
+    </div>`).join('');
+
+  jump.innerHTML = `<option value="-1">${t('chapters-title')}</option>` +
+    novel.chapters.map((ch,i) => `<option value="${i}">${t('chapter')} ${i+1}</option>`).join('');
+}
+
+function showChapterList() {
+  document.getElementById('chapterListView').style.display = 'block';
+  document.getElementById('chapterReaderView').classList.remove('active');
+  document.getElementById('fontControls').style.display = 'none';
+  document.getElementById('chapterJumpSelect').value = '-1';
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════════
+// OPEN CHAPTER
+// ═══════════════════════════════════════════════
+function openChapter(idx) {
+  currentChapterIdx = idx;
+  const novel = NOVELS[currentNovel];
+  const ch = novel.chapters[idx];
+
+  document.getElementById('chapterListView').style.display = 'none';
+  const reader = document.getElementById('chapterReaderView');
+  reader.classList.add('active');
+  document.getElementById('fontControls').style.display = 'flex';
+
+  document.getElementById('readerChLabel').textContent = `${t('chapter')} ${idx+1}`;
+  document.getElementById('readerChTitle').textContent = ch.title;
+  document.getElementById('readerText').innerHTML = ch.content;
+  document.getElementById('readerText').style.fontSize = fontSize + 'rem';
+
+  const epig = document.getElementById('readerEpigraph');
+  if (ch.epigraph) { epig.textContent = ch.epigraph; epig.style.display = 'block'; }
+  else { epig.style.display = 'none'; }
+
+  document.getElementById('prevChBtn').disabled = idx === 0;
+  document.getElementById('nextChBtn').disabled = idx === novel.chapters.length - 1;
+  document.getElementById('chapterJumpSelect').value = idx;
+
+  window.scrollTo(0,0);
+}
+
+function jumpToChapter(val) {
+  if (val == -1) { showChapterList(); return; }
+  openChapter(parseInt(val));
+}
+
+function prevChapter() { if (currentChapterIdx > 0) openChapter(currentChapterIdx - 1); }
+function nextChapter() { if (currentChapterIdx < NOVELS[currentNovel].chapters.length - 1) openChapter(currentChapterIdx + 1); }
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function goBack() {
+  document.getElementById('readingView').style.display = 'none';
+  document.getElementById('libraryView').style.display = 'block';
+  document.getElementById('fontControls').style.display = 'none';
+  currentNovel = null;
+  window.scrollTo(0,0);
+}
+
+function scrollToLibrary() {
+  document.getElementById('libraryAnchor').scrollIntoView({behavior:'smooth'});
+}
+
+function showAboutPage() {
+  document.getElementById('aboutOverlay').classList.add('open');
+}
+
+function closeAbout(e) {
+  if (e.target === document.getElementById('aboutOverlay')) {
+    document.getElementById('aboutOverlay').classList.remove('open');
+  }
+}
+
+function changeFontSize(dir) {
+  fontSize = Math.max(0.9, Math.min(1.5, fontSize + dir * 0.08));
+  document.getElementById('readerText').style.fontSize = fontSize + 'rem';
+}
+
+// ═══════════════════════════════════════════════
+// PROGRESS BAR
+// ═══════════════════════════════════════════════
+window.addEventListener('scroll', () => {
+  const d = document.documentElement;
+  const pct = d.scrollTop / (d.scrollHeight - d.clientHeight);
+  document.getElementById('progressBar').style.width = (pct * 100) + '%';
+});
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+buildMarquee();
+renderGrid();
+</script>
+
+<!-- GOOGLE TRANSLATE -->
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'zh-CN,zh-TW,ms,ja,ko,es,fr,de,ar,hi,pt,id,th,vi,ru',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    autoDisplay: false
+  }, 'google_translate_element');
+}
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- Style the Google Translate widget to match the site -->
+<style>
+#google_translate_element .goog-te-gadget-simple {
+  background: var(--olive) !important;
+  border: 2px solid var(--border) !important;
+  border-radius: 20px !important;
+  padding: 0.3rem 0.8rem !important;
+  box-shadow: 2px 2px 0 var(--border) !important;
+  font-family: 'Syne', sans-serif !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+}
+#google_translate_element .goog-te-gadget-simple span,
+#google_translate_element .goog-te-gadget-simple a span {
+  color: var(--cream) !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  font-family: 'Syne', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.7rem !important;
+}
+#google_translate_element .goog-te-gadget-simple .goog-te-menu-value span {
+  text-decoration: none !important;
+}
+/* Hide the Google Translate top banner bar */
+body > .skiptranslate { display: none !important; }
+body { top: 0 !important; }
+.goog-te-banner-frame { display: none !important; }
+iframe.goog-te-banner-frame { display: none !important; }
+</style>
+</body>
+</html>
