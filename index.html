@@ -3042,10 +3042,10 @@ function googleTranslateElementInit() {
   }, 'google_translate_element');
 }
 </script>
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-<!-- Style the Google Translate widget to match the site -->
 <style>
+/* ── Google Translate widget styling ── */
 #google_translate_element .goog-te-gadget-simple {
   background: var(--olive) !important;
   border: 2px solid var(--border) !important;
@@ -3055,8 +3055,10 @@ function googleTranslateElementInit() {
   font-family: 'Syne', sans-serif !important;
   font-size: 0.7rem !important;
   font-weight: 700 !important;
+  cursor: pointer !important;
 }
 #google_translate_element .goog-te-gadget-simple span,
+#google_translate_element .goog-te-gadget-simple a,
 #google_translate_element .goog-te-gadget-simple a span {
   color: var(--cream) !important;
   letter-spacing: 0.1em !important;
@@ -3064,15 +3066,17 @@ function googleTranslateElementInit() {
   font-family: 'Syne', sans-serif !important;
   font-weight: 700 !important;
   font-size: 0.7rem !important;
-}
-#google_translate_element .goog-te-gadget-simple .goog-te-menu-value span {
   text-decoration: none !important;
+  pointer-events: auto !important;
 }
-/* Hide the Google Translate top banner bar */
-body > .skiptranslate { display: none !important; }
-body { top: 0 !important; }
-.goog-te-banner-frame { display: none !important; }
-iframe.goog-te-banner-frame { display: none !important; }
+/* Hide the top bar Google injects BUT keep the iframe it needs to function */
+.goog-te-banner-frame.skiptranslate { display: none !important; }
+body > font > a { display: none !important; }
+/* Let Google move the body — DON'T override with top:0 */
+.skiptranslate:not(#google_translate_element *) { height: 0 !important; overflow: hidden !important; }
+/* Keep dropdown z-index above our nav */
+.goog-te-menu-frame { z-index: 9999 !important; }
+.goog-te-gadget-simple:hover { background: var(--coral) !important; }
 </style>
 </body>
 </html>
