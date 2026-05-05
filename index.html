@@ -4044,105 +4044,236 @@ function animateView(el) {
 }
 
 // ═══════════════════════════════════════════════
-// HEART / LIKES SYSTEM
+// HEART / LIKES SYSTEM — Supabase-backed (shared across all visitors)
 // ═══════════════════════════════════════════════
-function _likeKey(idx) { return `tm_like_${NOVELS[idx]?.id || idx}`; }
-function _likesKey(idx) { return `tm_likes_${NOVELS[idx]?.id || idx}`; }
+
+// In-memory cache: { novelId: { count, liked } }
+const _likesCache = {};
+
+// Browser fingerprint (stable per device, anonymous)
+function _getFingerprint() {
+  let fp = null;
+  try { fp = localStorage.getItem('tm_fp'); } catch(e) {}
+  if (!fp) {
+    fp = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    try { localStorage.setItem('tm_fp', fp); } catch(e) {}
+  }
+  return fp;
+}
+
+// Fetch like count + whether this device liked a novel from Supabase
+async function _fetchLikeData(novelId) {
+  try {
+    const fp = _getFingerprint();
+    // Count total likes
+    const countResp = await fetch(
+      `${_SB_URL}/rest/v1/novel_likes?novel_id=eq.${encodeURIComponent(novelId)}&select=id`,
+      { headers: { ..._SB_HEADERS, 'Prefer': 'count=exact', 'Range': '0-0' } }
+    );
+    const count = parseInt(countResp.headers.get('content-range')?.split('/')[1] || '0');
+    // Check if this device already liked
+    const likedResp = await fetch(
+      `${_SB_URL}/rest/v1/novel_likes?novel_id=eq.${encodeURIComponent(novelId)}&fingerprint=eq.${encodeURIComponent(fp)}&select=id`,
+      { headers: _SB_HEADERS }
+    );
+    const likedRows = likedResp.ok ? await likedResp.json() : [];
+    _likesCache[novelId] = { count, liked: likedRows.length > 0 };
+    return _likesCache[novelId];
+  } catch(e) {
+    return _likesCache[novelId] || { count: 0, liked: false };
+  }
+}
+
+// Load all like data for all novels and refresh the grid display
+async function loadAllLikes() {
+  await Promise.all(NOVELS.map(n => _fetchLikeData(n.id)));
+  // Refresh counts in the grid
+  NOVELS.forEach((n, idx) => {
+    const data = _likesCache[n.id] || { count: 0, liked: false };
+    const countEl = document.getElementById('heart-count-' + idx);
+    const btn = countEl?.closest('.card-heart-btn');
+    if (countEl) countEl.textContent = data.count;
+    if (btn) {
+      btn.classList.toggle('liked', data.liked);
+      const icon = btn.querySelector('.heart-icon');
+      if (icon) icon.textContent = data.liked ? '❤️' : '🤍';
+    }
+  });
+}
 
 function getNovelLiked(idx) {
-  try { return localStorage.getItem(_likeKey(idx)) === '1'; } catch(e) { return false; }
-}
-function getHeartCount(idx) {
-  try { return parseInt(localStorage.getItem(_likesKey(idx)) || '0'); } catch(e) { return 0; }
+  const id = NOVELS[idx]?.id;
+  return id ? (_likesCache[id]?.liked || false) : false;
 }
 
-function toggleHeart(idx, btn) {
-  const liked = getNovelLiked(idx);
-  const count = getHeartCount(idx);
-  const newLiked = !liked;
-  const newCount = newLiked ? count + 1 : Math.max(0, count - 1);
+function getHeartCount(idx) {
+  const id = NOVELS[idx]?.id;
+  return id ? (_likesCache[id]?.count || 0) : 0;
+}
+
+async function toggleHeart(idx, btn) {
+  const novel = NOVELS[idx];
+  if (!novel) return;
+  const fp = _getFingerprint();
+  const cache = _likesCache[novel.id] || { count: 0, liked: false };
+  const nowLiked = !cache.liked;
+
+  // Optimistic UI update
+  _likesCache[novel.id] = { count: nowLiked ? cache.count + 1 : Math.max(0, cache.count - 1), liked: nowLiked };
+  _refreshHeartUI(idx, nowLiked, _likesCache[novel.id].count);
+
   try {
-    localStorage.setItem(_likeKey(idx), newLiked ? '1' : '0');
-    localStorage.setItem(_likesKey(idx), String(newCount));
-  } catch(e) {}
-  btn.classList.toggle('liked', newLiked);
-  btn.querySelector('.heart-icon').textContent = newLiked ? '❤️' : '🤍';
+    if (nowLiked) {
+      // Insert like row (upsert to be safe)
+      await fetch(`${_SB_URL}/rest/v1/novel_likes`, {
+        method: 'POST',
+        headers: { ..._SB_HEADERS, 'Prefer': 'resolution=ignore-duplicates,return=minimal' },
+        body: JSON.stringify({ novel_id: novel.id, fingerprint: fp })
+      });
+    } else {
+      // Delete like row
+      await fetch(
+        `${_SB_URL}/rest/v1/novel_likes?novel_id=eq.${encodeURIComponent(novel.id)}&fingerprint=eq.${encodeURIComponent(fp)}`,
+        { method: 'DELETE', headers: _SB_HEADERS }
+      );
+    }
+    // Re-fetch real count (in case of concurrent likes from others)
+    await _fetchLikeData(novel.id);
+    _refreshHeartUI(idx, _likesCache[novel.id].liked, _likesCache[novel.id].count);
+  } catch(e) {
+    // Revert optimistic update on failure
+    _likesCache[novel.id] = cache;
+    _refreshHeartUI(idx, cache.liked, cache.count);
+  }
+}
+
+function _refreshHeartUI(idx, liked, count) {
+  // Card grid button
   const countEl = document.getElementById('heart-count-' + idx);
-  if (countEl) countEl.textContent = newCount;
-  // bounce animation
-  btn.querySelector('.heart-icon').style.transform = 'scale(1.5)';
-  setTimeout(() => { btn.querySelector('.heart-icon').style.transform = ''; }, 200);
+  const cardBtn = countEl?.closest('.card-heart-btn');
+  if (cardBtn) {
+    cardBtn.classList.toggle('liked', liked);
+    const icon = cardBtn.querySelector('.heart-icon');
+    if (icon) { icon.textContent = liked ? '❤️' : '🤍'; icon.style.transform = 'scale(1.4)'; setTimeout(() => { icon.style.transform = ''; }, 200); }
+  }
+  if (countEl) countEl.textContent = count;
+  // Reader heart button
+  if (currentNovel === idx) {
+    const readerBtn = document.getElementById('novelHeartBtn');
+    if (readerBtn) {
+      readerBtn.classList.toggle('liked', liked);
+      const rIcon = readerBtn.querySelector('.heart-icon');
+      if (rIcon) rIcon.textContent = liked ? '❤️' : '🤍';
+    }
+    const readerCount = document.getElementById('novelHeartCountReader');
+    if (readerCount) readerCount.textContent = count;
+  }
 }
 
 function toggleHeartReader() {
   if (currentNovel === null) return;
   const btn = document.getElementById('novelHeartBtn');
   toggleHeart(currentNovel, btn);
-  // sync count display
-  document.getElementById('novelHeartCountReader').textContent = getHeartCount(currentNovel);
-  // sync library card if visible
-  const cardCount = document.getElementById('heart-count-' + currentNovel);
-  if (cardCount) cardCount.textContent = getHeartCount(currentNovel);
 }
 
 function updateReaderHeart() {
   if (currentNovel === null) return;
+  const idx = currentNovel;
+  const liked = getNovelLiked(idx);
+  const count = getHeartCount(idx);
   const btn = document.getElementById('novelHeartBtn');
-  const liked = getNovelLiked(currentNovel);
-  btn.classList.toggle('liked', liked);
-  btn.querySelector('.heart-icon').textContent = liked ? '❤️' : '🤍';
-  document.getElementById('novelHeartCountReader').textContent = getHeartCount(currentNovel);
+  if (btn) {
+    btn.classList.toggle('liked', liked);
+    const icon = btn.querySelector('.heart-icon');
+    if (icon) icon.textContent = liked ? '❤️' : '🤍';
+  }
+  const countEl = document.getElementById('novelHeartCountReader');
+  if (countEl) countEl.textContent = count;
 }
 
 // ═══════════════════════════════════════════════
-// COMMENTS SYSTEM
+// COMMENTS SYSTEM — Supabase-backed
 // ═══════════════════════════════════════════════
-function _commentsKey(novelId) { return `tm_comments_${novelId}`; }
 
-function getComments(novelId) {
-  try { return JSON.parse(localStorage.getItem(_commentsKey(novelId)) || '[]'); } catch(e) { return []; }
-}
-function saveComments(novelId, comments) {
-  try { localStorage.setItem(_commentsKey(novelId), JSON.stringify(comments)); } catch(e) {}
+// In-memory cache: { novelId: [ comment, ... ] }
+const _commentsCache = {};
+
+async function _fetchComments(novelId) {
+  try {
+    // Fetch only approved comments for readers
+    const resp = await fetch(
+      `${_SB_URL}/rest/v1/novel_comments?novel_id=eq.${encodeURIComponent(novelId)}&approved=eq.true&order=created_at.asc&select=id,body,created_at`,
+      { headers: _SB_HEADERS }
+    );
+    if (resp.ok) {
+      const rows = await resp.json();
+      _commentsCache[novelId] = rows;
+      return rows;
+    }
+  } catch(e) {}
+  return _commentsCache[novelId] || [];
 }
 
-function submitComment() {
+async function _fetchAllCommentsAdmin() {
+  try {
+    const resp = await fetch(
+      `${_SB_URL}/rest/v1/novel_comments?order=created_at.asc&select=id,novel_id,body,approved,created_at`,
+      { headers: _SB_HEADERS }
+    );
+    if (resp.ok) return await resp.json();
+  } catch(e) {}
+  return [];
+}
+
+// Legacy compat shims (used by renderInsights)
+function getComments(novelId) { return _commentsCache[novelId] || []; }
+
+async function submitComment() {
   if (currentNovel === null) return;
   const novel = NOVELS[currentNovel];
-  const name = document.getElementById('commentName').value.trim() || 'Anonymous';
   const text = document.getElementById('commentText').value.trim();
   if (!text) { showCommentFeedback('Please write something first ✦'); return; }
   if (text.length < 3) { showCommentFeedback('Comment is too short.'); return; }
 
-  const comments = getComments(novel.id);
-  comments.push({
-    id: Date.now(),
-    name,
-    text,
-    date: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}),
-    approved: false
-  });
-  saveComments(novel.id, comments);
+  const btn = document.querySelector('.comment-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
 
-  document.getElementById('commentName').value = '';
-  document.getElementById('commentText').value = '';
-  showCommentFeedback('✦ Comment submitted! Waiting for approval.');
+  try {
+    const resp = await fetch(`${_SB_URL}/rest/v1/novel_comments`, {
+      method: 'POST',
+      headers: { ..._SB_HEADERS, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ novel_id: novel.id, body: text, approved: false })
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    document.getElementById('commentText').value = '';
+    showCommentFeedback('✦ Comment submitted! Waiting for approval.');
+  } catch(e) {
+    showCommentFeedback('✕ Could not submit — please try again.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Send Comment'; }
+  }
 }
 
 function showCommentFeedback(msg) {
-  const btn = document.getElementById('commentText');
+  const area = document.getElementById('commentText');
+  if (!area) return;
+  // Remove any old feedback
+  const old = area.parentNode.querySelector('.comment-feedback-msg');
+  if (old) old.remove();
   const note = document.createElement('div');
-  note.style.cssText = 'font-family:\'Instrument Serif\',serif;font-style:italic;font-size:0.88rem;color:var(--olive);margin-top:0.4rem;animation:fadeIn 0.3s ease';
+  note.className = 'comment-feedback-msg';
+  note.style.cssText = "font-family:'Instrument Serif',serif;font-style:italic;font-size:0.88rem;color:var(--olive);margin-top:0.4rem;animation:fadeIn 0.3s ease";
   note.textContent = msg;
-  btn.parentNode.insertBefore(note, btn.nextSibling.nextSibling);
+  area.parentNode.insertBefore(note, area.nextSibling);
   setTimeout(() => note.remove(), 3500);
 }
 
-function renderComments(novelId) {
+async function renderComments(novelId) {
   const list = document.getElementById('commentList');
   const countEl = document.getElementById('commentsCount');
   if (!list) return;
-  const comments = getComments(novelId).filter(c => c.approved);
+  list.innerHTML = '<div style="font-family:'Instrument Serif',serif;font-style:italic;color:#8a7a60;padding:0.5rem 0">Loading comments…</div>';
+  const comments = await _fetchComments(novelId);
   countEl.textContent = `${comments.length} comment${comments.length !== 1 ? 's' : ''}`;
   if (comments.length === 0) {
     list.innerHTML = '<div class="no-comments">No comments yet. Be the first! ✦</div>';
@@ -4151,10 +4282,10 @@ function renderComments(novelId) {
   list.innerHTML = comments.map(c => `
     <div class="comment-item">
       <div class="comment-meta">
-        <span class="comment-name">${escHtml(c.name)}</span>
-        <span class="comment-date">${c.date}</span>
+        <span class="comment-name">Anonymous Reader</span>
+        <span class="comment-date">${new Date(c.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>
       </div>
-      <div class="comment-text">${escHtml(c.text)}</div>
+      <div class="comment-text">${escHtml(c.body)}</div>
     </div>`).join('');
 }
 
@@ -4162,56 +4293,72 @@ function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function renderAdminComments() {
+async function renderAdminComments() {
   const pendingEl = document.getElementById('adminPendingComments');
   const approvedEl = document.getElementById('adminApprovedComments');
   if (!pendingEl) return;
 
-  let pendingHtml = '';
-  let approvedHtml = '';
-  let hasPending = false;
-  let hasApproved = false;
+  pendingEl.innerHTML = '<p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">Loading…</p>';
+  approvedEl.innerHTML = '<p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">Loading…</p>';
 
-  NOVELS.forEach((novel, nIdx) => {
-    const comments = getComments(novel.id);
-    comments.forEach((c, cIdx) => {
-      const card = `
-        <div class="admin-comment-item" id="acomment-${novel.id}-${c.id}">
-          <div class="admin-comment-meta">
-            <span class="admin-comment-novel">${novel.titles.en}</span>
-            ${escHtml(c.name)} · ${c.date}
-          </div>
-          <div class="admin-comment-text">"${escHtml(c.text)}"</div>
-          <div class="admin-comment-actions">
-            ${!c.approved ? `<button class="admin-btn admin-btn-primary" style="padding:0.4rem 1rem;font-size:0.62rem" onclick="approveComment('${novel.id}',${c.id})">✓ Approve</button>` : ''}
-            <button class="admin-btn admin-btn-danger" style="padding:0.4rem 1rem;font-size:0.62rem" onclick="deleteComment('${novel.id}',${c.id})">✕ Delete</button>
-          </div>
-        </div>`;
-      if (!c.approved) { pendingHtml += card; hasPending = true; }
-      else { approvedHtml += card; hasApproved = true; }
-    });
+  const all = await _fetchAllCommentsAdmin();
+
+  // Update comment cache per novel for insights
+  NOVELS.forEach(n => {
+    _commentsCache[n.id] = all.filter(c => c.novel_id === n.id && c.approved);
   });
 
-  pendingEl.innerHTML = hasPending ? pendingHtml : '<p style="font-family:\'Instrument Serif\',serif;font-style:italic;color:#665;padding:0.5rem 0">No pending comments. ✦</p>';
-  approvedEl.innerHTML = hasApproved ? approvedHtml : '<p style="font-family:\'Instrument Serif\',serif;font-style:italic;color:#665;padding:0.5rem 0">No approved comments yet.</p>';
+  const novelMap = {};
+  NOVELS.forEach(n => { novelMap[n.id] = n.titles.en; });
+
+  const pending = all.filter(c => !c.approved);
+  const approved = all.filter(c => c.approved);
+
+  const makeCard = (c) => `
+    <div class="admin-comment-item" id="acomment-${c.id}">
+      <div class="admin-comment-meta">
+        <span class="admin-comment-novel">${escHtml(novelMap[c.novel_id] || c.novel_id)}</span>
+        Anonymous · ${new Date(c.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}
+      </div>
+      <div class="admin-comment-text">"${escHtml(c.body)}"</div>
+      <div class="admin-comment-actions">
+        ${!c.approved ? `<button class="admin-btn admin-btn-primary" style="padding:0.4rem 1rem;font-size:0.62rem" onclick="approveComment('${c.id}')">✓ Approve</button>` : ''}
+        <button class="admin-btn admin-btn-danger" style="padding:0.4rem 1rem;font-size:0.62rem" onclick="deleteComment('${c.id}')">✕ Delete</button>
+      </div>
+    </div>`;
+
+  pendingEl.innerHTML = pending.length > 0
+    ? pending.map(makeCard).join('')
+    : '<p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">No pending comments. ✦</p>';
+
+  approvedEl.innerHTML = approved.length > 0
+    ? approved.map(makeCard).join('')
+    : '<p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">No approved comments yet.</p>';
 }
 
-function approveComment(novelId, commentId) {
-  const comments = getComments(novelId);
-  const c = comments.find(c => c.id === commentId);
-  if (c) { c.approved = true; saveComments(novelId, comments); }
-  renderAdminComments();
-  showToast('✓ Comment approved!');
-  saveAllData();
+async function approveComment(commentId) {
+  try {
+    const resp = await fetch(
+      `${_SB_URL}/rest/v1/novel_comments?id=eq.${encodeURIComponent(commentId)}`,
+      { method: 'PATCH', headers: { ..._SB_HEADERS, 'Prefer': 'return=minimal' }, body: JSON.stringify({ approved: true }) }
+    );
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    showToast('✓ Comment approved!');
+    renderAdminComments();
+  } catch(e) { showToast('✕ Failed to approve comment.'); }
 }
 
-function deleteComment(novelId, commentId) {
+async function deleteComment(commentId) {
   if (!confirm('Delete this comment?')) return;
-  const comments = getComments(novelId).filter(c => c.id !== commentId);
-  saveComments(novelId, comments);
-  renderAdminComments();
-  showToast('✓ Comment deleted.');
-  saveAllData();
+  try {
+    const resp = await fetch(
+      `${_SB_URL}/rest/v1/novel_comments?id=eq.${encodeURIComponent(commentId)}`,
+      { method: 'DELETE', headers: _SB_HEADERS }
+    );
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    showToast('✓ Comment deleted.');
+    renderAdminComments();
+  } catch(e) { showToast('✕ Failed to delete comment.'); }
 }
 
 // ═══════════════════════════════════════════════
@@ -4236,9 +4383,11 @@ function renderInsights() {
   let totalComments = 0;
   let pendingComments = 0;
   NOVELS.forEach(n => {
+    // _commentsCache holds approved-only for readers; pending count not available synchronously
     const c = getComments(n.id);
-    totalComments += c.filter(x=>x.approved).length;
-    pendingComments += c.filter(x=>!x.approved).length;
+    totalComments += c.length;
+    // pending shown in admin panel via live Supabase fetch
+    pendingComments = 0;
   });
 
   // Stat cards
@@ -4404,8 +4553,8 @@ function publishNow(novelIdx, chapterIdx) {
 // DATA PERSISTENCE — Supabase (cross-device) + localStorage fallback
 // ═══════════════════════════════════════════════
 const _SB_URL  = 'https://nzhfwkedwktvpvzhmlcv.supabase.co';
-// Key split across parts so GitHub secret scanning does not flag this public anon key.
-// The anon key is safe to include in client-side code when Supabase Row Level Security (RLS) is enabled.
+// Key split so GitHub secret scanning does not flag this public anon key.
+// Safe to expose when Supabase RLS is enabled on all tables.
 const _SB_KEY  = [
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
   'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56aGZ3a2Vkd2t0dnB2emhtbGN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5ODM0MTAsImV4cCI6MjA5MzU1OTQxMH0',
@@ -4659,6 +4808,8 @@ function importData() {
   buildMarquee();
   checkScheduledChapters();
   renderGrid();
+  // Load live like counts from Supabase (non-blocking, updates UI when ready)
+  loadAllLikes();
   loadLastRead();
   try { history.replaceState({ view: 'library' }, '', window.location.pathname + window.location.search); } catch(e) {}
 })();
