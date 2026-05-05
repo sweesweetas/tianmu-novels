@@ -4401,31 +4401,81 @@ function publishNow(novelIdx, chapterIdx) {
 }
 
 // ═══════════════════════════════════════════════
-// DATA PERSISTENCE — localStorage auto-save
+// DATA PERSISTENCE — Supabase (cross-device) + localStorage fallback
 // ═══════════════════════════════════════════════
-const _SAVE_KEY = 'tm_site_data_v1';
+const _SB_URL  = 'https://nzhfwkedwktvpvzhmlcv.supabase.co';
+const _SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56aGZ3a2Vkd2t0dnB2emhtbGN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5ODM0MTAsImV4cCI6MjA5MzU1OTQxMH0.I4Zhh_NqyxjWgIo5qb8Gpx0YjiD89owPwFjyFnm8Cgc';
+const _SB_HEADERS = { 'Content-Type': 'application/json', 'apikey': _SB_KEY, 'Authorization': 'Bearer ' + _SB_KEY };
+const _SAVE_KEY = 'tm_site_data_v1'; // kept for fallback
+
+// Debounce timer — avoid hammering Supabase on rapid saves
+let _saveTimer = null;
 
 function saveAllData() {
+  // Always write to localStorage immediately as local fallback
   try {
-    const data = {
+    localStorage.setItem(_SAVE_KEY, JSON.stringify({
+      novels: NOVELS, siteConfig: SITE_CONFIG, aboutConfig: ABOUT_CONFIG, savedAt: Date.now()
+    }));
+  } catch(e) {}
+
+  // Debounce Supabase write by 800ms
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(_saveToSupabase, 800);
+}
+
+async function _saveToSupabase() {
+  try {
+    const payload = {
       novels: NOVELS,
       siteConfig: SITE_CONFIG,
       aboutConfig: ABOUT_CONFIG,
+      passwordHash: _ap,
       savedAt: Date.now()
     };
-    localStorage.setItem(_SAVE_KEY, JSON.stringify(data));
+    const resp = await fetch(_SB_URL + '/rest/v1/site_data?id=eq.main', {
+      method: 'PATCH',
+      headers: { ..._SB_HEADERS, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ data: payload, updated_at: new Date().toISOString() })
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
   } catch(e) {
-    console.warn('Save failed (storage full?):', e);
+    console.warn('Supabase save failed, data kept in localStorage:', e);
   }
 }
 
-function loadSavedData() {
+async function loadSavedData() {
+  // Try Supabase first
+  try {
+    const resp = await fetch(_SB_URL + '/rest/v1/site_data?id=eq.main&select=data', {
+      headers: _SB_HEADERS
+    });
+    if (resp.ok) {
+      const rows = await resp.json();
+      if (rows.length > 0 && rows[0].data && Object.keys(rows[0].data).length > 0) {
+        const data = rows[0].data;
+        if (data.novels && Array.isArray(data.novels) && data.novels.length > 0) {
+          NOVELS.length = 0;
+          data.novels.forEach(n => NOVELS.push(n));
+        }
+        if (data.siteConfig) Object.assign(SITE_CONFIG, data.siteConfig);
+        if (data.aboutConfig) Object.assign(ABOUT_CONFIG, data.aboutConfig);
+        if (data.passwordHash) _ap = data.passwordHash;
+        // Mirror to localStorage as fallback
+        try { localStorage.setItem(_SAVE_KEY, JSON.stringify(data)); } catch(e) {}
+        return true;
+      }
+    }
+  } catch(e) {
+    console.warn('Supabase load failed, trying localStorage:', e);
+  }
+
+  // Fallback to localStorage
   try {
     const raw = localStorage.getItem(_SAVE_KEY);
     if (!raw) return false;
     const data = JSON.parse(raw);
     if (data.novels && Array.isArray(data.novels) && data.novels.length > 0) {
-      // Merge saved novels into NOVELS array
       NOVELS.length = 0;
       data.novels.forEach(n => NOVELS.push(n));
     }
@@ -4593,16 +4643,19 @@ function importData() {
 // ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
-loadSavedData();       // Load any saved admin edits from localStorage
-applySiteConfig();     // Apply config to DOM
-applyAboutConfig();    // Apply about config
-applyDarkPref();       // Restore dark mode preference
-buildMarquee();
-checkScheduledChapters();
-renderGrid();
-loadLastRead();
-// Set initial history state
-try { history.replaceState({ view: 'library' }, '', window.location.pathname + window.location.search); } catch(e) {}
+(async () => {
+  document.getElementById('novelGrid').innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;font-family:'Instrument Serif',serif;font-style:italic;color:#8a7a60">Loading library…</div>`;
+
+  await loadSavedData();  // Fetch from Supabase (or localStorage fallback)
+  applySiteConfig();
+  applyAboutConfig();
+  applyDarkPref();
+  buildMarquee();
+  checkScheduledChapters();
+  renderGrid();
+  loadLastRead();
+  try { history.replaceState({ view: 'library' }, '', window.location.pathname + window.location.search); } catch(e) {}
+})();
 </script>
 
 <!-- ADMIN OVERLAY -->
