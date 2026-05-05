@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>甜慕 Tián Mù — Novel Library</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<meta name="description" content="Original stories by 甜慕 Tián Mù — fantasy, romance, and literary fiction.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Instrument+Serif:ital@0;1&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --olive: #5a6e2c;
@@ -81,22 +84,6 @@ nav {
   transition: color 0.2s;
 }
 .nav-link:hover { color: var(--coral); }
-
-.lang-select {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  background: var(--olive);
-  color: var(--cream);
-  border: 2px solid var(--border);
-  border-radius: 20px;
-  padding: 0.4rem 0.9rem;
-  cursor: pointer;
-  box-shadow: 2px 2px 0 var(--border);
-  transition: all 0.15s;
-}
-.lang-select:hover { background: var(--coral); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--border); }
 
 /* ── HERO ── */
 .hero {
@@ -729,41 +716,192 @@ nav {
 .font-btn:hover { background: var(--coral); color: white; transform: translate(-1px,-1px); }
 
 /* ── TRANSLATION OVERLAY ── */
-.trans-bar {
-  background: var(--yellow);
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  margin: 0 1.5rem 1.5rem;
-  padding: 0.8rem 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: var(--shadow);
-  flex-wrap: wrap;
+/* ── FRONT MATTER (synopsis, author note etc) ── */
+.frontmatter-section {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 2rem 1rem;
 }
-.trans-label {
+.frontmatter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+}
+.fm-tab {
+  background: var(--cream-dark);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 0.4rem 1.1rem;
   font-family: 'Syne', sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--border);
+  transition: all 0.15s;
   color: var(--ink);
 }
-.trans-opts { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-.trans-btn {
+.fm-tab:hover { background: var(--pink-bg); transform: translate(-1px,-1px); }
+.fm-tab.active { background: var(--ink); color: var(--cream); box-shadow: none; transform: translate(1px,1px); }
+.fm-content { display: none; animation: viewIn 0.3s ease; }
+.fm-content.active { display: block; }
+.fm-block {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+.fm-block-icon { font-size: 2rem; margin-bottom: 0.8rem; line-height: 1; }
+.fm-block-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 0.5rem;
+}
+.fm-block-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+.fm-block-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: #2a2018;
+}
+.fm-block-text p { margin-bottom: 1.2em; }
+.char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 1rem; }
+.char-card {
+  background: var(--cream-dark);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 2px 2px 0 var(--border);
+}
+.char-name { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
+.char-role { font-family: 'Syne', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--coral); margin-bottom: 0.5rem; }
+.char-desc { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 0.9rem; color: #6a5a40; line-height: 1.5; }
+.ch-hidden-badge {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: #e8d060;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.15rem 0.5rem;
+  margin-left: 0.5rem;
+}
+/* Admin toggle switch */
+.admin-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #2a2820;
+}
+.admin-toggle-row:last-child { border-bottom: none; }
+.admin-toggle-label { font-family: 'Instrument Serif', serif; font-size: 0.95rem; color: var(--cream-dark); }
+.admin-toggle-sub { font-family: 'Syne', sans-serif; font-size: 0.6rem; color: #665; letter-spacing: 0.1em; margin-top: 0.2rem; }
+.toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; inset: 0;
+  background: #2a2820; border: 1px solid #444; border-radius: 24px; cursor: pointer; transition: background 0.2s;
+}
+.toggle-slider:before {
+  content: ''; position: absolute;
+  width: 18px; height: 18px; left: 2px; top: 2px;
+  background: #665; border-radius: 50%; transition: all 0.2s;
+}
+.toggle-switch input:checked + .toggle-slider { background: var(--olive); border-color: var(--olive-light); }
+.toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); background: var(--cream); }
+/* Admin front matter type tabs */
+.fm-admin-type-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.fm-admin-type-tab {
+  background: #0e0c08; border: 1px solid #333; border-radius: 6px;
+  padding: 0.35rem 0.8rem; font-family: 'Syne', sans-serif; font-size: 0.65rem;
+  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #665544; cursor: pointer; transition: all 0.15s;
+}
+.fm-admin-type-tab:hover { color: var(--cream); border-color: #555; }
+.fm-admin-type-tab.active { background: var(--olive); color: var(--cream); border-color: var(--olive-light); }
+.fm-admin-type-tab.has-content { border-color: var(--yellow); color: var(--yellow); }
+.fm-admin-type-tab.has-content.active { background: var(--yellow); color: var(--ink); }
+.fm-admin-field { display: none; }
+.fm-admin-field.active { display: block; }
+
+/* ── READER LANGUAGE SWITCHER ── */
+.reader-lang-bar {
+  background: var(--cream-dark);
+  border-bottom: 2px solid var(--border);
+  padding: 0.6rem 2rem;
+  display: none;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.reader-lang-bar.has-translations { display: flex; }
+.reader-lang-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a7a60;
+}
+.reader-lang-btn {
   background: var(--cream);
   border: 2px solid var(--border);
   border-radius: 20px;
-  padding: 0.35rem 0.9rem;
+  padding: 0.3rem 0.9rem;
   font-family: 'Syne', sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 2px 2px 0 var(--border);
   transition: all 0.15s;
   color: var(--ink);
 }
-.trans-btn:hover, .trans-btn.active { background: var(--olive); color: var(--cream); transform: translate(-1px,-1px); }
+.reader-lang-btn:hover { background: var(--cream-dark); transform: translate(-1px,-1px); }
+.reader-lang-btn.active { background: var(--olive); color: var(--cream); box-shadow: none; transform: translate(1px,1px); }
+
+/* ── ADMIN TRANSLATION EDITOR ── */
+.trans-lang-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.trans-lang-tab {
+  background: #0e0c08;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.35rem 0.8rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #665544;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.trans-lang-tab:hover { color: var(--cream); border-color: #555; }
+.trans-lang-tab.active { background: var(--olive); color: var(--cream); border-color: var(--olive-light); }
+.trans-lang-tab.has-content { border-color: var(--coral); color: var(--coral); }
+.trans-lang-tab.has-content.active { background: var(--coral); color: white; border-color: var(--coral); }
+.trans-field { display: none; }
+.trans-field.active { display: block; }
 
 /* ── ABOUT OVERLAY ── */
 #aboutOverlay {
@@ -1327,24 +1465,165 @@ nav {
 .no-results-sub { font-style: italic; color: #8a7a60; margin-top: 0.3rem; }
 
 /* ── DARK READING MODE ── */
+/* ═══════════════════════════════════════════
+   DARK READ MODE — complete component coverage
+   ═══════════════════════════════════════════ */
+
+/* Base */
+body.dark-read { background: #1a1610; }
+body.dark-read #libraryView { background: #1a1610; }
+body.dark-read #content { background: #1a1610; }
+
+/* Nav */
+body.dark-read nav { background: rgba(20,16,10,0.97); border-color: #2a2418; }
+body.dark-read .nav-logo { color: var(--yellow); }
+body.dark-read .nav-link { color: #887766; }
+body.dark-read .nav-link:hover { color: var(--coral); }
+body.dark-read .hamburger span { background: var(--cream-dark); }
+
+/* Hero */
+body.dark-read .hero { background: #0e0c08; border-color: #2a2418; }
+body.dark-read .hero::after { background: #1a1610; }
+body.dark-read .hero-sub { color: #887766; }
+
+/* Marquee */
+body.dark-read .marquee-wrap { background: #141210; border-color: #2a2418; }
+body.dark-read .marquee-item { color: #665544; }
+
+/* Filter bar */
+body.dark-read .filter-bar { background: transparent; }
+body.dark-read .search-input { background: #1e1a14; border-color: #2a2418; color: var(--cream-dark); }
+body.dark-read .search-input::placeholder { color: #554433; }
+body.dark-read .filter-tag { background: #1e1a14; border-color: #2a2418; color: #887766; }
+body.dark-read .filter-tag.active { background: var(--olive); color: var(--cream); }
+
+/* Novel cards */
+body.dark-read .novel-card { background: #1e1a14; border-color: #2a2418; }
+body.dark-read .novel-card:hover { box-shadow: 6px 6px 0 #0a0808; }
+body.dark-read .card-body { background: #1e1a14; }
+body.dark-read .card-title { color: var(--cream-dark); }
+body.dark-read .card-desc { color: #7a6a50; }
+body.dark-read .card-footer { background: #16130e; border-color: #2a2418; }
+body.dark-read .card-chapters { color: #554433; }
+body.dark-read .card-pub-date { color: #554433; }
+
+/* Section headings */
+body.dark-read .section-title { color: var(--cream-dark); }
+body.dark-read .section-count { color: #554433; }
+body.dark-read #content { background: #1a1610; }
+
+/* Reading view */
 body.dark-read #readingView { background: #16130e; }
-body.dark-read .reading-nav { background: #1e1a14; border-color: #2a2418; }
-body.dark-read .back-btn { background: #2a2418; color: var(--cream-dark); border-color: #3a3020; }
-body.dark-read .chapter-select { background: #2a2418; color: var(--cream-dark); border-color: #3a3020; }
-body.dark-read .chapter-list { }
+body.dark-read .reading-nav { background: #1a1610; border-color: #2a2418; box-shadow: none; }
+body.dark-read .reading-title { color: var(--cream-dark); }
+body.dark-read .back-btn { background: #252018; color: var(--cream-dark); border-color: #3a3020; }
+body.dark-read .chapter-select { background: #252018; color: var(--cream-dark); border-color: #2a2418; }
+body.dark-read .read-mode-btn { background: #252018; border-color: #2a2418; color: var(--cream-dark); }
+
+/* Reading hero banner */
+body.dark-read .reading-hero { filter: brightness(0.7) saturate(0.8); }
+body.dark-read .reading-hero-eyebrow { color: var(--yellow); opacity: 0.7; }
+
+/* Chapter progress bar */
+body.dark-read .reader-progress-wrap { background: #16130e; border-color: #2a2418; }
+body.dark-read .reader-progress-label { color: #887766; }
+body.dark-read .reader-progress-track { background: #2a2418; }
+
+/* Language bar */
+body.dark-read .reader-lang-bar { background: #1a1610; border-color: #2a2418; }
+body.dark-read .reader-lang-label { color: #554433; }
+body.dark-read .reader-lang-btn { background: #252018; border-color: #2a2418; color: #887766; }
+body.dark-read .reader-lang-btn.active { background: var(--olive); color: var(--cream); }
+
+/* Chapter list */
+body.dark-read .chapter-list { background: #16130e; }
 body.dark-read .chapter-list-title { color: var(--cream-dark); }
 body.dark-read .chapter-item { background: #1e1a14; border-color: #2a2418; }
-body.dark-read .chapter-item:hover { background: #2a2418; }
+body.dark-read .chapter-item:hover { background: #252018; border-color: #3a3020; }
+body.dark-read .ch-num { color: var(--olive-light); }
 body.dark-read .ch-title { color: var(--cream-dark); }
-body.dark-read .chapter-reader { }
+body.dark-read .ch-desc { color: #6a5a40; }
+body.dark-read .ch-date { color: #554433; }
+body.dark-read .ch-arrow { color: #554433; }
+body.dark-read .chapter-item:hover .ch-arrow { color: var(--coral); }
+
+/* Upcoming section */
+body.dark-read .upcoming-section { border-color: #2a2418; }
+body.dark-read .upcoming-item { background: rgba(80,144,200,0.04); }
+body.dark-read .upcoming-ch-title { color: var(--cream-dark); }
+
+/* Front matter */
+body.dark-read .frontmatter-tabs { border-color: #2a2418; }
+body.dark-read .fm-tab { background: #252018; border-color: #2a2418; color: #887766; }
+body.dark-read .fm-tab:hover { background: #2a2418; }
+body.dark-read .fm-tab.active { background: var(--ink); color: var(--cream); border-color: var(--coral); }
+body.dark-read .fm-block { background: #1e1a14; border-color: #2a2418; }
+body.dark-read .fm-block-text { color: #c0b0a0; }
+body.dark-read .fm-block-title { color: var(--cream-dark); }
+body.dark-read .char-card { background: #252018; border-color: #2a2418; }
+body.dark-read .char-name { color: var(--cream-dark); }
+body.dark-read .char-desc { color: #7a6a50; }
+
+/* Chapter reader */
+body.dark-read .chapter-reader { background: #16130e; }
+body.dark-read .reader-chapter-label { color: var(--coral); opacity: 0.8; }
 body.dark-read .reader-chapter-title { color: var(--cream-dark); }
-body.dark-read .reader-epigraph { background: #1e1a14; border-color: #2a2418; }
+body.dark-read .reader-divider { background: var(--coral); opacity: 0.6; }
+body.dark-read .reader-epigraph { background: #1e1a14; border-color: #2a2418; color: #7a6a50; }
 body.dark-read .reader-text { color: #c8bfb0; }
+body.dark-read .reader-text p:first-child::first-letter { color: var(--coral); }
+body.dark-read .scene-break { color: #554433; }
 body.dark-read .reader-nav { border-color: #2a2418; }
 body.dark-read .reader-nav-btn { background: #1e1a14; color: var(--cream-dark); border-color: #2a2418; }
-body.dark-read .reader-nav-btn:hover { background: var(--olive); color: var(--cream); }
+body.dark-read .reader-nav-btn:hover { background: var(--olive); color: var(--cream); border-color: var(--olive-light); }
+body.dark-read .reader-nav-btn:disabled { opacity: 0.2; }
+
+/* Font size controls */
 body.dark-read .font-btn { background: #1e1a14; border-color: #2a2418; color: var(--cream-dark); }
-body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
+body.dark-read .font-btn:hover { background: var(--coral); color: white; }
+
+/* Footnotes */
+body.dark-read .footnotes-section { border-color: #2a2418; }
+body.dark-read .footnotes-title { color: #554433; }
+body.dark-read .footnote-item { color: #8a7a60; }
+
+/* Comments */
+body.dark-read .novel-comments { background: #16130e; }
+body.dark-read .comments-header { border-color: #2a2418; }
+body.dark-read .comments-title { color: var(--cream-dark); }
+body.dark-read .comments-count { color: #554433; }
+body.dark-read .comment-form { background: #1e1a14; border-color: #2a2418; }
+body.dark-read .comment-form-title { color: var(--olive-light); }
+body.dark-read .comment-input,
+body.dark-read .comment-textarea { background: #0e0c08; border-color: #2a2418; color: var(--cream-dark); }
+body.dark-read .comment-input::placeholder,
+body.dark-read .comment-textarea::placeholder { color: #443322; }
+body.dark-read .comment-pending-note { color: #554433; }
+body.dark-read .comment-item { background: #1e1a14; border-color: #2a2418; }
+body.dark-read .comment-name { color: var(--cream-dark); }
+body.dark-read .comment-date { color: #554433; }
+body.dark-read .comment-text { color: #c0b8a8; }
+body.dark-read .no-comments { color: #554433; }
+
+/* Heart button */
+body.dark-read .card-heart-btn { color: #554433; }
+body.dark-read .card-heart-btn.liked { color: #e87090; }
+
+/* Heart bar in novel page */
+body.dark-read div[style*="background:var(--cream-dark)"] { background: #1e1a14 !important; border-color: #2a2418 !important; }
+
+/* Scroll to top */
+body.dark-read .scroll-top-btn { background: #1e1a14; border-color: #2a2418; color: var(--cream-dark); }
+body.dark-read .scroll-top-btn:hover { background: var(--coral); color: white; }
+
+/* Resume banner */
+body.dark-read .resume-banner { background: #0e0c08; }
+
+/* About overlay */
+body.dark-read .about-body { background: var(--olive); }
+
+/* Dark mode persists on library too */
+body.dark-read .dot-strip { background: #141210; }
 
 /* ── READ MODE BUTTON ── */
 .read-mode-btn {
@@ -1506,7 +1785,6 @@ body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
   .hero-deco { display: none; }
   .novel-grid { padding: 0 0.8rem 2rem; grid-template-columns: 1fr 1fr; }
   .section-head { padding: 0 0.8rem; }
-  .trans-bar { margin: 0 0.8rem 1rem; }
   .font-controls { display: none; }
   .filter-bar { padding: 0 0.8rem 1rem; }
   .search-wrap { max-width: 100%; }
@@ -1519,8 +1797,438 @@ body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
 @media (max-width: 400px) {
   .novel-grid { grid-template-columns: 1fr; }
 }
+
+/* ── FOOTNOTES ── */
+.reader-text sup.fn-ref {
+  color: var(--coral);
+  font-size: 0.7em;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  margin-left: 1px;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.reader-text sup.fn-ref:hover { color: var(--olive); }
+
+.footnotes-section {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 2px dashed var(--cream-dark);
+}
+.footnotes-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #8a7a60;
+  margin-bottom: 1rem;
+}
+.footnote-item {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #6a5a40;
+}
+.footnote-num {
+  color: var(--coral);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 1.2rem;
+  padding-top: 0.15rem;
+}
+
+/* Footnote tooltip popup */
+.fn-tooltip {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: var(--cream-dark);
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding: 0.8rem 1.4rem;
+  border-radius: 12px;
+  border: 2px solid var(--coral);
+  max-width: 420px;
+  width: calc(100% - 4rem);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  z-index: 400;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.fn-tooltip.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.fn-tooltip-close {
+  position: absolute;
+  top: 0.4rem; right: 0.6rem;
+  background: none; border: none;
+  color: #665; font-size: 0.9rem; cursor: pointer;
+}
+.fn-tooltip-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 0.3rem;
+}
+
+/* Admin login lockout */
+.login-lockout {
+  color: #ffaaaa;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: rgba(180,40,40,0.15);
+  border: 1px solid rgba(180,40,40,0.3);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.8rem;
+  text-align: center;
+}
+/* ── HEART BUTTON on card ── */
+.card-heart-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #a09080;
+  padding: 0.3rem 0.5rem;
+  border-radius: 20px;
+  transition: all 0.15s;
+  letter-spacing: 0.05em;
+}
+.card-heart-btn:hover { color: #e87090; background: rgba(232,112,144,0.08); }
+.card-heart-btn.liked { color: #e87090; }
+.card-heart-btn .heart-icon { font-size: 1rem; transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+.card-heart-btn.liked .heart-icon { transform: scale(1.3); }
+.card-heart-btn:active .heart-icon { transform: scale(0.85); }
+
+/* ── NOVEL COMMENTS SECTION ── */
+.novel-comments {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+}
+.comments-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+}
+.comments-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.comments-count {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #8a7a60;
+}
+/* Comment form */
+.comment-form {
+  background: var(--cream-dark);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+}
+.comment-form-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--olive);
+  margin-bottom: 0.8rem;
+}
+.comment-input {
+  width: 100%;
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  outline: none;
+  margin-bottom: 0.7rem;
+  transition: border-color 0.15s;
+}
+.comment-input:focus { border-color: var(--coral); }
+.comment-textarea {
+  width: 100%;
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.95rem;
+  color: var(--ink);
+  outline: none;
+  min-height: 90px;
+  resize: vertical;
+  margin-bottom: 0.7rem;
+  transition: border-color 0.15s;
+  line-height: 1.6;
+}
+.comment-textarea:focus { border-color: var(--coral); }
+.comment-submit {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.4rem;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: all 0.15s;
+}
+.comment-submit:hover { background: var(--olive); transform: translate(-1px,-1px); box-shadow: var(--shadow-lg); }
+.comment-pending-note {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: #8a7a60;
+  margin-top: 0.5rem;
+}
+/* Individual comments */
+.comment-list { display: flex; flex-direction: column; gap: 1rem; }
+.comment-item {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  box-shadow: 2px 2px 0 var(--border);
+  animation: fadeIn 0.3s ease;
+}
+.comment-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+.comment-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.comment-date {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: #8a7a60;
+}
+.comment-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.97rem;
+  color: #2a2018;
+  line-height: 1.65;
+}
+.no-comments {
+  text-align: center;
+  padding: 2rem;
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  color: #8a7a60;
+}
+
+/* dark mode comments */
+/* dark mode for comments handled in main dark-read block above */
+
+/* ── ADMIN INSIGHTS ── */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+.insight-card {
+  background: #1a1810;
+  border: 1px solid #2a2820;
+  border-radius: 12px;
+  padding: 1.2rem 1rem;
+  text-align: center;
+}
+.insight-num {
+  font-family: 'Fraunces', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--yellow);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.insight-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #665544;
+}
+.insight-card.coral .insight-num { color: var(--coral); }
+.insight-card.olive .insight-num { color: #a0c060; }
+.insight-card.pink .insight-num { color: var(--pink); }
+
+/* Insights breakdown list */
+.insights-breakdown {
+  background: #1a1810;
+  border: 1px solid #2a2820;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
+}
+.insights-breakdown-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #665544;
+  padding: 0.8rem 1.2rem 0.4rem;
+}
+.insights-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.2rem;
+  border-top: 1px solid #2a2820;
+}
+.insights-row-label {
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.9rem;
+  color: var(--cream-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.insights-row-val {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--yellow);
+}
+/* Progress bar inside insights */
+.insights-bar-wrap {
+  background: #2a2820;
+  border-radius: 4px;
+  height: 6px;
+  flex: 1;
+  margin: 0 1rem;
+  overflow: hidden;
+}
+.insights-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--olive), var(--yellow));
+  transition: width 0.6s ease;
+}
+
+/* Admin comment approval */
+.admin-comment-item {
+  background: #0e0c08;
+  border: 1px solid #2a2820;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.6rem;
+}
+.admin-comment-meta {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #665;
+  margin-bottom: 0.4rem;
+}
+.admin-comment-novel {
+  color: var(--coral);
+  margin-right: 0.5rem;
+}
+.admin-comment-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.9rem;
+  color: #a09070;
+  line-height: 1.5;
+  margin-bottom: 0.7rem;
+}
+.admin-comment-actions { display: flex; gap: 0.5rem; }
+
+/* ── PUBLISH STATUS BADGES ── */
+.ch-status-badge {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  font-family: 'Syne', sans-serif; font-size: 0.55rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.15rem 0.55rem; border-radius: 20px; border: 1px solid; white-space: nowrap;
+}
+.ch-status-badge.published  { background: rgba(120,180,60,0.12);  color: #78b43c; border-color: #78b43c; }
+.ch-status-badge.draft      { background: rgba(160,140,80,0.15);  color: #a09050; border-color: #a09050; }
+.ch-status-badge.scheduled  { background: rgba(80,140,200,0.12);  color: #5090c8; border-color: #5090c8; }
+
+.ch-date { font-family: 'Syne', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #a09070; margin-top: 0.2rem; }
+
+.upcoming-section { margin-top: 2rem; padding-top: 1.5rem; border-top: 2px dashed var(--cream-dark); }
+.upcoming-title { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: #5090c8; margin-bottom: 1rem; }
+.upcoming-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 1rem; background: rgba(80,144,200,0.06); border: 2px dashed rgba(80,144,200,0.3); border-radius: 10px; margin-bottom: 0.6rem; }
+.upcoming-clock { font-size: 1.1rem; opacity: 0.7; flex-shrink: 0; }
+.upcoming-info { flex: 1; }
+.upcoming-ch-title { font-family: 'Instrument Serif', serif; font-size: 1rem; color: var(--ink); margin-bottom: 0.2rem; }
+.upcoming-date { font-family: 'Syne', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #5090c8; }
+.upcoming-countdown { font-family: 'Fraunces', serif; font-size: 0.85rem; font-weight: 700; color: #5090c8; white-space: nowrap; }
+
+.card-pub-date { font-family: 'Syne', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #a09070; margin-top: -0.2rem; }
+
+.publish-status-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+.publish-status-btn {
+  flex: 1; min-width: 80px; background: #0e0c08; border: 2px solid #333; border-radius: 8px;
+  padding: 0.6rem 0.4rem; font-family: 'Syne', sans-serif; font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #665; cursor: pointer; text-align: center; transition: all 0.15s;
+}
+.publish-status-btn:hover { border-color: #555; color: var(--cream); }
+.publish-status-btn.active-published { background: rgba(120,180,60,0.15); border-color: #78b43c; color: #78b43c; }
+.publish-status-btn.active-draft     { background: rgba(160,140,80,0.15); border-color: #a09050; color: #a09050; }
+.publish-status-btn.active-scheduled { background: rgba(80,140,200,0.15); border-color: #5090c8; color: #5090c8; }
+.schedule-row { display: none; gap: 0.8rem; margin-top: 0.6rem; flex-wrap: wrap; }
+.schedule-row.show { display: flex; }
+
+.scheduled-item { background: rgba(80,140,200,0.08); border: 1px solid rgba(80,140,200,0.3); border-radius: 10px; padding: 0.8rem 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.8rem; }
+.scheduled-item-info { flex: 1; }
+.scheduled-item-title { font-family: 'Instrument Serif', serif; font-size: 0.92rem; color: var(--cream-dark); }
+.scheduled-item-meta { font-family: 'Syne', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #5090c8; margin-top: 0.2rem; }
+.scheduled-item-countdown { font-family: 'Fraunces', serif; font-size: 0.85rem; font-weight: 700; color: #5090c8; white-space: nowrap; }
 </style>
-</head>
 <body>
 
 <div class="progress-bar" id="progressBar"></div>
@@ -1538,8 +2246,7 @@ body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
     <div class="nav-links" id="navLinks">
       <span class="nav-link" onclick="scrollToLibrary();closeMenu()">Library</span>
       <span class="nav-link" onclick="showAboutPage();closeMenu()">About</span>
-      <span class="nav-link" onclick="openAdmin();closeMenu()" style="color:#887766;font-size:0.65rem" title="Admin Panel">⚙</span>
-      <div id="google_translate_element"></div>
+      <button class="read-mode-btn" id="globalDarkBtn" onclick="toggleDarkMode()" title="Toggle dark mode" style="background:none;border:none;font-size:1rem;cursor:pointer;padding:0.2rem">🌙</button>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -1561,14 +2268,6 @@ body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
   <div class="marquee-wrap">
     <div class="marquee-inner" id="marqueeInner">
       <!-- filled by JS -->
-    </div>
-  </div>
-
-  <!-- TRANSLATION NOTE -->
-  <div class="trans-bar">
-    <span class="trans-label">🌐 Auto-Translation:</span>
-    <div class="trans-opts">
-      <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:#5a4a30;">Use the Translate button in the nav bar to read in any language — powered by Google Translate.</span>
     </div>
   </div>
 
@@ -1608,7 +2307,7 @@ body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
   <div class="reading-nav">
     <button class="back-btn" onclick="goBack()">← Library</button>
     <div class="reading-title" id="readingNavTitle"></div>
-    <div style="display:flex;gap:0.5rem;align-items:center">
+    <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
       <select class="chapter-select" id="chapterJumpSelect" onchange="jumpToChapter(this.value)"></select>
       <button class="read-mode-btn" id="darkModeBtn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
     </div>
@@ -1621,6 +2320,11 @@ body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
     </div>
   </div>
 
+  <div class="reader-lang-bar" id="readerLangBar">
+    <span class="reader-lang-label">🌐 Read in:</span>
+    <div id="readerLangBtns"></div>
+  </div>
+
   <div class="reading-hero" id="readingHero">
     <div class="reading-hero-eyebrow" data-i18n="reading-eyebrow">A Novel by</div>
     <div class="reading-hero-title" id="readingHeroTitle"></div>
@@ -1628,8 +2332,44 @@ body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
   </div>
 
   <div class="chapter-list" id="chapterListView">
+    <!-- FRONT MATTER TABS (shown when novel has front matter) -->
+    <div class="frontmatter-section" id="frontmatterSection" style="display:none">
+      <div class="frontmatter-tabs" id="frontmatterTabs"></div>
+      <div id="frontmatterContents"></div>
+    </div>
     <div class="chapter-list-title" data-i18n="chapters-title">Chapters</div>
     <div id="chapterListItems"></div>
+
+    <!-- NOVEL HEART + COMMENTS -->
+    <div class="novel-comments" id="novelCommentsSection">
+      <!-- heart bar -->
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding:1rem 1.2rem;background:var(--cream-dark);border:2px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)">
+        <button class="card-heart-btn" id="novelHeartBtn" onclick="toggleHeartReader()" style="font-size:1rem;padding:0.5rem 1rem">
+          <span class="heart-icon" style="font-size:1.4rem">🤍</span>
+          <span style="font-size:0.85rem" id="novelHeartCountReader">0</span>
+          <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:0.9rem;color:#8a7a60;margin-left:0.3rem">likes</span>
+        </button>
+        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:0.85rem;color:#8a7a60">Leave a like if you're enjoying this story ✦</div>
+      </div>
+      <!-- comment form -->
+      <div class="comment-form">
+        <div class="comment-form-title">💬 Leave a Comment</div>
+        <input class="comment-input" id="commentName" placeholder="Your name (optional)" maxlength="40">
+        <textarea class="comment-textarea" id="commentText" placeholder="Share your thoughts about this novel..." maxlength="500"></textarea>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem">
+          <button class="comment-submit" onclick="submitComment()">Send Comment</button>
+          <div class="comment-pending-note">✦ Comments are reviewed before appearing</div>
+        </div>
+      </div>
+      <!-- approved comments -->
+      <div class="comments-header">
+        <div class="comments-title">Comments</div>
+        <div class="comments-count" id="commentsCount">0 comments</div>
+      </div>
+      <div class="comment-list" id="commentList">
+        <div class="no-comments">No comments yet. Be the first! ✦</div>
+      </div>
+    </div>
   </div>
 
   <div class="chapter-reader" id="chapterReaderView">
@@ -1668,6 +2408,13 @@ body.dark-read .read-mode-btn { background: #2a2418; border-color: #3a3020; }
       <div class="about-sig">— 甜慕, somewhere between midnight and morning ✿</div>
     </div>
   </div>
+</div>
+
+<!-- FOOTNOTE TOOLTIP -->
+<div class="fn-tooltip" id="fnTooltip">
+  <div class="fn-tooltip-num" id="fnTooltipNum"></div>
+  <div id="fnTooltipText"></div>
+  <button class="fn-tooltip-close" onclick="closeFnTooltip()">✕</button>
 </div>
 
 <!-- SCROLL TO TOP -->
@@ -1963,152 +2710,11 @@ const NOVELS = [
 ];
 
 // ═══════════════════════════════════════════════
-// TRANSLATIONS
-// ═══════════════════════════════════════════════
-const i18n = {
-  en: {
-    'hero-eyebrow': '✦ Original Stories by',
-    'hero-sub': 'Stories of longing, magic, and the spaces between hearts. Updated regularly.',
-    'hero-btn': 'Browse All Novels',
-    'read-in': 'Read in:',
-    'library-title': 'Novel Library',
-    'back-btn': '← Back to Library',
-    'reading-eyebrow': 'A Novel by',
-    'chapters-title': 'Chapters',
-    'prev-ch': '← Previous',
-    'next-ch': 'Next →',
-    'all-ch': 'All Chapters',
-    'read-now': 'Read Now',
-    'chapters': 'chapters',
-    'chapter': 'Chapter'
-  },
-  zh: {
-    'hero-eyebrow': '✦ 甜慕原创故事',
-    'hero-sub': '关于渴望、魔法与心灵之间的故事，持续更新中。',
-    'hero-btn': '浏览全部小说',
-    'read-in': '阅读语言：',
-    'library-title': '小说书库',
-    'back-btn': '← 返回书库',
-    'reading-eyebrow': '甜慕著',
-    'chapters-title': '章节',
-    'prev-ch': '← 上一章',
-    'next-ch': '下一章 →',
-    'all-ch': '全部章节',
-    'read-now': '立即阅读',
-    'chapters': '章节',
-    'chapter': '第'
-  },
-  ms: {
-    'hero-eyebrow': '✦ Cerita Asal oleh',
-    'hero-sub': 'Kisah-kisah tentang rindu, sihir, dan ruang di antara hati. Dikemaskini kerap.',
-    'hero-btn': 'Semak Semua Novel',
-    'read-in': 'Baca dalam:',
-    'library-title': 'Perpustakaan Novel',
-    'back-btn': '← Kembali ke Perpustakaan',
-    'reading-eyebrow': 'Novel oleh',
-    'chapters-title': 'Bab-bab',
-    'prev-ch': '← Sebelumnya',
-    'next-ch': 'Seterusnya →',
-    'all-ch': 'Semua Bab',
-    'read-now': 'Baca Sekarang',
-    'chapters': 'bab',
-    'chapter': 'Bab'
-  },
-  ja: {
-    'hero-eyebrow': '✦ 甜慕オリジナル作品',
-    'hero-sub': '切望、魔法、そして心と心の間の空間についての物語。定期更新中。',
-    'hero-btn': 'すべての小説を見る',
-    'read-in': '言語を選択：',
-    'library-title': '小説ライブラリ',
-    'back-btn': '← ライブラリに戻る',
-    'reading-eyebrow': '著: 甜慕',
-    'chapters-title': '章一覧',
-    'prev-ch': '← 前の章',
-    'next-ch': '次の章 →',
-    'all-ch': '全章',
-    'read-now': '今すぐ読む',
-    'chapters': '章',
-    'chapter': '第'
-  },
-  ko: {
-    'hero-eyebrow': '✦ 甜慕 오리지널 스토리',
-    'hero-sub': '그리움, 마법, 마음 사이의 공간에 관한 이야기. 정기 업데이트.',
-    'hero-btn': '모든 소설 보기',
-    'read-in': '언어 선택:',
-    'library-title': '소설 라이브러리',
-    'back-btn': '← 도서관으로 돌아가기',
-    'reading-eyebrow': '저자: 甜慕',
-    'chapters-title': '챕터 목록',
-    'prev-ch': '← 이전',
-    'next-ch': '다음 →',
-    'all-ch': '전체 챕터',
-    'read-now': '지금 읽기',
-    'chapters': '챕터',
-    'chapter': '챕터'
-  },
-  es: {
-    'hero-eyebrow': '✦ Historias Originales de',
-    'hero-sub': 'Historias de anhelo, magia y los espacios entre corazones. Actualizado regularmente.',
-    'hero-btn': 'Explorar Todas las Novelas',
-    'read-in': 'Leer en:',
-    'library-title': 'Biblioteca de Novelas',
-    'back-btn': '← Volver a la Biblioteca',
-    'reading-eyebrow': 'Una Novela de',
-    'chapters-title': 'Capítulos',
-    'prev-ch': '← Anterior',
-    'next-ch': 'Siguiente →',
-    'all-ch': 'Todos los Capítulos',
-    'read-now': 'Leer Ahora',
-    'chapters': 'capítulos',
-    'chapter': 'Capítulo'
-  },
-  fr: {
-    'hero-eyebrow': '✦ Histoires Originales de',
-    'hero-sub': 'Des histoires de désir, de magie et des espaces entre les cœurs. Mis à jour régulièrement.',
-    'hero-btn': 'Parcourir Tous les Romans',
-    'read-in': 'Lire en:',
-    'library-title': 'Bibliothèque de Romans',
-    'back-btn': '← Retour à la Bibliothèque',
-    'reading-eyebrow': 'Un Roman de',
-    'chapters-title': 'Chapitres',
-    'prev-ch': '← Précédent',
-    'next-ch': 'Suivant →',
-    'all-ch': 'Tous les Chapitres',
-    'read-now': 'Lire Maintenant',
-    'chapters': 'chapitres',
-    'chapter': 'Chapitre'
-  }
-};
-
-// ═══════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════
-let currentLang = 'en';
 let currentNovel = null;
 let currentChapterIdx = 0;
 let fontSize = 1.1;
-
-// ═══════════════════════════════════════════════
-// LANGUAGE
-// ═══════════════════════════════════════════════
-function t(key) { return (i18n[currentLang] || i18n.en)[key] || i18n.en[key] || key; }
-
-function setLanguage(lang) {
-  currentLang = lang;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    el.textContent = t(el.dataset.i18n);
-  });
-  document.querySelectorAll('.lang-select').forEach(s => s.value = lang);
-  document.querySelectorAll('.trans-btn').forEach(b => {
-    b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang || b.onclick?.toString().includes(`'${lang}'`));
-  });
-  renderGrid();
-  if (currentNovel !== null) {
-    renderChapterList(currentNovel);
-    document.getElementById('readingNavTitle').textContent = NOVELS[currentNovel].titles[lang] || NOVELS[currentNovel].titles.en;
-    document.getElementById('readingHeroTitle').textContent = NOVELS[currentNovel].titles[lang] || NOVELS[currentNovel].titles.en;
-  }
-}
 
 // ═══════════════════════════════════════════════
 // MARQUEE
@@ -2130,8 +2736,8 @@ function renderGrid() {
   document.getElementById('novelCount').textContent = `${NOVELS.length} novels`;
 
   grid.innerHTML = NOVELS.map((n, idx) => {
-    const title = n.titles[currentLang] || n.titles.en;
-    const desc = n.descs[currentLang] || n.descs.en;
+    const title = n.titles.en;
+    const desc = n.descs.en;
     const isLocked = n.status === 'coming-soon' || n.status === 'idea';
     const isIdea = n.status === 'idea';
     const isComing = n.status === 'coming-soon';
@@ -2153,7 +2759,7 @@ function renderGrid() {
     // Footer button
     const footerBtn = isLocked
       ? `<button class="card-read-btn disabled" disabled>${isIdea ? 'Idea Stage' : 'Coming Soon'}</button>`
-      : `<button class="card-read-btn">${t('read-now')}</button>`;
+      : `<button class="card-read-btn">${'Read Now'}</button>`;
 
     // Idea note (shown below desc)
     const ideaNote = isIdea && n.ideaNote
@@ -2169,12 +2775,19 @@ function renderGrid() {
       <div class="card-body">
         <div class="card-genre">${n.genre}</div>
         <div class="card-title">${title}</div>
+        ${n.publishDate ? `<div class="card-pub-date">📅 ${formatDate(n.publishDate)}</div>` : ''}
         <div class="card-desc">${desc}</div>
         ${ideaNote}
       </div>
       <div class="card-footer">
-        <div class="card-chapters">${isLocked ? '—' : n.chapters.length + ' ' + t('chapters')}</div>
-        ${footerBtn}
+        <div class="card-chapters">${isLocked ? '—' : n.chapters.length + ' ' + 'chapters'}</div>
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          ${!isLocked ? `<button class="card-heart-btn ${getNovelLiked(idx)?'liked':''}" onclick="event.stopPropagation();toggleHeart(${idx},this)" title="Like this novel">
+            <span class="heart-icon">${getNovelLiked(idx)?'❤️':'🤍'}</span>
+            <span class="heart-count" id="heart-count-${idx}">${getHeartCount(idx)}</span>
+          </button>` : ''}
+          ${footerBtn}
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -2186,47 +2799,40 @@ function renderGrid() {
 function openNovel(idx) {
   currentNovel = idx;
   const novel = NOVELS[idx];
-  const title = novel.titles[currentLang] || novel.titles.en;
-
   document.getElementById('libraryView').style.display = 'none';
   document.getElementById('readingView').style.display = 'block';
   document.getElementById('fontControls').style.display = 'flex';
-
-  document.getElementById('readingNavTitle').textContent = title;
-  document.getElementById('readingHeroTitle').textContent = title;
+  document.getElementById('readingNavTitle').textContent = novel.titles.en;
+  document.getElementById('readingHeroTitle').textContent = novel.titles.en;
   document.getElementById('readingHero').style.background = `linear-gradient(135deg,${novel.color},${novel.coverAccent})`;
-
   renderChapterList(idx);
-  showChapterList();
+  _showChapterListUI();
+  try { history.pushState({ view: 'novel', novelIdx: idx }, '', `#novel-${novel.id}`); } catch(e) {}
   animateView(document.getElementById('readingView'));
   window.scrollTo(0,0);
 }
 
-function renderChapterList(idx) {
-  const novel = NOVELS[idx];
-  const items = document.getElementById('chapterListItems');
-  const jump = document.getElementById('chapterJumpSelect');
-
-  items.innerHTML = novel.chapters.map((ch, i) => `
-    <div class="chapter-item" onclick="openChapter(${i})">
-      <div class="ch-num">${String(i+1).padStart(2,'0')}</div>
-      <div class="ch-info">
-        <div class="ch-title">${ch.title}</div>
-        ${ch.desc ? `<div class="ch-desc">${ch.desc}</div>` : ''}
-      </div>
-      <div class="ch-arrow">→</div>
-    </div>`).join('');
-
-  jump.innerHTML = `<option value="-1">${t('chapters-title')}</option>` +
-    novel.chapters.map((ch,i) => `<option value="${i}">${t('chapter')} ${i+1}</option>`).join('');
-}
-
-function showChapterList() {
+// Internal UI update without pushing state
+function _showChapterListUI() {
   document.getElementById('chapterListView').style.display = 'block';
   document.getElementById('chapterReaderView').classList.remove('active');
   document.getElementById('fontControls').style.display = 'none';
   document.getElementById('readerProgressWrap').style.display = 'none';
+  document.getElementById('readerLangBar').classList.remove('has-translations');
   document.getElementById('chapterJumpSelect').value = '-1';
+  currentReaderLang = 'en';
+  if (currentNovel !== null) {
+    renderComments(NOVELS[currentNovel].id);
+    updateReaderHeart();
+  }
+}
+
+// Public — called by "All Chapters" button, chapter jump
+function showChapterList() {
+  _showChapterListUI();
+  if (currentNovel !== null) {
+    try { history.pushState({ view: 'novel', novelIdx: currentNovel }, '', `#novel-${NOVELS[currentNovel].id}`); } catch(e) {}
+  }
   window.scrollTo(0,0);
 }
 
@@ -2243,9 +2849,13 @@ function openChapter(idx) {
   reader.classList.add('active');
   document.getElementById('fontControls').style.display = 'flex';
 
-  document.getElementById('readerChLabel').textContent = `${t('chapter')} ${idx+1}`;
-  document.getElementById('readerChTitle').textContent = ch.title;
-  document.getElementById('readerText').innerHTML = ch.content;
+  const trans = ch.translations?.[currentReaderLang];
+  const displayTitle = (currentReaderLang !== 'en' && trans?.title) ? trans.title : ch.title;
+  const displayContent = (currentReaderLang !== 'en' && trans?.content) ? trans.content : ch.content;
+
+  document.getElementById('readerChLabel').textContent = `Chapter ${idx+1}`;
+  document.getElementById('readerChTitle').textContent = displayTitle;
+  document.getElementById('readerText').innerHTML = processFootnotes(displayContent);
   document.getElementById('readerText').style.fontSize = fontSize + 'rem';
 
   const epig = document.getElementById('readerEpigraph');
@@ -2256,12 +2866,14 @@ function openChapter(idx) {
   document.getElementById('nextChBtn').disabled = idx === novel.chapters.length - 1;
   document.getElementById('chapterJumpSelect').value = idx;
 
-  // save last read position
+  buildReaderLangBar(currentNovel, idx);
   if (currentNovel !== null) saveLastRead(currentNovel, idx);
 
-  // show chapter progress bar
   document.getElementById('readerProgressWrap').style.display = 'flex';
   document.getElementById('readerProgressLabel').textContent = `Ch. ${idx+1} of ${novel.chapters.length}`;
+
+  // Push history state
+  try { history.pushState({ view: 'chapter', novelIdx: currentNovel, chapterIdx: idx }, '', `#novel-${novel.id}-ch${idx+1}`); } catch(e) {}
 
   animateView(document.getElementById('chapterReaderView'));
   window.scrollTo(0,0);
@@ -2284,8 +2896,111 @@ function goBack() {
   document.getElementById('fontControls').style.display = 'none';
   document.getElementById('readerProgressWrap').style.display = 'none';
   currentNovel = null;
+  try { history.pushState({ view: 'library' }, '', window.location.pathname); } catch(e) {}
   animateView(document.getElementById('libraryView'));
   window.scrollTo(0,0);
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', e => {
+  const state = e.state;
+  if (!state || state.view === 'library') {
+    document.getElementById('readingView').style.display = 'none';
+    document.getElementById('libraryView').style.display = 'block';
+    document.getElementById('fontControls').style.display = 'none';
+    document.getElementById('readerProgressWrap').style.display = 'none';
+    currentNovel = null;
+    window.scrollTo(0,0);
+  } else if (state.view === 'novel') {
+    if (document.getElementById('libraryView').style.display !== 'none') {
+      openNovel(state.novelIdx);
+    } else {
+      currentNovel = state.novelIdx;
+      renderChapterList(state.novelIdx);
+      _showChapterListUI();
+      window.scrollTo(0,0);
+    }
+  } else if (state.view === 'chapter') {
+    if (currentNovel !== state.novelIdx) {
+      currentNovel = state.novelIdx;
+      const novel = NOVELS[state.novelIdx];
+      document.getElementById('libraryView').style.display = 'none';
+      document.getElementById('readingView').style.display = 'block';
+      document.getElementById('readingNavTitle').textContent = novel.titles.en;
+      document.getElementById('readingHeroTitle').textContent = novel.titles.en;
+      document.getElementById('readingHero').style.background = `linear-gradient(135deg,${novel.color},${novel.coverAccent})`;
+      renderChapterList(state.novelIdx);
+    }
+    openChapter(state.chapterIdx);
+  }
+});
+
+function renderChapterList(idx) {
+  const novel = NOVELS[idx];
+  const items = document.getElementById('chapterListItems');
+  const jump = document.getElementById('chapterJumpSelect');
+
+  // Auto-publish any scheduled chapters whose time has passed
+  checkScheduledChapters();
+
+  // Separate published/visible vs upcoming scheduled
+  const publishedChapters = novel.chapters.map((ch,i) => ({ch,i})).filter(({ch}) => {
+    const s = ch.publishStatus || 'published';
+    if (s === 'draft') return false;
+    if (s === 'published') return ch.visible !== false;
+    if (s === 'scheduled') return isScheduledPast(ch);
+    return false;
+  });
+
+  const upcomingChapters = novel.chapters.map((ch,i) => ({ch,i})).filter(({ch}) => {
+    const s = ch.publishStatus || 'published';
+    return s === 'scheduled' && !isScheduledPast(ch);
+  });
+
+  items.innerHTML = publishedChapters.map(({ch, i}) => {
+    const typeLabel = ch.type && ch.type !== 'chapter'
+      ? `<span class="ch-status-badge published" style="margin-left:0.4rem">${ch.type}</span>` : '';
+    const numDisplay = ch.type && ch.type !== 'chapter'
+      ? `<div class="ch-num" style="font-size:0.7rem;letter-spacing:0.05em">${ch.type.charAt(0).toUpperCase()+ch.type.slice(1)}</div>`
+      : `<div class="ch-num">${String(i+1).padStart(2,'0')}</div>`;
+    const dateStr = ch.publishDate
+      ? `<div class="ch-date">📅 ${formatDate(ch.publishDate)}</div>` : '';
+    return `
+    <div class="chapter-item" onclick="openChapter(${i})">
+      ${numDisplay}
+      <div class="ch-info">
+        <div class="ch-title">${ch.title}${typeLabel}</div>
+        ${ch.desc ? `<div class="ch-desc">${ch.desc}</div>` : ''}
+        ${dateStr}
+      </div>
+      <div class="ch-arrow">→</div>
+    </div>`;
+  }).join('') || '<p style="font-style:italic;color:#8a7a60;padding:1rem 0">No chapters available yet.</p>';
+
+  // Upcoming section
+  if (upcomingChapters.length > 0) {
+    items.innerHTML += `<div class="upcoming-section">
+      <div class="upcoming-title">🕐 Upcoming Chapters</div>
+      ${upcomingChapters.map(({ch}) => {
+        const dt = getScheduledDate(ch);
+        const countdown = dt ? formatCountdown(dt) : '—';
+        const dateLabel = dt ? dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}) : '';
+        return `<div class="upcoming-item">
+          <div class="upcoming-clock">🕐</div>
+          <div class="upcoming-info">
+            <div class="upcoming-ch-title">${ch.title}</div>
+            <div class="upcoming-date">${dateLabel}</div>
+          </div>
+          <div class="upcoming-countdown">${countdown}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  jump.innerHTML = `<option value="-1">Chapters</option>` +
+    publishedChapters.map(({ch,i}) => `<option value="${i}">${ch.type && ch.type!=='chapter' ? ch.type : 'Ch. '+(i+1)}: ${ch.title}</option>`).join('');
+
+  renderFrontMatterReader(idx);
 }
 
 function scrollToLibrary() {
@@ -2302,6 +3017,75 @@ function closeAbout(e) {
   }
 }
 
+// ═══════════════════════════════════════════════
+// FOOTNOTE SYSTEM
+// ═══════════════════════════════════════════════
+// How to add footnotes in chapter content:
+//   Use [^1] in your text to mark a footnote reference.
+//   Add footnotes at the end of content like:
+//   [^1]: This is the footnote text.
+//   [^2]: Another footnote.
+
+function processFootnotes(html) {
+  // Extract footnote definitions from content [^n]: text
+  const footnotes = {};
+  let fnCounter = 0;
+
+  // Find all footnote definitions like [^1]: some text
+  const defRegex = /\[\^(\d+)\]:\s*(.+?)(?=\[\^\d+\]:|$)/gs;
+  let cleanHtml = html;
+  let match;
+  while ((match = defRegex.exec(html)) !== null) {
+    footnotes[match[1]] = match[2].trim();
+    fnCounter++;
+  }
+
+  // Remove footnote definitions from rendered text
+  cleanHtml = cleanHtml.replace(/\[\^\d+\]:\s*.+?(?=\[\^\d+\]:|$)/gs, '');
+
+  // Replace inline references [^1] with superscript links
+  cleanHtml = cleanHtml.replace(/\[\^(\d+)\]/g, (_, num) => {
+    if (!footnotes[num]) return '';
+    const safe = footnotes[num].replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    return `<sup class="fn-ref" onclick="showFnTooltip(${num},'${safe}')">[${num}]</sup>`;
+  });
+
+  // Append footnote list at bottom if any exist
+  if (Object.keys(footnotes).length > 0) {
+    const fnItems = Object.entries(footnotes).map(([num, text]) =>
+      `<div class="footnote-item"><span class="footnote-num">[${num}]</span><span>${text}</span></div>`
+    ).join('');
+    cleanHtml += `<div class="footnotes-section">
+      <div class="footnotes-title">✦ &nbsp; Footnotes &nbsp; ✦</div>
+      ${fnItems}
+    </div>`;
+  }
+
+  return cleanHtml;
+}
+
+function showFnTooltip(num, text) {
+  const tip = document.getElementById('fnTooltip');
+  document.getElementById('fnTooltipNum').textContent = `Footnote ${num}`;
+  document.getElementById('fnTooltipText').textContent = text;
+  tip.classList.add('show');
+  // Auto close after 6s
+  clearTimeout(window._fnTimer);
+  window._fnTimer = setTimeout(closeFnTooltip, 6000);
+}
+
+function closeFnTooltip() {
+  document.getElementById('fnTooltip').classList.remove('show');
+}
+
+// Close tooltip on outside click
+document.addEventListener('click', e => {
+  const tip = document.getElementById('fnTooltip');
+  if (tip && !tip.contains(e.target) && !e.target.classList.contains('fn-ref')) {
+    closeFnTooltip();
+  }
+});
+
 function changeFontSize(dir) {
   fontSize = Math.max(0.9, Math.min(1.5, fontSize + dir * 0.08));
   document.getElementById('readerText').style.fontSize = fontSize + 'rem';
@@ -2309,18 +3093,126 @@ function changeFontSize(dir) {
 
 
 // ═══════════════════════════════════════════════
-// ADMIN SYSTEM
+// ADMIN SYSTEM — HARDENED
 // ═══════════════════════════════════════════════
 
-// ── SET YOUR PASSWORD HERE ──
-let ADMIN_PASSWORD = 'tianmu2024';
-// ───────────────────────────
+// Password is stored as SHA-256 hash — NOT plain text
+// To change your password: replace the hash below with a new one.
+// Generate a SHA-256 hash at: https://emn178.github.io/online-tools/sha256.html
+// Default password: tianmu2024
+let _ap = '5971c406f165e857a954c2f9cdf800573f56f71980e28a7f120ae96513307e57';
 
-let adminNovelIdx = null;
-let adminChapterIdx = null;
+// Rate limiting
+let _loginAttempts = 0;
+let _lockUntil = 0;
+const _MAX_ATTEMPTS = 3;
+const _LOCK_DURATION = 60000; // 1 minute
+
+// SHA-256 hash function (Web Crypto API)
+async function _hash(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// Secret entry: click the nav logo 5 times quickly
+let _logoClicks = 0;
+let _logoTimer = null;
+document.addEventListener('DOMContentLoaded', () => {
+  const logo = document.querySelector('.nav-logo');
+  if (logo) {
+    logo.addEventListener('click', () => {
+      _logoClicks++;
+      clearTimeout(_logoTimer);
+      if (_logoClicks >= 5) { _logoClicks = 0; openAdmin(); return; }
+      _logoTimer = setTimeout(() => { _logoClicks = 0; }, 1500);
+    });
+  }
+});
+
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  document.getElementById('adminLogin').style.display = 'flex';
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('adminPasswordInput').value = '';
+  document.getElementById('loginError').textContent = '';
+  document.getElementById('loginError').className = 'login-error';
+}
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  _loginAttempts = 0;
+}
+
+async function checkAdminPassword() {
+  const now = Date.now();
+
+  // Check lockout
+  if (_lockUntil > now) {
+    const secs = Math.ceil((_lockUntil - now) / 1000);
+    document.getElementById('loginError').className = 'login-lockout';
+    document.getElementById('loginError').textContent = `Too many attempts. Try again in ${secs}s.`;
+    return;
+  }
+
+  const val = document.getElementById('adminPasswordInput').value;
+  if (!val) return;
+
+  const hashed = await _hash(val);
+
+  if (hashed === _ap) {
+    _loginAttempts = 0;
+    _lockUntil = 0;
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    populateAdminForms();
+  } else {
+    _loginAttempts++;
+    document.getElementById('adminPasswordInput').value = '';
+
+    if (_loginAttempts >= _MAX_ATTEMPTS) {
+      _lockUntil = now + _LOCK_DURATION;
+      document.getElementById('loginError').className = 'login-lockout';
+      document.getElementById('loginError').textContent = `Locked for 60 seconds after ${_MAX_ATTEMPTS} failed attempts.`;
+      // Countdown display
+      const interval = setInterval(() => {
+        const remaining = Math.ceil((_lockUntil - Date.now()) / 1000);
+        const el = document.getElementById('loginError');
+        if (remaining <= 0) {
+          clearInterval(interval);
+          _loginAttempts = 0;
+          el.className = 'login-error';
+          el.textContent = '';
+        } else {
+          el.textContent = `Locked for 60 seconds after ${_MAX_ATTEMPTS} failed attempts. Try again in ${remaining}s.`;
+        }
+      }, 1000);
+    } else {
+      const remaining = _MAX_ATTEMPTS - _loginAttempts;
+      document.getElementById('loginError').className = 'login-error';
+      document.getElementById('loginError').textContent = `Incorrect password. ${remaining} attempt${remaining>1?'s':''} remaining.`;
+    }
+  }
+}
+
+async function changePassword() {
+  const cur = document.getElementById('pw-current').value;
+  const nw = document.getElementById('pw-new').value;
+  const conf = document.getElementById('pw-confirm').value;
+
+  const curHash = await _hash(cur);
+  if (curHash !== _ap) { showToast('✗ Current password wrong.'); return; }
+  if (!nw || nw.length < 8) { showToast('✗ Password must be at least 8 characters.'); return; }
+  if (nw !== conf) { showToast('✗ Passwords do not match.'); return; }
+
+  _ap = await _hash(nw);
+  document.getElementById('pw-current').value = '';
+  document.getElementById('pw-new').value = '';
+  document.getElementById('pw-confirm').value = '';
+  showToast('✓ Password changed! Save your HTML file to keep this change.');
+}
 
 // ── Site config (editable via admin) ──
-let SITE_CONFIG = {
+var SITE_CONFIG = {
   siteTitle: '甜慕 Tián Mù — Novel Library',
   authorName: '甜慕 Tián Mù',
   navLogo: '甜慕 Tián Mù',
@@ -2328,7 +3220,7 @@ let SITE_CONFIG = {
   heroBtn: 'Browse All Novels'
 };
 
-let ABOUT_CONFIG = {
+var ABOUT_CONFIG = {
   eyebrow: 'The Mind Behind the Stories',
   name: '甜慕',
   namesub: 'Tián Mù — Sweet Longing',
@@ -2337,36 +3229,17 @@ let ABOUT_CONFIG = {
   sig: '— 甜慕, somewhere between midnight and morning ✿'
 };
 
-function openAdmin() {
-  document.getElementById('adminOverlay').classList.add('open');
-  document.getElementById('adminLogin').style.display = 'flex';
-  document.getElementById('adminPanel').style.display = 'none';
-  document.getElementById('adminPasswordInput').value = '';
-  document.getElementById('loginError').textContent = '';
-}
-
-function closeAdmin() {
-  document.getElementById('adminOverlay').classList.remove('open');
-}
-
-function checkAdminPassword() {
-  const val = document.getElementById('adminPasswordInput').value;
-  if (val === ADMIN_PASSWORD) {
-    document.getElementById('adminLogin').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    populateAdminForms();
-  } else {
-    document.getElementById('loginError').textContent = 'Incorrect password. Try again.';
-    document.getElementById('adminPasswordInput').value = '';
-  }
-}
-
 function switchAdminTab(tab) {
   document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.admin-nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
   event.target.classList.add('active');
   if (tab === 'chapters') populateChapterNovelSelect();
+  if (tab === 'translations') populateTransNovelSelect();
+  if (tab === 'frontmatter') populateFMNovelSelect();
+  if (tab === 'insights') renderInsights();
+  if (tab === 'comments') renderAdminComments();
+  if (tab === 'schedule') renderSchedulePanel();
 }
 
 function showToast(msg) {
@@ -2392,6 +3265,9 @@ function populateAdminForms() {
   document.getElementById('ab-sig').value = ABOUT_CONFIG.sig;
   // Novels
   renderAdminNovelList();
+  // Always load insights on open
+  renderInsights();
+  renderAdminComments();
 }
 
 // ── SITE SETTINGS ──
@@ -2408,6 +3284,7 @@ function saveSiteSettings() {
   document.querySelector('.hero-sub').textContent = SITE_CONFIG.heroSub;
   document.querySelector('.hero-btn').textContent = SITE_CONFIG.heroBtn;
   showToast('✓ Site settings saved!');
+  saveAllData();
 }
 
 // ── ABOUT ──
@@ -2426,6 +3303,7 @@ function saveAbout() {
   document.querySelector('.about-text').innerHTML = ABOUT_CONFIG.body;
   document.querySelector('.about-sig').textContent = ABOUT_CONFIG.sig;
   showToast('✓ About page saved!');
+  saveAllData();
 }
 
 // ── NOVELS ──
@@ -2455,6 +3333,8 @@ function editNovel(idx) {
   document.getElementById('ne-badge').value = n.badge || '';
   document.getElementById('ne-status').value = n.status || 'active';
   document.getElementById('ne-ideaNote').value = n.ideaNote || '';
+  document.getElementById('ne-publishDate').value = n.publishDate || '';
+  document.getElementById('ne-updatedDate').value = n.updatedDate || '';
   document.getElementById('ne-color-preview').style.background = n.color;
   document.getElementById('ne-colorAccent-preview').style.background = n.coverAccent;
   document.getElementById('novelEditForm').style.display = 'block';
@@ -2479,6 +3359,7 @@ function addNewNovel() {
   editNovel(NOVELS.length - 1);
   renderGrid();
   showToast('✓ New novel added!');
+  saveAllData();
 }
 
 function saveNovel() {
@@ -2492,9 +3373,12 @@ function saveNovel() {
   n.badge = document.getElementById('ne-badge').value;
   n.status = document.getElementById('ne-status').value;
   n.ideaNote = document.getElementById('ne-ideaNote').value;
+  n.publishDate = document.getElementById('ne-publishDate').value;
+  n.updatedDate = document.getElementById('ne-updatedDate').value;
   renderAdminNovelList();
   renderGrid();
   showToast('✓ Novel saved!');
+  saveAllData();
 }
 
 function deleteNovel() {
@@ -2506,6 +3390,7 @@ function deleteNovel() {
   renderAdminNovelList();
   renderGrid();
   showToast('✓ Novel deleted.');
+  saveAllData();
 }
 
 function cancelNovelEdit() {
@@ -2536,11 +3421,22 @@ function loadChapterList() {
 function renderAdminChapterList() {
   const novel = NOVELS[adminNovelIdx];
   document.getElementById('adminChapterList').innerHTML = novel.chapters.length
-    ? novel.chapters.map((ch, i) => `
-      <div class="admin-chapter-item ${adminChapterIdx===i?'selected':''}" onclick="editChapter(${i})">
-        <div class="admin-chapter-num">${String(i+1).padStart(2,'0')}</div>
-        <div class="admin-chapter-name">${ch.title}</div>
-      </div>`).join('')
+    ? novel.chapters.map((ch, i) => {
+        const status = ch.publishStatus || 'published';
+        const statusIcon = status==='published'?'✓':status==='draft'?'✎':'⏰';
+        const statusColor = status==='published'?'#78b43c':status==='draft'?'#a09050':'#5090c8';
+        const typeLabel = ch.type && ch.type!=='chapter' ? ` [${ch.type}]` : '';
+        const schedInfo = status==='scheduled' && ch.scheduleDate ? ` → ${ch.scheduleDate}` : '';
+        return `
+        <div class="admin-chapter-item ${adminChapterIdx===i?'selected':''}" onclick="editChapter(${i})">
+          <div class="admin-chapter-num" style="color:${statusColor}">${statusIcon}</div>
+          <div class="admin-chapter-name">
+            ${ch.title}
+            <span style="color:${statusColor};font-size:0.65rem;margin-left:0.3rem">[${status}${schedInfo}]</span>
+            ${typeLabel ? `<span style="color:var(--yellow);font-size:0.7rem;margin-left:0.3rem">${typeLabel}</span>` : ''}
+          </div>
+        </div>`;
+      }).join('')
     : '<div style="color:#665;font-style:italic;padding:0.5rem">No chapters yet — add one below.</div>';
 }
 
@@ -2552,8 +3448,30 @@ function editChapter(idx) {
   document.getElementById('ce-desc').value = ch.desc || '';
   document.getElementById('ce-epigraph').value = ch.epigraph || '';
   document.getElementById('ce-content').value = ch.content;
+  document.getElementById('ce-type').value = ch.type || 'chapter';
+
+  // Publish status
+  const status = ch.publishStatus || 'published';
+  setPublishStatus(status, false);
+  if (ch.scheduleDate) document.getElementById('ce-scheduleDate').value = ch.scheduleDate;
+  if (ch.scheduleTime) document.getElementById('ce-scheduleTime').value = ch.scheduleTime;
+  if (ch.publishDate)  document.getElementById('ce-publishDate').value = ch.publishDate;
+
   document.getElementById('chapterEditForm').style.display = 'block';
   renderAdminChapterList();
+}
+
+function setPublishStatus(status, updateField = true) {
+  ['published','draft','scheduled'].forEach(s => {
+    const btn = document.getElementById('ps-' + s);
+    if (btn) btn.className = `publish-status-btn${status===s?' active-'+s:''}`;
+  });
+  document.getElementById('scheduleRow').classList.toggle('show', status === 'scheduled');
+  document.getElementById('publishedDateRow').style.display = status === 'published' ? 'block' : 'none';
+  if (updateField) {
+    // store in a temp variable to be saved on saveChapter
+    document.getElementById('ps-published').dataset.current = status;
+  }
 }
 
 function addNewChapter() {
@@ -2562,12 +3480,19 @@ function addNewChapter() {
     title: 'New Chapter',
     desc: '',
     epigraph: '',
-    content: '<p>Your chapter content goes here.</p>'
+    content: '<p>Your chapter content goes here.</p>',
+    publishStatus: 'draft',
+    visible: false,
+    type: 'chapter',
+    publishDate: '',
+    scheduleDate: '',
+    scheduleTime: '12:00'
   });
   const newIdx = NOVELS[adminNovelIdx].chapters.length - 1;
   renderAdminChapterList();
   editChapter(newIdx);
-  showToast('✓ New chapter added!');
+  showToast('✓ New draft chapter added!');
+  saveAllData();
 }
 
 function saveChapter() {
@@ -2577,9 +3502,28 @@ function saveChapter() {
   ch.desc = document.getElementById('ce-desc').value;
   ch.epigraph = document.getElementById('ce-epigraph').value;
   ch.content = document.getElementById('ce-content').value;
+  ch.type = document.getElementById('ce-type').value;
+
+  // Publish status
+  const activeBtn = document.querySelector('.publish-status-btn[class*="active-"]');
+  const status = activeBtn ? activeBtn.id.replace('ps-','') : 'published';
+  ch.publishStatus = status;
+  ch.scheduleDate = document.getElementById('ce-scheduleDate').value;
+  ch.scheduleTime = document.getElementById('ce-scheduleTime').value || '12:00';
+  ch.publishDate  = document.getElementById('ce-publishDate').value;
+
+  // Derive visible from status
+  if (status === 'published') ch.visible = true;
+  else if (status === 'draft') ch.visible = false;
+  else if (status === 'scheduled') {
+    // visible if scheduled datetime has already passed
+    ch.visible = isScheduledPast(ch);
+  }
+
   renderAdminChapterList();
   renderGrid();
   showToast('✓ Chapter saved!');
+  saveAllData();
 }
 
 function deleteChapter() {
@@ -2591,6 +3535,7 @@ function deleteChapter() {
   renderAdminChapterList();
   renderGrid();
   showToast('✓ Chapter deleted.');
+  saveAllData();
 }
 
 function cancelChapterEdit() {
@@ -2599,25 +3544,349 @@ function cancelChapterEdit() {
   renderAdminChapterList();
 }
 
-// ── PASSWORD ──
-function changePassword() {
-  const cur = document.getElementById('pw-current').value;
-  const nw = document.getElementById('pw-new').value;
-  const conf = document.getElementById('pw-confirm').value;
-  if (cur !== ADMIN_PASSWORD) { showToast('✗ Current password wrong.'); return; }
-  if (!nw) { showToast('✗ New password is empty.'); return; }
-  if (nw !== conf) { showToast('✗ Passwords do not match.'); return; }
-  ADMIN_PASSWORD = nw;
-  document.getElementById('pw-current').value = '';
-  document.getElementById('pw-new').value = '';
-  document.getElementById('pw-confirm').value = '';
-  showToast('✓ Password changed! Remember to save your HTML file.');
+// ── FRONT MATTER ──
+const FM_TYPES = [
+  { key: 'synopsis',     label: 'Synopsis',        icon: '📖', placeholder: 'Write your novel synopsis here...' },
+  { key: 'authorNote',   label: 'Author Note',      icon: '✍️',  placeholder: 'A note from the author...' },
+  { key: 'characters',   label: 'Characters',       icon: '👥', placeholder: 'Name | Role | Description\nName | Role | Description\n(one per line)' },
+  { key: 'contentWarn',  label: 'Content Warning',  icon: '⚠️',  placeholder: 'List any content warnings here...' },
+  { key: 'dedication',   label: 'Dedication',       icon: '💌', placeholder: 'For...' },
+  { key: 'worldNote',    label: 'World / Lore Note', icon: '🗺️', placeholder: 'Notes about the world, setting, or lore...' },
+  { key: 'glossary',     label: 'Glossary',         icon: '📚', placeholder: 'Term — Definition\nTerm — Definition\n(one per line)' },
+  { key: 'custom',       label: 'Custom Page',      icon: '📄', placeholder: 'Any extra page you want to add...' },
+];
+
+let activeFMType = FM_TYPES[0].key;
+
+function populateFMNovelSelect() {
+  const sel = document.getElementById('fm-novelSelect');
+  sel.innerHTML = '<option value="">— choose a novel —</option>' +
+    NOVELS.map((n,i) => `<option value="${i}">${n.titles.en}</option>`).join('');
+  document.getElementById('fm-editorWrap').style.display = 'none';
 }
 
-// Secret shortcut: press Ctrl+Shift+A to open admin
-document.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.shiftKey && e.key === 'A') openAdmin();
-});
+function loadFMEditor() {
+  const nIdx = parseInt(document.getElementById('fm-novelSelect').value);
+  if (isNaN(nIdx)) { document.getElementById('fm-editorWrap').style.display='none'; return; }
+  adminNovelIdx = nIdx;
+  const novel = NOVELS[nIdx];
+  if (!novel.frontMatter) novel.frontMatter = {};
+
+  const tabsEl = document.getElementById('fmAdminTabs');
+  const fieldsEl = document.getElementById('fmAdminFields');
+  const togglesEl = document.getElementById('fmToggleRows');
+
+  tabsEl.innerHTML = '';
+  fieldsEl.innerHTML = '';
+  togglesEl.innerHTML = '';
+
+  FM_TYPES.forEach((fm, i) => {
+    const hasContent = !!(novel.frontMatter[fm.key]?.content);
+    const isVisible = novel.frontMatter[fm.key]?.visible !== false;
+
+    // Tab
+    const tab = document.createElement('button');
+    tab.className = 'fm-admin-type-tab' + (hasContent?' has-content':'') + (i===0?' active':'');
+    tab.textContent = fm.icon + ' ' + fm.label;
+    tab.dataset.key = fm.key;
+    tab.onclick = () => switchFMType(fm.key);
+    tabsEl.appendChild(tab);
+
+    // Field
+    const field = document.createElement('div');
+    field.className = 'fm-admin-field' + (i===0?' active':'');
+    field.id = 'fmf-' + fm.key;
+    field.innerHTML = `
+      <div class="admin-field">
+        <label class="admin-label">${fm.icon} ${fm.label} Content</label>
+        <textarea class="admin-textarea" id="fmcontent-${fm.key}" style="min-height:180px" placeholder="${fm.placeholder}">${novel.frontMatter[fm.key]?.content || ''}</textarea>
+      </div>
+      ${fm.key === 'custom' ? `<div class="admin-field"><label class="admin-label">Custom Page Title</label><input class="admin-input" id="fmtitle-custom" value="${novel.frontMatter.custom?.title||''}" placeholder="e.g. Playlist, Maps, Notes..."></div>` : ''}`;
+    fieldsEl.appendChild(field);
+
+    // Toggle row
+    const row = document.createElement('div');
+    row.className = 'admin-toggle-row';
+    row.innerHTML = `
+      <div>
+        <div class="admin-toggle-label">${fm.icon} ${fm.label}</div>
+        <div class="admin-toggle-sub">${hasContent ? 'Has content' : 'No content yet'}</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="fmvis-${fm.key}" ${isVisible && hasContent ? 'checked' : ''} ${!hasContent ? 'disabled' : ''}>
+        <span class="toggle-slider"></span>
+      </label>`;
+    togglesEl.appendChild(row);
+  });
+
+  activeFMType = FM_TYPES[0].key;
+  document.getElementById('fm-editorWrap').style.display = 'block';
+}
+
+function switchFMType(key) {
+  activeFMType = key;
+  document.querySelectorAll('.fm-admin-type-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.fm-admin-field').forEach(f => f.classList.remove('active'));
+  document.querySelector(`.fm-admin-type-tab[data-key="${key}"]`).classList.add('active');
+  document.getElementById('fmf-' + key).classList.add('active');
+}
+
+function saveFrontMatter() {
+  const nIdx = parseInt(document.getElementById('fm-novelSelect').value);
+  if (isNaN(nIdx)) return;
+  const novel = NOVELS[nIdx];
+  if (!novel.frontMatter) novel.frontMatter = {};
+
+  FM_TYPES.forEach(fm => {
+    const content = document.getElementById('fmcontent-' + fm.key)?.value || '';
+    const visEl = document.getElementById('fmvis-' + fm.key);
+    const visible = visEl ? visEl.checked : true;
+    const title = fm.key === 'custom' ? (document.getElementById('fmtitle-custom')?.value || 'Extra') : fm.label;
+    if (content) {
+      novel.frontMatter[fm.key] = { content, visible, title, icon: fm.icon };
+    } else {
+      delete novel.frontMatter[fm.key];
+    }
+  });
+
+  loadFMEditor(); // refresh to update badges
+  showToast('✓ Front matter saved!');
+  saveAllData();
+}
+
+function clearFMPage() {
+  const nIdx = parseInt(document.getElementById('fm-novelSelect').value);
+  if (isNaN(nIdx) || !activeFMType) return;
+  if (!confirm('Clear this front matter page?')) return;
+  if (NOVELS[nIdx].frontMatter) delete NOVELS[nIdx].frontMatter[activeFMType];
+  loadFMEditor();
+  showToast('✓ Page cleared.');
+  saveAllData();
+}
+
+// ── READER: render front matter tabs ──
+function renderFrontMatterReader(novelIdx) {
+  const novel = NOVELS[novelIdx];
+  const section = document.getElementById('frontmatterSection');
+  const tabsEl = document.getElementById('frontmatterTabs');
+  const contentsEl = document.getElementById('frontmatterContents');
+
+  if (!novel.frontMatter || Object.keys(novel.frontMatter).length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  const visible = FM_TYPES.filter(fm => novel.frontMatter[fm.key]?.content && novel.frontMatter[fm.key]?.visible !== false);
+  if (visible.length === 0) { section.style.display = 'none'; return; }
+
+  section.style.display = 'block';
+  tabsEl.innerHTML = visible.map((fm, i) =>
+    `<button class="fm-tab ${i===0?'active':''}" onclick="switchFMTab('${fm.key}',this)">${fm.icon} ${novel.frontMatter[fm.key].title || fm.label}</button>`
+  ).join('');
+
+  contentsEl.innerHTML = visible.map((fm, i) => {
+    const data = novel.frontMatter[fm.key];
+    let innerHtml = '';
+
+    if (fm.key === 'characters') {
+      // Parse Name | Role | Description lines
+      const cards = data.content.split('\n').filter(l=>l.trim()).map(line => {
+        const parts = line.split('|').map(p=>p.trim());
+        return `<div class="char-card">
+          <div class="char-name">${parts[0]||'Character'}</div>
+          ${parts[1]?`<div class="char-role">${parts[1]}</div>`:''}
+          ${parts[2]?`<div class="char-desc">${parts[2]}</div>`:''}
+        </div>`;
+      }).join('');
+      innerHtml = `<div class="char-grid">${cards}</div>`;
+    } else if (fm.key === 'glossary') {
+      const items = data.content.split('\n').filter(l=>l.trim()).map(line => {
+        const dash = line.indexOf('—');
+        const term = dash>-1 ? line.slice(0,dash).trim() : line;
+        const def  = dash>-1 ? line.slice(dash+1).trim() : '';
+        return `<div style="margin-bottom:0.8rem"><strong style="font-family:'Fraunces',serif">${term}</strong>${def?` <span style="color:#7a6a50">— ${def}</span>`:''}</div>`;
+      }).join('');
+      innerHtml = `<div class="fm-block-text">${items}</div>`;
+    } else {
+      // Treat content as plain text paragraphs
+      const paras = data.content.split('\n').filter(l=>l.trim()).map(l=>`<p>${l}</p>`).join('');
+      innerHtml = `<div class="fm-block-text">${paras}</div>`;
+    }
+
+    return `<div class="fm-content ${i===0?'active':''}" id="fmread-${fm.key}">
+      <div class="fm-block">
+        <div class="fm-block-icon">${fm.icon}</div>
+        <div class="fm-block-label">${novel.titles.en}</div>
+        <div class="fm-block-title">${data.title || fm.label}</div>
+        ${innerHtml}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function switchFMTab(key, btn) {
+  document.querySelectorAll('.fm-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.fm-content').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('fmread-' + key)?.classList.add('active');
+}
+
+// ── TRANSLATIONS ──
+const LANGUAGES = [
+  { code: 'zh', label: '中文 ZH' },
+  { code: 'ms', label: 'Melayu MS' },
+  { code: 'ja', label: '日本語 JA' },
+  { code: 'ko', label: '한국어 KO' },
+  { code: 'es', label: 'Español ES' },
+  { code: 'fr', label: 'Français FR' },
+  { code: 'de', label: 'Deutsch DE' },
+  { code: 'id', label: 'Indonesia ID' },
+  { code: 'th', label: 'ภาษาไทย TH' },
+  { code: 'ar', label: 'العربية AR' },
+];
+
+let currentReaderLang = 'en';
+
+function populateTransNovelSelect() {
+  const sel = document.getElementById('tl-novelSelect');
+  sel.innerHTML = '<option value="">— choose novel —</option>' +
+    NOVELS.map((n,i) => `<option value="${i}">${n.titles.en}</option>`).join('');
+  document.getElementById('tl-chapterSelect').innerHTML = '<option value="">— choose chapter —</option>';
+  document.getElementById('tl-chapterSelect').disabled = true;
+  document.getElementById('tl-editorSection').style.display = 'none';
+}
+
+function loadTransChapters() {
+  const nIdx = parseInt(document.getElementById('tl-novelSelect').value);
+  const chSel = document.getElementById('tl-chapterSelect');
+  if (isNaN(nIdx)) { chSel.disabled = true; return; }
+  chSel.innerHTML = '<option value="">— choose chapter —</option>' +
+    NOVELS[nIdx].chapters.map((ch,i) => `<option value="${i}">Ch.${i+1} — ${ch.title}</option>`).join('');
+  chSel.disabled = false;
+  document.getElementById('tl-editorSection').style.display = 'none';
+}
+
+function loadTransEditor() {
+  const nIdx = parseInt(document.getElementById('tl-novelSelect').value);
+  const cIdx = parseInt(document.getElementById('tl-chapterSelect').value);
+  if (isNaN(nIdx) || isNaN(cIdx)) return;
+  const ch = NOVELS[nIdx].chapters[cIdx];
+  if (!ch) return;
+
+  // Ensure translations object exists
+  if (!ch.translations) ch.translations = {};
+
+  // Original reference
+  const tmp = document.createElement('div');
+  tmp.innerHTML = ch.content;
+  document.getElementById('tl-originalRef').textContent = tmp.textContent.slice(0, 600) + (tmp.textContent.length > 600 ? '…' : '');
+
+  // Build language tabs + fields
+  const tabsEl = document.getElementById('tlLangTabs');
+  const fieldsEl = document.getElementById('tlLangFields');
+  tabsEl.innerHTML = '';
+  fieldsEl.innerHTML = '';
+
+  LANGUAGES.forEach((lang, i) => {
+    const hasContent = !!(ch.translations[lang.code]?.content);
+    // Tab
+    const tab = document.createElement('button');
+    tab.className = 'trans-lang-tab' + (hasContent ? ' has-content' : '') + (i === 0 ? ' active' : '');
+    tab.textContent = lang.label;
+    tab.dataset.lang = lang.code;
+    tab.onclick = () => switchTransLang(lang.code);
+    tabsEl.appendChild(tab);
+
+    // Field
+    const field = document.createElement('div');
+    field.className = 'trans-field' + (i === 0 ? ' active' : '');
+    field.id = 'tl-field-' + lang.code;
+    field.innerHTML = `
+      <div class="admin-field">
+        <label class="admin-label">Chapter Title in ${lang.label}</label>
+        <input class="admin-input" id="tl-title-${lang.code}" placeholder="Translated title..." value="${ch.translations[lang.code]?.title || ''}">
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">Chapter Content in ${lang.label} (use &lt;p&gt; tags)</label>
+        <textarea class="admin-textarea" id="tl-content-${lang.code}" style="min-height:250px;font-family:monospace;font-size:0.85rem" placeholder="Paste your translated chapter text here, wrapped in &lt;p&gt; tags...">${ch.translations[lang.code]?.content || ''}</textarea>
+      </div>`;
+    fieldsEl.appendChild(field);
+  });
+
+  document.getElementById('tl-editorSection').style.display = 'block';
+}
+
+function switchTransLang(code) {
+  document.querySelectorAll('.trans-lang-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.trans-field').forEach(f => f.classList.remove('active'));
+  document.querySelector(`.trans-lang-tab[data-lang="${code}"]`).classList.add('active');
+  document.getElementById('tl-field-' + code).classList.add('active');
+}
+
+function saveTrans() {
+  const nIdx = parseInt(document.getElementById('tl-novelSelect').value);
+  const cIdx = parseInt(document.getElementById('tl-chapterSelect').value);
+  if (isNaN(nIdx) || isNaN(cIdx)) return;
+  const ch = NOVELS[nIdx].chapters[cIdx];
+  if (!ch.translations) ch.translations = {};
+
+  LANGUAGES.forEach(lang => {
+    const title = document.getElementById('tl-title-' + lang.code)?.value || '';
+    const content = document.getElementById('tl-content-' + lang.code)?.value || '';
+    if (title || content) {
+      ch.translations[lang.code] = { title, content };
+    }
+  });
+
+  // Refresh tab indicators
+  loadTransEditor();
+  showToast('✓ Translations saved!');
+  saveAllData();
+}
+
+function deleteTrans() {
+  const nIdx = parseInt(document.getElementById('tl-novelSelect').value);
+  const cIdx = parseInt(document.getElementById('tl-chapterSelect').value);
+  if (isNaN(nIdx) || isNaN(cIdx)) return;
+  const ch = NOVELS[nIdx].chapters[cIdx];
+  // Find active lang
+  const activeTab = document.querySelector('.trans-lang-tab.active');
+  if (!activeTab) return;
+  const code = activeTab.dataset.lang;
+  if (!confirm(`Clear ${code.toUpperCase()} translation for this chapter?`)) return;
+  if (ch.translations) delete ch.translations[code];
+  loadTransEditor();
+  showToast('✓ Translation cleared.');
+  saveAllData();
+}
+
+// ── READER LANG SYSTEM ──
+function buildReaderLangBar(novelIdx, chapterIdx) {
+  const ch = NOVELS[novelIdx]?.chapters[chapterIdx];
+  const bar = document.getElementById('readerLangBar');
+  const btns = document.getElementById('readerLangBtns');
+  if (!ch?.translations || Object.keys(ch.translations).length === 0) {
+    bar.classList.remove('has-translations');
+    return;
+  }
+  const available = LANGUAGES.filter(l => ch.translations[l.code]?.content);
+  if (available.length === 0) { bar.classList.remove('has-translations'); return; }
+
+  bar.classList.add('has-translations');
+  btns.innerHTML =
+    `<button class="reader-lang-btn ${currentReaderLang==='en'?'active':''}" onclick="setReaderLang('en')">EN</button>` +
+    available.map(l =>
+      `<button class="reader-lang-btn ${currentReaderLang===l.code?'active':''}" onclick="setReaderLang('${l.code}')">${l.code.toUpperCase()}</button>`
+    ).join('');
+}
+
+function setReaderLang(code) {
+  currentReaderLang = code;
+  // re-render current chapter in chosen language
+  if (currentNovel !== null) openChapter(currentChapterIdx);
+}
+
+// ── SECRET ENTRY: logo click ×5 handled in DOMContentLoaded above ──
 
 window.addEventListener('scroll', () => {
   const d = document.documentElement;
@@ -2698,7 +3967,18 @@ let isDark = false;
 function toggleDarkMode() {
   isDark = !isDark;
   document.body.classList.toggle('dark-read', isDark);
-  document.getElementById('darkModeBtn').textContent = isDark ? '☀️' : '🌙';
+  const icon = isDark ? '☀️' : '🌙';
+  document.querySelectorAll('#darkModeBtn, #globalDarkBtn').forEach(b => b.textContent = icon);
+  try { localStorage.setItem('tm_dark', isDark ? '1' : '0'); } catch(e) {}
+}
+function applyDarkPref() {
+  try {
+    isDark = localStorage.getItem('tm_dark') === '1';
+    if (isDark) {
+      document.body.classList.add('dark-read');
+      document.querySelectorAll('#darkModeBtn, #globalDarkBtn').forEach(b => b.textContent = '☀️');
+    }
+  } catch(e) {}
 }
 
 // ── SCROLL TO TOP + PROGRESS ──
@@ -2758,11 +4038,472 @@ function animateView(el) {
 }
 
 // ═══════════════════════════════════════════════
+// HEART / LIKES SYSTEM
+// ═══════════════════════════════════════════════
+function _likeKey(idx) { return `tm_like_${NOVELS[idx]?.id || idx}`; }
+function _likesKey(idx) { return `tm_likes_${NOVELS[idx]?.id || idx}`; }
+
+function getNovelLiked(idx) {
+  try { return localStorage.getItem(_likeKey(idx)) === '1'; } catch(e) { return false; }
+}
+function getHeartCount(idx) {
+  try { return parseInt(localStorage.getItem(_likesKey(idx)) || '0'); } catch(e) { return 0; }
+}
+
+function toggleHeart(idx, btn) {
+  const liked = getNovelLiked(idx);
+  const count = getHeartCount(idx);
+  const newLiked = !liked;
+  const newCount = newLiked ? count + 1 : Math.max(0, count - 1);
+  try {
+    localStorage.setItem(_likeKey(idx), newLiked ? '1' : '0');
+    localStorage.setItem(_likesKey(idx), String(newCount));
+  } catch(e) {}
+  btn.classList.toggle('liked', newLiked);
+  btn.querySelector('.heart-icon').textContent = newLiked ? '❤️' : '🤍';
+  const countEl = document.getElementById('heart-count-' + idx);
+  if (countEl) countEl.textContent = newCount;
+  // bounce animation
+  btn.querySelector('.heart-icon').style.transform = 'scale(1.5)';
+  setTimeout(() => { btn.querySelector('.heart-icon').style.transform = ''; }, 200);
+}
+
+function toggleHeartReader() {
+  if (currentNovel === null) return;
+  const btn = document.getElementById('novelHeartBtn');
+  toggleHeart(currentNovel, btn);
+  // sync count display
+  document.getElementById('novelHeartCountReader').textContent = getHeartCount(currentNovel);
+  // sync library card if visible
+  const cardCount = document.getElementById('heart-count-' + currentNovel);
+  if (cardCount) cardCount.textContent = getHeartCount(currentNovel);
+}
+
+function updateReaderHeart() {
+  if (currentNovel === null) return;
+  const btn = document.getElementById('novelHeartBtn');
+  const liked = getNovelLiked(currentNovel);
+  btn.classList.toggle('liked', liked);
+  btn.querySelector('.heart-icon').textContent = liked ? '❤️' : '🤍';
+  document.getElementById('novelHeartCountReader').textContent = getHeartCount(currentNovel);
+}
+
+// ═══════════════════════════════════════════════
+// COMMENTS SYSTEM
+// ═══════════════════════════════════════════════
+function _commentsKey(novelId) { return `tm_comments_${novelId}`; }
+
+function getComments(novelId) {
+  try { return JSON.parse(localStorage.getItem(_commentsKey(novelId)) || '[]'); } catch(e) { return []; }
+}
+function saveComments(novelId, comments) {
+  try { localStorage.setItem(_commentsKey(novelId), JSON.stringify(comments)); } catch(e) {}
+}
+
+function submitComment() {
+  if (currentNovel === null) return;
+  const novel = NOVELS[currentNovel];
+  const name = document.getElementById('commentName').value.trim() || 'Anonymous';
+  const text = document.getElementById('commentText').value.trim();
+  if (!text) { showCommentFeedback('Please write something first ✦'); return; }
+  if (text.length < 3) { showCommentFeedback('Comment is too short.'); return; }
+
+  const comments = getComments(novel.id);
+  comments.push({
+    id: Date.now(),
+    name,
+    text,
+    date: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}),
+    approved: false
+  });
+  saveComments(novel.id, comments);
+
+  document.getElementById('commentName').value = '';
+  document.getElementById('commentText').value = '';
+  showCommentFeedback('✦ Comment submitted! Waiting for approval.');
+}
+
+function showCommentFeedback(msg) {
+  const btn = document.getElementById('commentText');
+  const note = document.createElement('div');
+  note.style.cssText = 'font-family:\'Instrument Serif\',serif;font-style:italic;font-size:0.88rem;color:var(--olive);margin-top:0.4rem;animation:fadeIn 0.3s ease';
+  note.textContent = msg;
+  btn.parentNode.insertBefore(note, btn.nextSibling.nextSibling);
+  setTimeout(() => note.remove(), 3500);
+}
+
+function renderComments(novelId) {
+  const list = document.getElementById('commentList');
+  const countEl = document.getElementById('commentsCount');
+  if (!list) return;
+  const comments = getComments(novelId).filter(c => c.approved);
+  countEl.textContent = `${comments.length} comment${comments.length !== 1 ? 's' : ''}`;
+  if (comments.length === 0) {
+    list.innerHTML = '<div class="no-comments">No comments yet. Be the first! ✦</div>';
+    return;
+  }
+  list.innerHTML = comments.map(c => `
+    <div class="comment-item">
+      <div class="comment-meta">
+        <span class="comment-name">${escHtml(c.name)}</span>
+        <span class="comment-date">${c.date}</span>
+      </div>
+      <div class="comment-text">${escHtml(c.text)}</div>
+    </div>`).join('');
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderAdminComments() {
+  const pendingEl = document.getElementById('adminPendingComments');
+  const approvedEl = document.getElementById('adminApprovedComments');
+  if (!pendingEl) return;
+
+  let pendingHtml = '';
+  let approvedHtml = '';
+  let hasPending = false;
+  let hasApproved = false;
+
+  NOVELS.forEach((novel, nIdx) => {
+    const comments = getComments(novel.id);
+    comments.forEach((c, cIdx) => {
+      const card = `
+        <div class="admin-comment-item" id="acomment-${novel.id}-${c.id}">
+          <div class="admin-comment-meta">
+            <span class="admin-comment-novel">${novel.titles.en}</span>
+            ${escHtml(c.name)} · ${c.date}
+          </div>
+          <div class="admin-comment-text">"${escHtml(c.text)}"</div>
+          <div class="admin-comment-actions">
+            ${!c.approved ? `<button class="admin-btn admin-btn-primary" style="padding:0.4rem 1rem;font-size:0.62rem" onclick="approveComment('${novel.id}',${c.id})">✓ Approve</button>` : ''}
+            <button class="admin-btn admin-btn-danger" style="padding:0.4rem 1rem;font-size:0.62rem" onclick="deleteComment('${novel.id}',${c.id})">✕ Delete</button>
+          </div>
+        </div>`;
+      if (!c.approved) { pendingHtml += card; hasPending = true; }
+      else { approvedHtml += card; hasApproved = true; }
+    });
+  });
+
+  pendingEl.innerHTML = hasPending ? pendingHtml : '<p style="font-family:\'Instrument Serif\',serif;font-style:italic;color:#665;padding:0.5rem 0">No pending comments. ✦</p>';
+  approvedEl.innerHTML = hasApproved ? approvedHtml : '<p style="font-family:\'Instrument Serif\',serif;font-style:italic;color:#665;padding:0.5rem 0">No approved comments yet.</p>';
+}
+
+function approveComment(novelId, commentId) {
+  const comments = getComments(novelId);
+  const c = comments.find(c => c.id === commentId);
+  if (c) { c.approved = true; saveComments(novelId, comments); }
+  renderAdminComments();
+  showToast('✓ Comment approved!');
+  saveAllData();
+}
+
+function deleteComment(novelId, commentId) {
+  if (!confirm('Delete this comment?')) return;
+  const comments = getComments(novelId).filter(c => c.id !== commentId);
+  saveComments(novelId, comments);
+  renderAdminComments();
+  showToast('✓ Comment deleted.');
+  saveAllData();
+}
+
+// ═══════════════════════════════════════════════
+// INSIGHTS
+// ═══════════════════════════════════════════════
+function renderInsights() {
+  const totalNovels = NOVELS.length;
+  const published = NOVELS.filter(n => !n.status || n.status === 'active').length;
+  const inProgress = NOVELS.filter(n => n.status === 'coming-soon').length;
+  const ideas = NOVELS.filter(n => n.status === 'idea').length;
+  const completed = NOVELS.filter(n => n.badge === 'COMPLETE').length;
+  const totalChapters = NOVELS.reduce((s,n) => s + (n.chapters?.length||0), 0);
+  const totalWords = NOVELS.reduce((s,n) => {
+    return s + (n.chapters||[]).reduce((cs,ch) => {
+      if (!ch.content) return cs;
+      const tmp = document.createElement('div');
+      tmp.innerHTML = ch.content;
+      return cs + (tmp.textContent.trim().split(/\s+/).length);
+    }, 0);
+  }, 0);
+  const totalLikes = NOVELS.reduce((s,n,i) => s + getHeartCount(i), 0);
+  let totalComments = 0;
+  let pendingComments = 0;
+  NOVELS.forEach(n => {
+    const c = getComments(n.id);
+    totalComments += c.filter(x=>x.approved).length;
+    pendingComments += c.filter(x=>!x.approved).length;
+  });
+
+  // Stat cards
+  document.getElementById('insightsGrid').innerHTML = [
+    { num: totalNovels, label: 'Total Novels', cls: '' },
+    { num: published, label: 'Published', cls: 'olive' },
+    { num: inProgress, label: 'In Progress', cls: 'coral' },
+    { num: ideas, label: 'Ideas', cls: 'pink' },
+    { num: completed, label: 'Completed', cls: 'olive' },
+    { num: totalChapters, label: 'Total Chapters', cls: '' },
+    { num: totalWords.toLocaleString(), label: 'Est. Words', cls: '' },
+    { num: totalLikes, label: 'Total Likes ❤️', cls: 'coral' },
+    { num: totalComments, label: 'Comments', cls: 'olive' },
+    { num: pendingComments, label: 'Pending Review', cls: pendingComments > 0 ? 'coral' : '' },
+  ].map(s => `
+    <div class="insight-card ${s.cls}">
+      <div class="insight-num">${s.num}</div>
+      <div class="insight-label">${s.label}</div>
+    </div>`).join('');
+
+  // Per-novel breakdown
+  const maxChapters = Math.max(...NOVELS.map(n => n.chapters?.length||0), 1);
+  document.getElementById('insightsNovelBreakdown').innerHTML = `
+    <div class="insights-breakdown-title">Novel Breakdown</div>
+    ${NOVELS.map((n,i) => {
+      const chCount = n.chapters?.length || 0;
+      const status = n.status || 'active';
+      const statusColor = status==='active'?'#a0c060':status==='coming-soon'?'var(--coral)':'var(--pink)';
+      const likes = getHeartCount(i);
+      return `<div class="insights-row">
+        <div class="insights-row-label">
+          <span style="width:8px;height:8px;border-radius:50%;background:${statusColor};display:inline-block;flex-shrink:0"></span>
+          <span style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.titles.en}</span>
+        </div>
+        <div class="insights-bar-wrap"><div class="insights-bar-fill" style="width:${Math.round((chCount/maxChapters)*100)}%"></div></div>
+        <div class="insights-row-val">${chCount} ch</div>
+        <div style="font-family:'Syne',sans-serif;font-size:0.65rem;color:#e87090;margin-left:0.8rem;min-width:2.5rem">❤️ ${likes}</div>
+      </div>`;
+    }).join('')}`;
+
+  // Likes leaderboard
+  const sortedByLikes = [...NOVELS.map((n,i)=>({n,i,likes:getHeartCount(i)}))]
+    .sort((a,b) => b.likes - a.likes)
+    .filter(x => x.likes > 0);
+  document.getElementById('insightsLikes').innerHTML = sortedByLikes.length === 0
+    ? `<div class="insights-breakdown-title">Likes Leaderboard</div><div style="padding:1rem;font-family:'Instrument Serif',serif;font-style:italic;color:#665">No likes yet.</div>`
+    : `<div class="insights-breakdown-title">Likes Leaderboard ❤️</div>
+      ${sortedByLikes.map((x,rank) => `
+        <div class="insights-row">
+          <div class="insights-row-label">
+            <span style="font-family:'Fraunces',serif;font-weight:900;color:${rank===0?'var(--yellow)':rank===1?'#c0c0c0':rank===2?'#cd7f32':'#665'}">#${rank+1}</span>
+            ${x.n.titles.en}
+          </div>
+          <div class="insights-row-val">❤️ ${x.likes}</div>
+        </div>`).join('')}`;
+}
+
+// ═══════════════════════════════════════════════
+// PUBLISH / SCHEDULE SYSTEM
+// ═══════════════════════════════════════════════
+
+function getScheduledDate(ch) {
+  if (!ch.scheduleDate) return null;
+  const time = ch.scheduleTime || '12:00';
+  return new Date(`${ch.scheduleDate}T${time}:00`);
+}
+
+function isScheduledPast(ch) {
+  const dt = getScheduledDate(ch);
+  return dt ? dt <= new Date() : false;
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function formatCountdown(dt) {
+  const diff = dt - new Date();
+  if (diff <= 0) return 'Publishing now…';
+  const days = Math.floor(diff / 86400000);
+  const hrs  = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000)  / 60000);
+  if (days > 0)  return `in ${days}d ${hrs}h`;
+  if (hrs > 0)   return `in ${hrs}h ${mins}m`;
+  return `in ${mins}m`;
+}
+
+// Check every minute if any scheduled chapters should now be visible
+function checkScheduledChapters() {
+  NOVELS.forEach(novel => {
+    (novel.chapters || []).forEach(ch => {
+      if (ch.publishStatus === 'scheduled' && !ch.visible && isScheduledPast(ch)) {
+        ch.visible = true;
+      }
+    });
+  });
+}
+
+// Run check every 60 seconds
+setInterval(() => {
+  checkScheduledChapters();
+  // Refresh countdown displays if visible
+  if (currentNovel !== null && document.getElementById('chapterListView').style.display !== 'none') {
+    renderChapterList(currentNovel);
+    renderComments(NOVELS[currentNovel].id);
+    updateReaderHeart();
+  }
+}, 60000);
+
+function renderSchedulePanel() {
+  checkScheduledChapters();
+  let schedHtml = '';
+  let draftHtml = '';
+
+  NOVELS.forEach((novel, nIdx) => {
+    (novel.chapters || []).forEach((ch, cIdx) => {
+      const status = ch.publishStatus || 'published';
+      if (status === 'scheduled' && !isScheduledPast(ch)) {
+        const dt = getScheduledDate(ch);
+        const countdown = dt ? formatCountdown(dt) : '—';
+        const dateLabel = dt ? dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+        schedHtml += `<div class="scheduled-item">
+          <div class="scheduled-item-info">
+            <div class="scheduled-item-title">${ch.title}</div>
+            <div class="scheduled-item-meta">${novel.titles.en} · ${dateLabel}</div>
+          </div>
+          <div class="scheduled-item-countdown">${countdown}</div>
+          <button class="admin-btn admin-btn-primary" style="padding:0.3rem 0.8rem;font-size:0.6rem;margin-left:0.5rem" onclick="publishNow(${nIdx},${cIdx})">Publish Now</button>
+        </div>`;
+      }
+      if (status === 'draft') {
+        draftHtml += `<div class="scheduled-item" style="border-color:rgba(160,140,80,0.3);background:rgba(160,140,80,0.05)">
+          <div class="scheduled-item-info">
+            <div class="scheduled-item-title">${ch.title}</div>
+            <div class="scheduled-item-meta" style="color:#a09050">${novel.titles.en} · Draft</div>
+          </div>
+          <button class="admin-btn admin-btn-primary" style="padding:0.3rem 0.8rem;font-size:0.6rem" onclick="publishNow(${nIdx},${cIdx})">Publish</button>
+        </div>`;
+      }
+    });
+  });
+
+  document.getElementById('scheduleList').innerHTML = schedHtml ||
+    '<p style="font-family:\'Instrument Serif\',serif;font-style:italic;color:#665;padding:0.5rem 0">No scheduled chapters.</p>';
+  document.getElementById('draftList').innerHTML = draftHtml ||
+    '<p style="font-family:\'Instrument Serif\',serif;font-style:italic;color:#665;padding:0.5rem 0">No drafts.</p>';
+}
+
+function publishNow(novelIdx, chapterIdx) {
+  const ch = NOVELS[novelIdx].chapters[chapterIdx];
+  ch.publishStatus = 'published';
+  ch.visible = true;
+  ch.publishDate = ch.publishDate || new Date().toISOString().split('T')[0];
+  renderSchedulePanel();
+  renderGrid();
+  showToast(`✓ "${ch.title}" published!`);
+  saveAllData();
+}
+
+// ═══════════════════════════════════════════════
+// DATA PERSISTENCE — localStorage auto-save
+// ═══════════════════════════════════════════════
+const _SAVE_KEY = 'tm_site_data_v1';
+
+function saveAllData() {
+  try {
+    const data = {
+      novels: NOVELS,
+      siteConfig: SITE_CONFIG,
+      aboutConfig: ABOUT_CONFIG,
+      savedAt: Date.now()
+    };
+    localStorage.setItem(_SAVE_KEY, JSON.stringify(data));
+  } catch(e) {
+    console.warn('Save failed (storage full?):', e);
+  }
+}
+
+function loadSavedData() {
+  try {
+    const raw = localStorage.getItem(_SAVE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (data.novels && Array.isArray(data.novels) && data.novels.length > 0) {
+      // Merge saved novels into NOVELS array
+      NOVELS.length = 0;
+      data.novels.forEach(n => NOVELS.push(n));
+    }
+    if (data.siteConfig) Object.assign(SITE_CONFIG, data.siteConfig);
+    if (data.aboutConfig) Object.assign(ABOUT_CONFIG, data.aboutConfig);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+// Apply live site config to DOM
+function applySiteConfig() {
+  document.title = SITE_CONFIG.siteTitle;
+  const logo = document.querySelector('.nav-logo');
+  if (logo) logo.textContent = SITE_CONFIG.navLogo;
+  const heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) heroTitle.innerHTML = SITE_CONFIG.authorName.replace(' ', '<br>');
+  const heroSub = document.querySelector('.hero-sub');
+  if (heroSub) heroSub.textContent = SITE_CONFIG.heroSub;
+  const heroBtn = document.querySelector('.hero-btn');
+  if (heroBtn) heroBtn.textContent = SITE_CONFIG.heroBtn;
+}
+
+function applyAboutConfig() {
+  const map = {
+    '.about-eyebrow': ABOUT_CONFIG.eyebrow,
+    '.about-name': ABOUT_CONFIG.name,
+    '.about-name-sub': ABOUT_CONFIG.namesub,
+    '.about-quote': ABOUT_CONFIG.quote,
+    '.about-sig': ABOUT_CONFIG.sig
+  };
+  Object.entries(map).forEach(([sel, val]) => {
+    const el = document.querySelector(sel);
+    if (el) el.textContent = val;
+  });
+  const body = document.querySelector('.about-text');
+  if (body) body.innerHTML = ABOUT_CONFIG.body;
+}
+
+// Auto-save whenever admin saves anything — saveAllData() called inline after each ✓ action
+
+// ═══════════════════════════════════════════════
+// EXPORT — download updated HTML file
+// ═══════════════════════════════════════════════
+function exportSite() {
+  // Get the current page source
+  const src = document.documentElement.outerHTML;
+
+  // Replace the NOVELS array in source with current data
+  const novelsJson = JSON.stringify(NOVELS, null, 2);
+  const siteJson   = JSON.stringify(SITE_CONFIG, null, 2);
+  const aboutJson  = JSON.stringify(ABOUT_CONFIG, null, 2);
+  const pwHash     = `'${_ap}'`;
+
+  let updated = src
+    .replace(/const NOVELS = \[[\s\S]*?\n\];/, `const NOVELS = ${novelsJson};`)
+    .replace(/var SITE_CONFIG = \{[\s\S]*?\};/, `let SITE_CONFIG = ${siteJson};`)
+    .replace(/var ABOUT_CONFIG = \{[\s\S]*?\};/, `let ABOUT_CONFIG = ${aboutJson};`)
+    .replace(/let _ap = '[^']*';/, `let _ap = ${pwHash};`);
+
+  const blob = new Blob([updated], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tianmu-library.html';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✓ Site exported! Upload to GitHub to publish.');
+}
+
+// ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
+loadSavedData();       // Load any saved admin edits from localStorage
+applySiteConfig();     // Apply config to DOM
+applyAboutConfig();    // Apply about config
+applyDarkPref();       // Restore dark mode preference
 buildMarquee();
+checkScheduledChapters();
 renderGrid();
 loadLastRead();
+// Set initial history state
+try { history.replaceState({ view: 'library' }, '', window.location.pathname + window.location.search); } catch(e) {}
 </script>
 
 <!-- ADMIN OVERLAY -->
@@ -2789,9 +4530,14 @@ loadLastRead();
       <!-- Sidebar -->
       <div class="admin-sidebar">
         <div class="admin-sidebar-title">Manage</div>
-        <button class="admin-nav-item active" onclick="switchAdminTab('site')">🏠 Site Settings</button>
+        <button class="admin-nav-item active" onclick="switchAdminTab('insights')">📊 Insights</button>
+        <button class="admin-nav-item" onclick="switchAdminTab('comments')">💬 Comments</button>
+        <button class="admin-nav-item" onclick="switchAdminTab('site')">🏠 Site Settings</button>
         <button class="admin-nav-item" onclick="switchAdminTab('novels')">📚 Novels</button>
+        <button class="admin-nav-item" onclick="switchAdminTab('frontmatter')">📋 Front Matter</button>
         <button class="admin-nav-item" onclick="switchAdminTab('chapters')">📄 Chapters</button>
+        <button class="admin-nav-item" onclick="switchAdminTab('schedule')">⏰ Schedule</button>
+        <button class="admin-nav-item" onclick="switchAdminTab('translations')">🌐 Translations</button>
         <button class="admin-nav-item" onclick="switchAdminTab('about')">✍ About Page</button>
         <button class="admin-nav-item" onclick="switchAdminTab('password')">🔒 Password</button>
       </div>
@@ -2799,8 +4545,31 @@ loadLastRead();
       <!-- Panels -->
       <div style="min-width:0">
 
+        <!-- INSIGHTS -->
+        <div class="admin-panel active" id="panel-insights">
+          <div class="admin-panel-title">Insights</div>
+          <div class="admin-panel-sub">Overview of your library — novels, chapters, engagement.</div>
+          <div class="insights-grid" id="insightsGrid"></div>
+          <div class="insights-breakdown" id="insightsNovelBreakdown"></div>
+          <div class="insights-breakdown" id="insightsLikes"></div>
+        </div>
+
+        <!-- COMMENTS APPROVAL -->
+        <div class="admin-panel" id="panel-comments">
+          <div class="admin-panel-title">Comments</div>
+          <div class="admin-panel-sub">Review and approve reader comments before they appear on the site.</div>
+          <div class="admin-section">
+            <div class="admin-section-title">Pending Approval</div>
+            <div id="adminPendingComments"><p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">No pending comments.</p></div>
+          </div>
+          <div class="admin-section">
+            <div class="admin-section-title">Approved Comments</div>
+            <div id="adminApprovedComments"><p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">No approved comments yet.</p></div>
+          </div>
+        </div>
+
         <!-- SITE SETTINGS -->
-        <div class="admin-panel active" id="panel-site">
+        <div class="admin-panel" id="panel-site">
           <div class="admin-panel-title">Site Settings</div>
           <div class="admin-panel-sub">Edit your site's title, author name and hero text.</div>
           <div class="admin-section">
@@ -2865,6 +4634,16 @@ loadLastRead();
               <label class="admin-label">Description (English)</label>
               <textarea class="admin-textarea" id="ne-desc" style="min-height:80px"></textarea>
             </div>
+            <div class="admin-row">
+              <div class="admin-field">
+                <label class="admin-label">Date Published (shown on card)</label>
+                <input class="admin-input" type="date" id="ne-publishDate">
+              </div>
+              <div class="admin-field">
+                <label class="admin-label">Last Updated</label>
+                <input class="admin-input" type="date" id="ne-updatedDate">
+              </div>
+            </div>
             <div class="admin-row-3">
               <div class="admin-field">
                 <label class="admin-label">Cover Color (dark)</label>
@@ -2911,6 +4690,41 @@ loadLastRead();
           </div>
         </div>
 
+        <!-- FRONT MATTER -->
+        <div class="admin-panel" id="panel-frontmatter">
+          <div class="admin-panel-title">Front Matter</div>
+          <div class="admin-panel-sub">Add pages shown before Chapter 1 — synopsis, author note, character list, content warning, map, dedication, and more.</div>
+
+          <div class="admin-section">
+            <div class="admin-section-title">Select Novel</div>
+            <select class="admin-select" id="fm-novelSelect" onchange="loadFMEditor()">
+              <option value="">— choose a novel —</option>
+            </select>
+          </div>
+
+          <div id="fm-editorWrap" style="display:none">
+            <div class="admin-section">
+              <div class="admin-section-title">Front Matter Pages — click tab to edit</div>
+              <div class="fm-admin-type-tabs" id="fmAdminTabs"></div>
+              <div id="fmAdminFields"></div>
+              <div class="admin-btn-row">
+                <button class="admin-btn admin-btn-primary" onclick="saveFrontMatter()">✓ Save Front Matter</button>
+                <button class="admin-btn admin-btn-danger" onclick="clearFMPage()">✕ Clear This Page</button>
+              </div>
+            </div>
+
+            <div class="admin-section">
+              <div class="admin-section-title">Visibility Toggles</div>
+              <div id="fmToggleRows"></div>
+            </div>
+
+            <div class="admin-section" style="background:#0a0808">
+              <div class="admin-section-title" style="color:#555">💡 Tip</div>
+              <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#554;line-height:1.6">Pages with content appear as tabs before the chapter list. Toggle them off to hide from readers without deleting. Character List uses a special card layout — enter each character on a new line as: <code style="color:var(--yellow);font-size:0.8rem">Name | Role | Description</code></p>
+            </div>
+          </div>
+        </div>
+
         <!-- CHAPTERS -->
         <div class="admin-panel" id="panel-chapters">
           <div class="admin-panel-title">Chapters</div>
@@ -2933,6 +4747,50 @@ loadLastRead();
 
           <div class="admin-section" id="chapterEditForm" style="display:none">
             <div class="admin-section-title" id="chapterEditLabel">Edit Chapter</div>
+
+            <!-- Publish Status -->
+            <div class="admin-section" style="background:#0a0808;margin-bottom:1rem">
+              <div class="admin-section-title">Publish Status</div>
+              <div class="publish-status-row">
+                <button class="publish-status-btn" id="ps-published" onclick="setPublishStatus('published')">✓ Published</button>
+                <button class="publish-status-btn" id="ps-draft"     onclick="setPublishStatus('draft')">✎ Draft</button>
+                <button class="publish-status-btn" id="ps-scheduled" onclick="setPublishStatus('scheduled')">⏰ Scheduled</button>
+              </div>
+              <!-- Schedule date/time — shown only when scheduled -->
+              <div class="schedule-row" id="scheduleRow">
+                <div class="admin-field" style="flex:1;min-width:160px">
+                  <label class="admin-label">Publish Date</label>
+                  <input class="admin-input" type="date" id="ce-scheduleDate">
+                </div>
+                <div class="admin-field" style="flex:1;min-width:120px">
+                  <label class="admin-label">Publish Time</label>
+                  <input class="admin-input" type="time" id="ce-scheduleTime" value="12:00">
+                </div>
+              </div>
+              <!-- Published date (shown for published chapters) -->
+              <div id="publishedDateRow" style="display:none">
+                <div class="admin-field" style="margin-top:0.6rem">
+                  <label class="admin-label">Published On (shown to readers)</label>
+                  <input class="admin-input" type="date" id="ce-publishDate">
+                </div>
+              </div>
+
+              <div class="admin-toggle-row" style="margin-top:0.6rem">
+                <div>
+                  <div class="admin-toggle-label">Chapter type</div>
+                  <div class="admin-toggle-sub">Shown in chapter list label</div>
+                </div>
+                <select class="admin-select" id="ce-type" style="width:auto;padding:0.3rem 0.7rem;font-size:0.7rem">
+                  <option value="chapter">Chapter</option>
+                  <option value="prologue">Prologue</option>
+                  <option value="epilogue">Epilogue</option>
+                  <option value="interlude">Interlude</option>
+                  <option value="bonus">Bonus</option>
+                  <option value="extra">Extra</option>
+                </select>
+              </div>
+            </div>
+
             <div class="admin-row">
               <div class="admin-field">
                 <label class="admin-label">Chapter Title</label>
@@ -2955,6 +4813,61 @@ loadLastRead();
               <button class="admin-btn admin-btn-primary" onclick="saveChapter()">✓ Save Chapter</button>
               <button class="admin-btn admin-btn-danger" onclick="deleteChapter()">✕ Delete Chapter</button>
               <button class="admin-btn admin-btn-ghost" onclick="cancelChapterEdit()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCHEDULE -->
+        <div class="admin-panel" id="panel-schedule">
+          <div class="admin-panel-title">Schedule</div>
+          <div class="admin-panel-sub">All scheduled chapters across every novel — with live countdowns.</div>
+          <div class="admin-section">
+            <div class="admin-section-title">⏰ Scheduled for Release</div>
+            <div id="scheduleList"><p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">No scheduled chapters.</p></div>
+          </div>
+          <div class="admin-section">
+            <div class="admin-section-title">✎ Drafts</div>
+            <div id="draftList"><p style="font-family:'Instrument Serif',serif;font-style:italic;color:#665;padding:0.5rem 0">No drafts.</p></div>
+          </div>
+        </div>
+
+        <!-- TRANSLATIONS -->
+        <div class="admin-panel" id="panel-translations">
+          <div class="admin-panel-title">Translations</div>
+          <div class="admin-panel-sub">Add translated versions of chapter content. Readers can switch language while reading.</div>
+
+          <div class="admin-section">
+            <div class="admin-section-title">Step 1 — Select Novel & Chapter</div>
+            <div class="admin-row">
+              <div class="admin-field">
+                <label class="admin-label">Novel</label>
+                <select class="admin-select" id="tl-novelSelect" onchange="loadTransChapters()">
+                  <option value="">— choose novel —</option>
+                </select>
+              </div>
+              <div class="admin-field">
+                <label class="admin-label">Chapter</label>
+                <select class="admin-select" id="tl-chapterSelect" onchange="loadTransEditor()" disabled>
+                  <option value="">— choose chapter —</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" id="tl-editorSection" style="display:none">
+            <div class="admin-section-title">Step 2 — Select Language to Translate Into</div>
+            <div class="trans-lang-tabs" id="tlLangTabs"></div>
+
+            <div id="tlLangFields"></div>
+
+            <div class="admin-btn-row">
+              <button class="admin-btn admin-btn-primary" onclick="saveTrans()">✓ Save Translation</button>
+              <button class="admin-btn admin-btn-danger" onclick="deleteTrans()">✕ Clear This Language</button>
+            </div>
+
+            <div class="admin-section" style="margin-top:1.2rem;background:#0a0808">
+              <div class="admin-section-title" style="color:#665">Original (English) — for reference</div>
+              <div id="tl-originalRef" style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#554433;line-height:1.7;max-height:200px;overflow-y:auto;padding:0.5rem 0"></div>
             </div>
           </div>
         </div>
@@ -3002,24 +4915,64 @@ loadLastRead();
 
         <!-- PASSWORD -->
         <div class="admin-panel" id="panel-password">
-          <div class="admin-panel-title">Change Password</div>
-          <div class="admin-panel-sub">Update your admin password. You'll need it next time you open the panel.</div>
+          <div class="admin-panel-title">Security</div>
+          <div class="admin-panel-sub">Manage your admin password and access settings.</div>
+
+          <div class="admin-section" style="background:#0a0808;margin-bottom:1.2rem">
+            <div class="admin-section-title" style="color:#e8a060">🔐 How Admin Access Works</div>
+            <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#776655;line-height:1.7;margin-bottom:0.8rem">
+              There is no visible admin button on the site. To open the admin panel, <strong style="color:var(--yellow)">click the site logo 5 times quickly</strong>.
+            </p>
+            <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#776655;line-height:1.7;margin-bottom:0.8rem">
+              Your password is stored as a <strong style="color:var(--yellow)">SHA-256 hash</strong> — not in plain text. Even if someone reads the source code they cannot reverse the hash to find your password.
+            </p>
+            <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#776655;line-height:1.7">
+              After <strong style="color:var(--yellow)">3 wrong attempts</strong>, the login locks for 60 seconds. Any changes made by others only affect their own browser — your real files on GitHub stay untouched.
+            </p>
+          </div>
+
           <div class="admin-section">
+            <div class="admin-section-title">Change Password</div>
             <div class="admin-field">
               <label class="admin-label">Current Password</label>
-              <input class="admin-input" type="password" id="pw-current">
+              <input class="admin-input" type="password" id="pw-current" placeholder="Your current password">
             </div>
             <div class="admin-field">
-              <label class="admin-label">New Password</label>
-              <input class="admin-input" type="password" id="pw-new">
+              <label class="admin-label">New Password (min. 8 characters)</label>
+              <input class="admin-input" type="password" id="pw-new" placeholder="New password">
             </div>
             <div class="admin-field">
               <label class="admin-label">Confirm New Password</label>
-              <input class="admin-input" type="password" id="pw-confirm">
+              <input class="admin-input" type="password" id="pw-confirm" placeholder="Repeat new password">
+            </div>
+            <div class="admin-btn-row">
+              <button class="admin-btn admin-btn-primary" onclick="changePassword()">✓ Update Password</button>
             </div>
           </div>
-          <div class="admin-btn-row">
-            <button class="admin-btn admin-btn-primary" onclick="changePassword()">✓ Update Password</button>
+
+          <div class="admin-section" style="background:#0a1a08;border-color:rgba(120,180,60,0.3)">
+            <div class="admin-section-title" style="color:#78b43c">💾 Save & Export Your Site</div>
+            <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#5a7a40;line-height:1.7;margin-bottom:1rem">
+              Your edits are <strong style="color:var(--yellow)">auto-saved to this browser's localStorage</strong> — they survive page refreshes on this device. But if you clear your browser or visit from another device, changes will be lost.
+            </p>
+            <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#5a7a40;line-height:1.7;margin-bottom:1rem">
+              To <strong style="color:var(--yellow)">permanently save</strong> your novels, click Export — it downloads a new HTML file with all your content baked in. Upload that to GitHub to publish.
+            </p>
+            <button class="admin-btn admin-btn-primary" style="background:#78b43c;border-color:#a0c060;font-size:0.75rem;padding:0.8rem 2rem" onclick="exportSite()">⬇ Export & Download Site</button>
+          </div>
+
+          <div class="admin-section" style="background:#0a0808">
+            <div class="admin-section-title" style="color:#e8d060">📝 How to Use Footnotes</div>
+            <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#776655;line-height:1.7;margin-bottom:0.8rem">
+              In any chapter content, add footnote references using <code style="color:var(--yellow);background:#1a1610;padding:0.1rem 0.4rem;border-radius:4px">[^1]</code> inline, then define them at the end of the content:
+            </p>
+            <pre style="background:#0e0c08;border:1px solid #2a2820;border-radius:8px;padding:1rem;font-size:0.8rem;color:#a09070;line-height:1.8;overflow-x:auto">&lt;p&gt;She walked into the garden.[^1] The roses were red.[^2]&lt;/p&gt;
+
+[^1]: The garden was described earlier in chapter 2.
+[^2]: Red roses symbolise passion in this story.</pre>
+            <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#776655;line-height:1.7;margin-top:0.8rem">
+              Footnotes appear as <span style="color:var(--coral)">coral superscripts</span> — tap/click one to see a popup. They're also listed at the bottom of the chapter.
+            </p>
           </div>
         </div>
 
@@ -3031,52 +4984,5 @@ loadLastRead();
 <!-- TOAST -->
 <div class="admin-toast" id="adminToast"></div>
 
-<!-- GOOGLE TRANSLATE -->
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    includedLanguages: 'zh-CN,zh-TW,ms,ja,ko,es,fr,de,ar,hi,pt,id,th,vi,ru',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-    autoDisplay: false
-  }, 'google_translate_element');
-}
-</script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-<style>
-/* ── Google Translate widget styling ── */
-#google_translate_element .goog-te-gadget-simple {
-  background: var(--olive) !important;
-  border: 2px solid var(--border) !important;
-  border-radius: 20px !important;
-  padding: 0.3rem 0.8rem !important;
-  box-shadow: 2px 2px 0 var(--border) !important;
-  font-family: 'Syne', sans-serif !important;
-  font-size: 0.7rem !important;
-  font-weight: 700 !important;
-  cursor: pointer !important;
-}
-#google_translate_element .goog-te-gadget-simple span,
-#google_translate_element .goog-te-gadget-simple a,
-#google_translate_element .goog-te-gadget-simple a span {
-  color: var(--cream) !important;
-  letter-spacing: 0.1em !important;
-  text-transform: uppercase !important;
-  font-family: 'Syne', sans-serif !important;
-  font-weight: 700 !important;
-  font-size: 0.7rem !important;
-  text-decoration: none !important;
-  pointer-events: auto !important;
-}
-/* Hide the top bar Google injects BUT keep the iframe it needs to function */
-.goog-te-banner-frame.skiptranslate { display: none !important; }
-body > font > a { display: none !important; }
-/* Let Google move the body — DON'T override with top:0 */
-.skiptranslate:not(#google_translate_element *) { height: 0 !important; overflow: hidden !important; }
-/* Keep dropdown z-index above our nav */
-.goog-te-menu-frame { z-index: 9999 !important; }
-.goog-te-gadget-simple:hover { background: var(--coral) !important; }
-</style>
 </body>
 </html>
