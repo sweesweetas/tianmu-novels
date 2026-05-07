@@ -4,7 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>甜慕 Tián Mù — Novel Library</title>
-<meta name="description" content="Original stories by 甜慕 Tián Mù — fantasy, romance, and literary fiction.">
+<meta name="description" content="Original stories by 甜慕 Tián Mù — fantasy, romance, and literary fiction. Read original web novels updated regularly.">
+<meta name="keywords" content="甜慕, Tián Mù, web novel, original fiction, fantasy romance, literary fiction, online reading, free novels">
+<meta name="author" content="甜慕 Tián Mù">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://tianmu.github.io/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="甜慕 Tián Mù — Novel Library">
+<meta property="og:description" content="Original stories by 甜慕 Tián Mù — fantasy, romance, and literary fiction. Read free web novels updated regularly.">
+<meta property="og:url" content="https://tianmu.github.io/">
+<meta property="og:site_name" content="甜慕 Tián Mù — Novel Library">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="甜慕 Tián Mù — Novel Library">
+<meta name="twitter:description" content="Original stories by 甜慕 Tián Mù — fantasy, romance, and literary fiction.">
+
+<!-- Structured Data — Website -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "甜慕 Tián Mù — Novel Library",
+  "description": "Original stories by 甜慕 Tián Mù — fantasy, romance, and literary fiction.",
+  "url": "https://tianmu.github.io/",
+  "author": {
+    "@type": "Person",
+    "name": "甜慕 Tián Mù",
+    "alternateName": "Tián Mù"
+  },
+  "genre": ["Fantasy", "Romance", "Literary Fiction"],
+  "inLanguage": "en"
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Instrument+Serif:ital@0;1&family=Syne:wght@700;800&display=swap" rel="stylesheet">
@@ -1625,6 +1660,33 @@ body.dark-read .about-body { background: var(--olive); }
 /* Dark mode persists on library too */
 body.dark-read .dot-strip { background: #141210; }
 
+/* ── DARK MODE: ABOUT OVERLAY COMPLETE FIX ── */
+body.dark-read #aboutOverlay { background: rgba(10,8,4,0.85); }
+body.dark-read .about-card { background: #1a1610; border-color: #2a2418; }
+body.dark-read .about-header { background: #0e0c08; border-color: #2a2418; }
+body.dark-read .about-name { color: var(--yellow); }
+body.dark-read .about-name-sub { color: var(--pink); }
+body.dark-read .about-quote { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); color: var(--yellow); }
+body.dark-read .about-text { color: var(--cream-dark); }
+body.dark-read .about-sig { color: var(--pink); border-color: rgba(255,255,255,0.1); }
+body.dark-read .about-close { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); color: var(--cream-dark); }
+
+/* ── DARK MODE: NAV MOBILE DROPDOWN ── */
+body.dark-read .nav-links { background: rgba(20,16,10,0.97); border-color: #2a2418; }
+body.dark-read .nav-link { border-color: #2a2418; }
+
+/* ── DARK MODE: CHAPTER PREVIEW PANEL ── */
+body.dark-read #chapterPreviewPanel {
+  background: #16130e;
+  border-color: #2a2418;
+}
+body.dark-read #chapterPreviewPanel .reader-text { color: #c8bfb0; }
+body.dark-read #chapterPreviewPanel .scene-break { color: #554433; }
+body.dark-read .preview-header { background: #0e0c08; border-color: #2a2418; color: var(--yellow); }
+body.dark-read .format-toolbar { background: #1a1810; border-color: #2a2418; }
+body.dark-read .fmt-btn { background: #252018; border-color: #333; color: #887766; }
+body.dark-read .fmt-btn:hover { background: var(--coral); color: white; border-color: var(--coral); }
+
 /* ── READ MODE BUTTON ── */
 .read-mode-btn {
   width: 36px; height: 36px;
@@ -2228,6 +2290,88 @@ body.dark-read .dot-strip { background: #141210; }
 .scheduled-item-title { font-family: 'Instrument Serif', serif; font-size: 0.92rem; color: var(--cream-dark); }
 .scheduled-item-meta { font-family: 'Syne', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #5090c8; margin-top: 0.2rem; }
 .scheduled-item-countdown { font-family: 'Fraunces', serif; font-size: 0.85rem; font-weight: 700; color: #5090c8; white-space: nowrap; }
+
+/* ── FORMATTING TOOLBAR ── */
+.format-toolbar {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #141210;
+  border: 1px solid #2a2820;
+  border-radius: 8px 8px 0 0;
+  padding: 0.5rem 0.7rem;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+.fmt-btn {
+  background: #1a1810;
+  border: 1px solid #333;
+  border-radius: 5px;
+  color: #c0b8a8;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.fmt-btn:hover { background: var(--coral); color: white; border-color: var(--coral); transform: translateY(-1px); }
+.fmt-btn-sep { width: 1px; background: #2a2820; height: 20px; flex-shrink: 0; }
+.fmt-toolbar-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #443322;
+  margin-right: 0.2rem;
+}
+/* textarea that follows toolbar gets top radius removed */
+.format-toolbar + .admin-textarea {
+  border-radius: 0 0 8px 8px;
+  border-top: none;
+}
+/* Preview panel */
+#chapterPreviewPanel {
+  display: none;
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 1rem;
+  box-shadow: var(--shadow);
+}
+.preview-header {
+  background: var(--cream-dark);
+  border-bottom: 2px solid var(--border);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.preview-close-btn {
+  background: none;
+  border: none;
+  color: #8a7a60;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.1rem 0.3rem;
+}
+.preview-close-btn:hover { color: var(--coral); }
+.preview-body {
+  padding: 1.5rem 2rem;
+  max-height: 480px;
+  overflow-y: auto;
+}
 </style>
 <body>
 
@@ -3547,7 +3691,65 @@ function deleteChapter() {
 function cancelChapterEdit() {
   adminChapterIdx = null;
   document.getElementById('chapterEditForm').style.display = 'none';
+  closeChapterPreview();
   renderAdminChapterList();
+}
+
+// ── CHAPTER FORMATTING TOOLBAR ──
+function fmtWrap(textareaId, before, after) {
+  const ta = document.getElementById(textareaId);
+  if (!ta) return;
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const selected = ta.value.substring(start, end);
+  const replacement = before + (selected || 'text here') + after;
+  ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
+  // Put cursor inside the tags
+  const newPos = start + before.length + (selected || 'text here').length;
+  ta.setSelectionRange(newPos, newPos);
+  ta.focus();
+  updatePreviewIfOpen();
+}
+
+function fmtInsert(textareaId, text) {
+  const ta = document.getElementById(textareaId);
+  if (!ta) return;
+  const pos = ta.selectionEnd;
+  const before = ta.value.substring(0, pos);
+  const after = ta.value.substring(pos);
+  const sep = before.length > 0 && !before.endsWith('\n') ? '\n' : '';
+  ta.value = before + sep + text + '\n' + after;
+  const newPos = pos + sep.length + text.length + 1;
+  ta.setSelectionRange(newPos, newPos);
+  ta.focus();
+  updatePreviewIfOpen();
+}
+
+function toggleChapterPreview() {
+  const panel = document.getElementById('chapterPreviewPanel');
+  const btn = document.getElementById('previewToggleBtn');
+  if (panel.style.display === 'block') {
+    closeChapterPreview();
+  } else {
+    panel.style.display = 'block';
+    btn.textContent = '👁 Hide Preview';
+    updatePreviewIfOpen();
+  }
+}
+
+function closeChapterPreview() {
+  const panel = document.getElementById('chapterPreviewPanel');
+  const btn = document.getElementById('previewToggleBtn');
+  if (panel) panel.style.display = 'none';
+  if (btn) btn.textContent = '👁 Preview';
+}
+
+function updatePreviewIfOpen() {
+  const panel = document.getElementById('chapterPreviewPanel');
+  if (!panel || panel.style.display !== 'block') return;
+  const content = document.getElementById('ce-content')?.value || '';
+  const previewEl = document.getElementById('chapterPreviewContent');
+  if (previewEl) previewEl.innerHTML = processFootnotes(content);
 }
 
 // ── FRONT MATTER ──
@@ -4653,6 +4855,20 @@ function applySiteConfig() {
   if (heroSub) heroSub.textContent = SITE_CONFIG.heroSub;
   const heroBtn = document.querySelector('.hero-btn');
   if (heroBtn) heroBtn.textContent = SITE_CONFIG.heroBtn;
+  // Update meta tags dynamically
+  _setMeta('name', 'description', SITE_CONFIG.siteTitle + ' — ' + SITE_CONFIG.heroSub);
+  _setMeta('property', 'og:title', SITE_CONFIG.siteTitle);
+  _setMeta('property', 'og:description', SITE_CONFIG.heroSub);
+  _setMeta('name', 'twitter:title', SITE_CONFIG.siteTitle);
+  _setMeta('name', 'twitter:description', SITE_CONFIG.heroSub);
+}
+
+function _setMeta(attr, name, content) {
+  try {
+    let el = document.querySelector(`meta[${attr}="${name}"]`);
+    if (!el) { el = document.createElement('meta'); el.setAttribute(attr, name); document.head.appendChild(el); }
+    el.setAttribute('content', content);
+  } catch(e) {}
 }
 
 function applyAboutConfig() {
@@ -4715,8 +4931,50 @@ async function exportSite() {
 }
 
 // ═══════════════════════════════════════════════
-// IMPORT / EXPORT DATA (JSON backup)
+// SEO EXPORT — sitemap.xml + robots.txt
 // ═══════════════════════════════════════════════
+function _getSiteBaseUrl() {
+  // Use canonical URL if set, else current origin
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) return canonical.href.replace(/\/$/, '');
+  return window.location.origin;
+}
+
+function exportSitemap() {
+  const base = _getSiteBaseUrl();
+  const today = new Date().toISOString().split('T')[0];
+  const novelUrls = NOVELS
+    .filter(n => !n.status || n.status === 'active')
+    .map(n => `  <url>\n    <loc>${base}/#novel-${n.id}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`)
+    .join('\n');
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${base}/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+${novelUrls}
+</urlset>`;
+  _downloadFile('sitemap.xml', xml, 'application/xml;charset=utf-8');
+  showToast('✓ sitemap.xml downloaded!');
+}
+
+function exportRobots() {
+  const base = _getSiteBaseUrl();
+  const txt = `User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`;
+  _downloadFile('robots.txt', txt, 'text/plain;charset=utf-8');
+  showToast('✓ robots.txt downloaded!');
+}
+
+function _downloadFile(filename, content, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
 function exportData() {
   const date = new Date().toISOString().slice(0, 10);
   const payload = {
@@ -5116,7 +5374,31 @@ function importData() {
             </div>
             <div class="admin-field">
               <label class="admin-label">Chapter Content — wrap paragraphs in &lt;p&gt; tags</label>
-              <textarea class="admin-textarea" id="ce-content" style="min-height:300px;font-family:monospace;font-size:0.85rem"></textarea>
+              <div class="format-toolbar">
+                <span class="fmt-toolbar-label">Insert</span>
+                <button class="fmt-btn" onclick="fmtWrap('ce-content','<p>','</p>')" title="Wrap selection in paragraph tags">¶ &lt;p&gt;</button>
+                <button class="fmt-btn" onclick="fmtWrap('ce-content','<strong>','</strong>')" title="Bold"><strong>B</strong></button>
+                <button class="fmt-btn" onclick="fmtWrap('ce-content','<em>','</em>')" title="Italic"><em>I</em></button>
+                <div class="fmt-btn-sep"></div>
+                <button class="fmt-btn" onclick="fmtInsert('ce-content','<div class=&quot;scene-break&quot;>✦ &nbsp; ✦ &nbsp; ✦</div>')" title="Insert scene break">✦ Scene Break</button>
+                <button class="fmt-btn" onclick="fmtInsert('ce-content','<p></p>\n<div class=&quot;scene-break&quot;>✦ &nbsp; ✦ &nbsp; ✦</div>\n<p></p>')" title="Scene break with spacing">✦ + Spacing</button>
+                <div class="fmt-btn-sep"></div>
+                <button class="fmt-btn" onclick="fmtWrap('ce-content','<span style=&quot;font-variant:small-caps&quot;>','</span>')" title="Small caps">Sᴍᴀʟʟ Cᴀᴘs</button>
+                <button class="fmt-btn" onclick="fmtInsert('ce-content','[^1]: Footnote text here.')" title="Add footnote">[^n] Footnote</button>
+                <div class="fmt-btn-sep"></div>
+                <button class="fmt-btn" onclick="toggleChapterPreview()" id="previewToggleBtn" title="Preview formatted output">👁 Preview</button>
+              </div>
+              <textarea class="admin-textarea" id="ce-content" style="min-height:300px;font-family:monospace;font-size:0.85rem;border-radius:0 0 8px 8px;border-top:none" oninput="updatePreviewIfOpen()"></textarea>
+              <!-- Preview Panel -->
+              <div id="chapterPreviewPanel">
+                <div class="preview-header">
+                  <span>✦ Live Preview</span>
+                  <button class="preview-close-btn" onclick="closeChapterPreview()">✕ Close</button>
+                </div>
+                <div class="preview-body">
+                  <div class="reader-text" id="chapterPreviewContent"></div>
+                </div>
+              </div>
             </div>
             <div class="admin-btn-row">
               <button class="admin-btn admin-btn-primary" onclick="saveChapter()">✓ Save Chapter</button>
@@ -5274,6 +5556,16 @@ function importData() {
                 To update your <strong style="color:var(--yellow)">live website</strong>, export the full HTML and upload it to GitHub Pages.
               </p>
               <button class="admin-btn admin-btn-primary" style="background:#556b2f;border-color:#78b43c;font-size:0.75rem;padding:0.8rem 1.6rem" onclick="exportSite()">⬇ Export HTML for GitHub</button>
+            </div>
+            <div style="border-top:1px solid rgba(80,144,200,0.2);padding-top:1rem;margin-top:1rem">
+              <div class="admin-section-title" style="color:#5090c8;margin-bottom:0.6rem">🗺 SEO Files</div>
+              <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#3a5a7a;line-height:1.7;margin-bottom:0.8rem">
+                Download <code style="color:var(--yellow);background:#0e0c08;padding:0.1rem 0.4rem;border-radius:4px">sitemap.xml</code> and <code style="color:var(--yellow);background:#0e0c08;padding:0.1rem 0.4rem;border-radius:4px">robots.txt</code> — upload these alongside your <code style="color:var(--yellow);background:#0e0c08;padding:0.1rem 0.4rem;border-radius:4px">index.html</code> in your GitHub repo root.
+              </p>
+              <div style="display:flex;gap:0.8rem;flex-wrap:wrap">
+                <button class="admin-btn" style="background:#1a3060;border-color:#3a60a0;color:#88aadd;font-size:0.7rem;padding:0.6rem 1.2rem" onclick="exportSitemap()">⬇ sitemap.xml</button>
+                <button class="admin-btn" style="background:#1a3060;border-color:#3a60a0;color:#88aadd;font-size:0.7rem;padding:0.6rem 1.2rem" onclick="exportRobots()">⬇ robots.txt</button>
+              </div>
             </div>
           </div>
 
