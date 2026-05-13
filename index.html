@@ -3349,15 +3349,17 @@ function openChapter(idx) {
   if (ch.epigraph) { epig.textContent = ch.epigraph; epig.style.display = 'block'; }
   else { epig.style.display = 'none'; }
 
-  document.getElementById('prevChBtn').disabled = idx === 0;
-  document.getElementById('nextChBtn').disabled = idx === novel.chapters.length - 1;
+  const _visibleForNav = getVisibleChapterIndices();
+  const _posForNav = _visibleForNav.indexOf(idx);
+  document.getElementById('prevChBtn').disabled = _posForNav <= 0;
+  document.getElementById('nextChBtn').disabled = _posForNav === -1 || _posForNav >= _visibleForNav.length - 1;
   document.getElementById('chapterJumpSelect').value = idx;
 
   buildReaderLangBar(currentNovel, idx);
   if (currentNovel !== null) saveLastRead(currentNovel, idx);
 
   document.getElementById('readerProgressWrap').style.display = 'flex';
-  document.getElementById('readerProgressLabel').textContent = `Ch. ${idx+1} of ${novel.chapters.length}`;
+  document.getElementById('readerProgressLabel').textContent = `Ch. ${_posForNav + 1} of ${_visibleForNav.length}`;
 
   // Push history state
   try { history.pushState({ view: 'chapter', novelIdx: currentNovel, chapterIdx: idx }, '', `#novel-${novel.id}-ch${idx+1}`); } catch(e) {}
@@ -3371,8 +3373,28 @@ function jumpToChapter(val) {
   openChapter(parseInt(val));
 }
 
-function prevChapter() { if (currentChapterIdx > 0) openChapter(currentChapterIdx - 1); }
-function nextChapter() { if (currentChapterIdx < NOVELS[currentNovel].chapters.length - 1) openChapter(currentChapterIdx + 1); }
+function getVisibleChapterIndices() {
+  const novel = NOVELS[currentNovel];
+  return novel.chapters.map((ch, i) => ({ ch, i })).filter(({ ch }) => {
+    const s = ch.publishStatus || 'published';
+    if (s === 'draft') return false;
+    if (s === 'published') return ch.visible !== false;
+    if (s === 'scheduled') return isScheduledPast(ch);
+    return false;
+  }).map(({ i }) => i);
+}
+
+function prevChapter() {
+  const visible = getVisibleChapterIndices();
+  const pos = visible.indexOf(currentChapterIdx);
+  if (pos > 0) openChapter(visible[pos - 1]);
+}
+
+function nextChapter() {
+  const visible = getVisibleChapterIndices();
+  const pos = visible.indexOf(currentChapterIdx);
+  if (pos !== -1 && pos < visible.length - 1) openChapter(visible[pos + 1]);
+}
 
 // ═══════════════════════════════════════════════
 // NAVIGATION
