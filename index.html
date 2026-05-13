@@ -2328,6 +2328,109 @@ body.dark-read .fmt-btn:hover { background: var(--coral); color: white; border-c
 }
 .admin-comment-actions { display: flex; gap: 0.5rem; }
 
+/* ── CHARACTER BUILDER (admin) ── */
+.char-builder-list { display: flex; flex-direction: column; gap: 1rem; }
+.char-builder-card {
+  background: #0e0c08;
+  border: 1px solid #2a2820;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.char-builder-card:focus-within { border-color: var(--coral); }
+.char-builder-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.85rem 1.1rem;
+  background: #141210;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #2a2820;
+}
+.char-builder-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'Fraunces', serif;
+  color: white;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.char-builder-hname { font-family: 'Fraunces', serif; font-size: 0.95rem; font-weight: 700; color: var(--cream); flex: 1; }
+.char-builder-hrole { font-family: 'Syne', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--coral); margin-left: 0.5rem; }
+.char-builder-toggle { color: #665; font-size: 0.75rem; transition: transform 0.2s; }
+.char-builder-card.cb-open .char-builder-toggle { transform: rotate(180deg); }
+.char-builder-body { display: none; padding: 1.1rem; }
+.char-builder-card.cb-open .char-builder-body { display: block; }
+.char-builder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 0.7rem; }
+.char-builder-field { display: flex; flex-direction: column; gap: 0.25rem; }
+.char-builder-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #665544;
+}
+.char-builder-input {
+  background: #1a1810;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  color: var(--cream);
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+.char-builder-input:focus { border-color: var(--coral); }
+.char-builder-textarea {
+  background: #1a1810;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  color: var(--cream);
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+  min-height: 70px;
+  resize: vertical;
+  line-height: 1.5;
+}
+.char-builder-textarea:focus { border-color: var(--coral); }
+.char-builder-section-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin: 0.9rem 0 0.5rem;
+  border-top: 1px solid #2a2820;
+  padding-top: 0.8rem;
+}
+.char-builder-hint {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: #554433;
+  margin-top: 0.2rem;
+}
+.char-drag-handle {
+  cursor: grab;
+  color: #443322;
+  font-size: 0.9rem;
+  padding: 0.1rem 0.3rem;
+  flex-shrink: 0;
+}
+.char-drag-handle:active { cursor: grabbing; }
+
 /* ── PUBLISH STATUS BADGES ── */
 .ch-status-badge {
   display: inline-flex; align-items: center; gap: 0.25rem;
@@ -3882,32 +3985,53 @@ function loadFMEditor() {
     field.className = 'fm-admin-field' + (i===0?' active':'');
     field.id = 'fmf-' + fm.key;
 
-    // Build toolbar for text fields (not characters/glossary which have special syntax)
-    let toolbarHtml = '';
-    if (!['characters','glossary'].includes(fm.key)) {
-      toolbarHtml = `<div class="format-toolbar" style="border-radius:8px 8px 0 0;border-bottom:none">
-        <span class="fmt-toolbar-label">Format</span>
-        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<p>','</p>')" title="Paragraph">¶ &lt;p&gt;</button>
-        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<strong>','</strong>')" title="Bold"><strong>B</strong></button>
-        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<em>','</em>')" title="Italic"><em>I</em></button>
-        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<u>','</u>')" title="Underline"><u>U</u></button>
-        <div class="fmt-btn-sep"></div>
-        <button class="fmt-btn" onclick="fmtInsert('fmcontent-${fm.key}','<div class=&quot;scene-break&quot;>✦ &nbsp; ✦ &nbsp; ✦</div>')" title="Scene break">✦ Break</button>
-        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<blockquote style=&quot;border-left:3px solid var(--coral);padding-left:1rem;font-style:italic;color:#6a5a40&quot;>','</blockquote>')" title="Quote">❝ Quote</button>
-        <div class="fmt-btn-sep"></div>
-        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<span style=&quot;color:var(--coral)&quot;>','</span>')" title="Coral color">🎨 Coral</button>
-        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<span style=&quot;color:var(--olive)&quot;>','</span>')" title="Olive color">🎨 Olive</button>
-      </div>`;
-    }
+    if (fm.key === 'characters') {
+      // Rich character builder UI
+      field.innerHTML = `
+        <div class="admin-field">
+          <label class="admin-label">👥 Characters</label>
+          <div class="char-builder-list" id="charBuilderList"></div>
+          <div class="admin-btn-row" style="margin-top:0.8rem">
+            <button class="admin-btn admin-btn-yellow" style="font-size:0.65rem;padding:0.5rem 1rem" onclick="addCharBuilderCard()">+ Add Character</button>
+          </div>
+        </div>`;
+      fieldsEl.appendChild(field);
+      // Populate existing characters
+      const existing = novel.frontMatter.characters?.chars || [];
+      // If old plain-text format exists with no chars array, migrate
+      if (existing.length === 0 && novel.frontMatter.characters?.content) {
+        migrateLegacyChars(novel.frontMatter.characters.content);
+      } else {
+        existing.forEach(c => addCharBuilderCard(c));
+      }
+    } else {
+      // Build toolbar for text fields (not glossary which has special syntax)
+      let toolbarHtml = '';
+      if (!['glossary'].includes(fm.key)) {
+        toolbarHtml = `<div class="format-toolbar" style="border-radius:8px 8px 0 0;border-bottom:none">
+          <span class="fmt-toolbar-label">Format</span>
+          <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<p>','</p>')" title="Paragraph">¶ &lt;p&gt;</button>
+          <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<strong>','</strong>')" title="Bold"><strong>B</strong></button>
+          <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<em>','</em>')" title="Italic"><em>I</em></button>
+          <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<u>','</u>')" title="Underline"><u>U</u></button>
+          <div class="fmt-btn-sep"></div>
+          <button class="fmt-btn" onclick="fmtInsert('fmcontent-${fm.key}','<div class=&quot;scene-break&quot;>✦ &nbsp; ✦ &nbsp; ✦</div>')" title="Scene break">✦ Break</button>
+          <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<blockquote style=&quot;border-left:3px solid var(--coral);padding-left:1rem;font-style:italic;color:#6a5a40&quot;>','</blockquote>')" title="Quote">❝ Quote</button>
+          <div class="fmt-btn-sep"></div>
+          <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<span style=&quot;color:var(--coral)&quot;>','</span>')" title="Coral color">🎨 Coral</button>
+          <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<span style=&quot;color:var(--olive)&quot;>','</span>')" title="Olive color">🎨 Olive</button>
+        </div>`;
+      }
 
-    field.innerHTML = `
-      <div class="admin-field">
-        <label class="admin-label">${fm.icon} ${fm.label} Content</label>
-        ${toolbarHtml}
-        <textarea class="admin-textarea" id="fmcontent-${fm.key}" style="min-height:180px${toolbarHtml ? ';border-radius:0 0 8px 8px;border-top:none' : ''}" placeholder="${fm.placeholder}">${novel.frontMatter[fm.key]?.content || ''}</textarea>
-      </div>
-      ${fm.key === 'custom' ? `<div class="admin-field"><label class="admin-label">Custom Page Title</label><input class="admin-input" id="fmtitle-custom" value="${novel.frontMatter.custom?.title||''}" placeholder="e.g. Playlist, Maps, Notes..."></div>` : ''}`;
-    fieldsEl.appendChild(field);
+      field.innerHTML = `
+        <div class="admin-field">
+          <label class="admin-label">${fm.icon} ${fm.label} Content</label>
+          ${toolbarHtml}
+          <textarea class="admin-textarea" id="fmcontent-${fm.key}" style="min-height:180px${toolbarHtml ? ';border-radius:0 0 8px 8px;border-top:none' : ''}" placeholder="${fm.placeholder}">${novel.frontMatter[fm.key]?.content || ''}</textarea>
+        </div>
+        ${fm.key === 'custom' ? `<div class="admin-field"><label class="admin-label">Custom Page Title</label><input class="admin-input" id="fmtitle-custom" value="${novel.frontMatter.custom?.title||''}" placeholder="e.g. Playlist, Maps, Notes..."></div>` : ''}`;
+      fieldsEl.appendChild(field);
+    }
 
     // Toggle row
     const row = document.createElement('div');
@@ -3943,14 +4067,28 @@ function saveFrontMatter() {
   if (!novel.frontMatter) novel.frontMatter = {};
 
   FM_TYPES.forEach(fm => {
-    const content = document.getElementById('fmcontent-' + fm.key)?.value || '';
-    const visEl = document.getElementById('fmvis-' + fm.key);
-    const visible = visEl ? visEl.checked : true;
-    const title = fm.key === 'custom' ? (document.getElementById('fmtitle-custom')?.value || 'Extra') : fm.label;
-    if (content) {
-      novel.frontMatter[fm.key] = { content, visible, title, icon: fm.icon };
+    if (fm.key === 'characters') {
+      // Collect from char builder cards
+      const chars = collectCharBuilderData();
+      const visEl = document.getElementById('fmvis-characters');
+      const visible = visEl ? visEl.checked : true;
+      if (chars.length > 0) {
+        // Serialize to rich text for reader
+        const content = serializeCharsToRichText(chars);
+        novel.frontMatter.characters = { content, visible, title: 'Characters', icon: '👥', chars };
+      } else {
+        delete novel.frontMatter.characters;
+      }
     } else {
-      delete novel.frontMatter[fm.key];
+      const content = document.getElementById('fmcontent-' + fm.key)?.value || '';
+      const visEl = document.getElementById('fmvis-' + fm.key);
+      const visible = visEl ? visEl.checked : true;
+      const title = fm.key === 'custom' ? (document.getElementById('fmtitle-custom')?.value || 'Extra') : fm.label;
+      if (content) {
+        novel.frontMatter[fm.key] = { content, visible, title, icon: fm.icon };
+      } else {
+        delete novel.frontMatter[fm.key];
+      }
     }
   });
 
@@ -3964,9 +4102,183 @@ function clearFMPage() {
   if (isNaN(nIdx) || !activeFMType) return;
   if (!confirm('Clear this front matter page?')) return;
   if (NOVELS[nIdx].frontMatter) delete NOVELS[nIdx].frontMatter[activeFMType];
+  if (activeFMType === 'characters') {
+    const list = document.getElementById('charBuilderList');
+    if (list) list.innerHTML = '';
+  }
   loadFMEditor();
   showToast('✓ Page cleared.');
   saveAllData();
+}
+
+// ── CHARACTER BUILDER ──
+let _charIdCounter = 0;
+
+const CHAR_FIELDS = [
+  { key: 'name',         label: 'Name (English)',       type: 'input',    placeholder: 'Lin Xiaoran',        group: 'basic' },
+  { key: 'nameChinese',  label: 'Name (Chinese/Other)', type: 'input',    placeholder: '林晓冉',              group: 'basic' },
+  { key: 'role',         label: 'Role',                 type: 'input',    placeholder: 'Female Lead',         group: 'basic' },
+  { key: 'age',          label: 'Age',                  type: 'input',    placeholder: '17',                  group: 'stats' },
+  { key: 'birthday',     label: 'Birthday',             type: 'input',    placeholder: 'April 12',            group: 'stats' },
+  { key: 'mbti',         label: 'MBTI',                 type: 'input',    placeholder: 'ENFP',                group: 'stats' },
+  { key: 'loveLanguage', label: 'Love Language',        type: 'input',    placeholder: 'Words of affirmation', group: 'stats' },
+  { key: 'appearance',   label: 'Appearance',           type: 'textarea', placeholder: 'Petite, soft-featured, expressive eyes…', group: 'detail' },
+  { key: 'personality',  label: 'Personality (one trait per line)', type: 'textarea', placeholder: 'Bratty but lovable\nDramatic over tiny inconveniences\nGets jealous easily', group: 'detail' },
+  { key: 'strengths',    label: 'Strengths (one per line)', type: 'textarea', placeholder: 'Brightens every room naturally\nHonest with emotions', group: 'detail' },
+  { key: 'weaknesses',   label: 'Weaknesses (one per line)', type: 'textarea', placeholder: 'Immature when jealous\nAvoids serious emotional conversations', group: 'detail' },
+  { key: 'nickname',     label: 'Nickname',             type: 'input',    placeholder: '"Little Trouble"',    group: 'extra' },
+  { key: 'favDrink',     label: 'Favorite Drink',       type: 'input',    placeholder: 'Strawberry milk',     group: 'extra' },
+  { key: 'favHabit',     label: 'Favorite Habit',       type: 'textarea', placeholder: 'Stealing his hoodie sleeves and poking his cheek', group: 'extra' },
+];
+
+function _charHue(name) {
+  return [...(name||'?')].reduce((h,c)=>h+c.charCodeAt(0),0) % 360;
+}
+
+function addCharBuilderCard(data = {}) {
+  const list = document.getElementById('charBuilderList');
+  if (!list) return;
+  const id = 'cbc-' + (++_charIdCounter);
+  const hue = _charHue(data.name || '');
+  const initials = (data.name||'?').replace(/[^a-zA-Z\u4e00-\u9fff]/g,'').slice(0,2).toUpperCase() || '?';
+
+  const card = document.createElement('div');
+  card.className = 'char-builder-card cb-open';
+  card.id = id;
+
+  const mkInput = (f) => {
+    const val = (data[f.key] || '').replace(/"/g, '&quot;');
+    if (f.type === 'textarea') {
+      return `<textarea class="char-builder-textarea" data-field="${f.key}" placeholder="${f.placeholder}" oninput="updateCharHeader('${id}')">${data[f.key]||''}</textarea>`;
+    }
+    return `<input class="char-builder-input" data-field="${f.key}" type="text" placeholder="${f.placeholder}" value="${val}" oninput="updateCharHeader('${id}')">`;
+  };
+
+  const basicFields = CHAR_FIELDS.filter(f => f.group === 'basic');
+  const statsFields = CHAR_FIELDS.filter(f => f.group === 'stats');
+  const detailFields = CHAR_FIELDS.filter(f => f.group === 'detail');
+  const extraFields = CHAR_FIELDS.filter(f => f.group === 'extra');
+
+  card.innerHTML = `
+    <div class="char-builder-header" onclick="toggleCharBuilder('${id}')">
+      <span class="char-drag-handle" title="Drag to reorder">⠿</span>
+      <div class="char-builder-avatar" id="${id}-avatar" style="background:hsl(${hue},40%,45%)">${initials}</div>
+      <div style="flex:1;min-width:0">
+        <div class="char-builder-hname" id="${id}-hname">${data.name || 'New Character'}</div>
+        ${data.role ? `<div class="char-builder-hrole" id="${id}-hrole">${data.role}</div>` : `<div class="char-builder-hrole" id="${id}-hrole" style="display:none"></div>`}
+      </div>
+      <div class="char-builder-toggle">▾</div>
+      <button onclick="event.stopPropagation();removeCharBuilderCard('${id}')" style="background:#3a1010;border:1px solid #5a2020;border-radius:6px;color:#ff8888;font-size:0.65rem;padding:0.2rem 0.5rem;cursor:pointer;margin-left:0.4rem;font-family:'Syne',sans-serif;font-weight:700" title="Remove character">✕</button>
+    </div>
+    <div class="char-builder-body">
+      <div class="char-builder-section-label" style="border-top:none;margin-top:0;padding-top:0">Basic Info</div>
+      <div class="char-builder-grid">
+        ${basicFields.map(f => `<div class="char-builder-field ${f.key==='name'||f.key==='nameChinese'?'':''}">
+          <div class="char-builder-label">${f.label}</div>
+          ${mkInput(f)}
+        </div>`).join('')}
+      </div>
+      <div class="char-builder-section-label">Stats & Identity</div>
+      <div class="char-builder-grid">
+        ${statsFields.map(f => `<div class="char-builder-field">
+          <div class="char-builder-label">${f.label}</div>
+          ${mkInput(f)}
+        </div>`).join('')}
+      </div>
+      <div class="char-builder-section-label">Personality & Appearance</div>
+      ${detailFields.map(f => `<div class="char-builder-field" style="margin-bottom:0.6rem">
+        <div class="char-builder-label">${f.label}</div>
+        ${mkInput(f)}
+        ${f.key==='personality'||f.key==='strengths'||f.key==='weaknesses' ? '<div class="char-builder-hint">One trait per line — shown as bullet list</div>' : ''}
+      </div>`).join('')}
+      <div class="char-builder-section-label">Extra Details</div>
+      <div class="char-builder-grid">
+        ${extraFields.map(f => `<div class="char-builder-field">
+          <div class="char-builder-label">${f.label}</div>
+          ${mkInput(f)}
+        </div>`).join('')}
+      </div>
+    </div>`;
+
+  list.appendChild(card);
+}
+
+function toggleCharBuilder(id) {
+  const card = document.getElementById(id);
+  if (card) card.classList.toggle('cb-open');
+}
+
+function removeCharBuilderCard(id) {
+  const card = document.getElementById(id);
+  if (card && confirm('Remove this character?')) card.remove();
+}
+
+function updateCharHeader(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  const nameEl = card.querySelector('[data-field="name"]');
+  const roleEl = card.querySelector('[data-field="role"]');
+  const name = nameEl ? nameEl.value.trim() : '';
+  const role = roleEl ? roleEl.value.trim() : '';
+  const hue = _charHue(name);
+  const initials = name.replace(/[^a-zA-Z\u4e00-\u9fff]/g,'').slice(0,2).toUpperCase() || '?';
+  const avatar = document.getElementById(id + '-avatar');
+  const hname = document.getElementById(id + '-hname');
+  const hrole = document.getElementById(id + '-hrole');
+  if (avatar) { avatar.textContent = initials; avatar.style.background = `hsl(${hue},40%,45%)`; }
+  if (hname) hname.textContent = name || 'New Character';
+  if (hrole) { hrole.textContent = role; hrole.style.display = role ? '' : 'none'; }
+}
+
+function collectCharBuilderData() {
+  const cards = document.querySelectorAll('#charBuilderList .char-builder-card');
+  const chars = [];
+  cards.forEach(card => {
+    const obj = {};
+    CHAR_FIELDS.forEach(f => {
+      const el = card.querySelector(`[data-field="${f.key}"]`);
+      if (el) obj[f.key] = el.value.trim();
+    });
+    // Only include if at least a name is present
+    if (obj.name || obj.nameChinese) chars.push(obj);
+  });
+  return chars;
+}
+
+function serializeCharsToRichText(chars) {
+  // Serialize each character to the rich text block format the reader parses
+  return chars.map(c => {
+    const lines = [];
+    const namePart = c.name || '';
+    const chinesePart = c.nameChinese ? ` (${c.nameChinese})` : '';
+    lines.push(`✦ ${namePart}${chinesePart}`);
+    if (c.role)        lines.push(`Role: ${c.role}`);
+    if (c.age)         lines.push(`Age: ${c.age}`);
+    if (c.birthday)    lines.push(`Birthday: ${c.birthday}`);
+    if (c.mbti)        lines.push(`MBTI: ${c.mbti}`);
+    if (c.loveLanguage) lines.push(`Love Language: ${c.loveLanguage}`);
+    if (c.appearance)  lines.push(`Appearance: ${c.appearance}`);
+    if (c.personality) lines.push(`Personality:\n${c.personality}`);
+    if (c.strengths)   lines.push(`Strengths:\n${c.strengths}`);
+    if (c.weaknesses)  lines.push(`Weaknesses:\n${c.weaknesses}`);
+    if (c.nickname)    lines.push(`Nickname: ${c.nickname}`);
+    if (c.favDrink)    lines.push(`Favorite Drink: ${c.favDrink}`);
+    if (c.favHabit)    lines.push(`Favorite Habit: ${c.favHabit}`);
+    return lines.join('\n');
+  }).join('\n\n');
+}
+
+function migrateLegacyChars(content) {
+  // Try to parse old pipe-separated format: Name | Role | Description
+  const lines = content.split('\n').filter(l => l.trim());
+  lines.forEach(line => {
+    if (line.includes('|')) {
+      const parts = line.split('|').map(p => p.trim());
+      addCharBuilderCard({ name: parts[0], role: parts[1], appearance: parts[2] });
+    } else {
+      addCharBuilderCard({ name: line });
+    }
+  });
 }
 
 // ── READER: render front matter tabs ──
@@ -5538,12 +5850,11 @@ function importData() {
 
             <div class="admin-section" style="background:#0a0808">
               <div class="admin-section-title" style="color:#555">💡 Tip</div>
-              <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#554;line-height:1.6">Pages with content appear as tabs before the chapter list. Toggle them off to hide from readers without deleting.<br><br>
-              <strong style="color:var(--yellow)">Character List</strong> — supports two formats:<br>
-              <code style="color:var(--yellow);font-size:0.75rem">Name | Role | Description</code> (simple, one per line)<br>
-              <strong>— or rich format (one character per blank line):</strong><br>
-              <code style="color:var(--yellow);font-size:0.75rem">✦ Lin Xiaoran (林晓冉)<br>Role: Female Lead<br>Age: 17<br>MBTI: ENFP<br>Appearance: ...<br>Personality:<br>Bratty but lovable<br>Strengths:<br>Brightens every room</code><br><br>
-              <strong style="color:var(--yellow)">Synopsis / Author Note</strong> — use the formatting toolbar above the text area for bold, italic, scene breaks, and color styling. HTML tags like &lt;p&gt;, &lt;strong&gt;, &lt;em&gt; are all supported.</p>
+              <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#554;line-height:1.6">
+              Pages with content appear as tabs before the chapter list. Toggle them off to hide from readers without deleting.<br><br>
+              <strong style="color:var(--yellow)">Characters</strong> — use the structured form to fill in each character's details. Only filled fields appear on the reader card — blank fields are gracefully hidden.<br><br>
+              <strong style="color:var(--yellow)">Synopsis / Author Note / Other</strong> — use the formatting toolbar for bold, italic, scene breaks, quotes, and color styling.
+              </p>
             </div>
           </div>
         </div>
