@@ -62,13 +62,14 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
   background: var(--pink-bg);
   font-family: 'Instrument Serif', Georgia, serif;
   color: var(--ink);
   overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* ── DOTS HEADER STRIP ── */
@@ -448,6 +449,8 @@ nav {
   display: none;
   background: var(--cream);
   min-height: 100vh;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 .reading-nav {
@@ -675,6 +678,8 @@ nav {
   font-size: clamp(1.05rem, 2vw, 1.18rem);
   line-height: 2;
   color: #2a2018;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .reader-text p { margin-bottom: 1.5em; text-indent: 2em; }
 .reader-text p:first-child { text-indent: 0; }
@@ -755,7 +760,7 @@ nav {
 .frontmatter-section {
   max-width: 680px;
   margin: 0 auto;
-  padding: 0 2rem 1rem;
+  padding: 0 0 1rem;
 }
 .frontmatter-tabs {
   display: flex;
@@ -1928,16 +1933,99 @@ body.dark-read .fmt-btn:hover { background: var(--coral); color: white; border-c
   .novel-grid { padding: 0 0.8rem 2rem; grid-template-columns: 1fr 1fr; }
   .section-head { padding: 0 0.8rem; }
   .font-controls { display: none; }
-  .filter-bar { padding: 0 0.8rem 1rem; }
+  .filter-bar { padding: 0 0.8rem 1rem; gap: 0.6rem; }
   .search-wrap { max-width: 100%; }
-  .reading-nav { padding: 0.6rem 1rem; flex-wrap: nowrap; gap: 0.5rem; }
+  .filter-tags { gap: 0.4rem; }
+
+  /* ── Reading nav: prevent overflow ── */
+  .reading-nav {
+    padding: 0.6rem 0.8rem;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+  }
   .reading-title { display: none; }
+
+  /* Constrain chapter select so it can't push past viewport */
+  .chapter-select {
+    max-width: 130px;
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.65rem;
+    padding: 0.35rem 0.6rem;
+  }
+
+  /* Right side group in reading-nav */
+  .reading-nav > div:last-child {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  /* Reading hero: tighter padding */
+  .reading-hero { padding: 2.5rem 1rem 2rem; }
+
+  /* Chapter list: tighter padding */
+  .chapter-list { padding: 1.2rem 1rem; }
+
+  /* Chapter reader: tighter padding */
+  .chapter-reader { padding: 2rem 1rem 4rem; }
+
+  /* frontmatter-section already has padding 0 horizontal from chapter-list */
+  .frontmatter-section { padding: 0 0 0.8rem; }
+
+  /* Tabs: scroll horizontally if they overflow rather than wrap awkwardly */
+  .frontmatter-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding-bottom: 0.6rem;
+    scrollbar-width: none;
+  }
+  .frontmatter-tabs::-webkit-scrollbar { display: none; }
+
+  /* fm-block: tighter padding */
+  .fm-block { padding: 1.2rem; }
+
+  /* Character grid: 1 column on mobile */
+  .char-grid { grid-template-columns: 1fr; }
+
+  /* novel-comments: already has padding 0 horizontal from chapter-list */
+  .novel-comments { padding: 1.5rem 0 3rem; }
+
+  /* Reader nav buttons: shrink/wrap so all 3 fit */
+  .reader-nav { gap: 0.5rem; }
+  .reader-nav-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Back button in reading nav */
+  .back-btn { padding: 0.45rem 0.9rem; font-size: 0.65rem; flex-shrink: 0; }
+
+  /* Resume banner */
   .resume-banner { left: 1rem; right: 1rem; transform: translateX(0) translateY(100px); bottom: 1rem; white-space: normal; }
   .resume-banner.show { transform: translateX(0) translateY(0); }
   .scroll-top-btn { bottom: 1rem; right: 1rem; }
+
+  /* Reader progress wrap full width */
+  .reader-progress-wrap { padding: 0.4rem 1rem; }
+
+  /* Language bar wrapping */
+  .reader-lang-bar { padding: 0.5rem 1rem; gap: 0.5rem; }
 }
 @media (max-width: 400px) {
   .novel-grid { grid-template-columns: 1fr; }
+  .chapter-select { max-width: 100px; font-size: 0.6rem; }
+  .reader-nav { flex-wrap: wrap; }
+  .reader-nav-btn { flex: 1 1 calc(50% - 0.5rem); }
+  #backToListBtn { flex: 1 1 100%; order: 3; }
 }
 
 /* ── FOOTNOTES ── */
@@ -2065,7 +2153,7 @@ body.dark-read .fmt-btn:hover { background: var(--coral); color: white; border-c
 .novel-comments {
   max-width: 680px;
   margin: 0 auto;
-  padding: 2rem 2rem 4rem;
+  padding: 2rem 0 4rem;
 }
 .comments-header {
   display: flex;
@@ -2824,13 +2912,13 @@ const NOVELS = [
         "publishDate": "2026-05-13",
         "scheduleDate": "2026-05-14",
         "scheduleTime": "12:00",
-        "publishStatus": "published",
         "translations": {
           "id": {
             "title": "Pengakuan Yichen",
             "content": "<p>Dimulai dari sebuah mesin capit.</p>\n\n<p>Lin Xiaoran berdiri di arcade dengan tangan terlipat, melototin boneka kelinci yang kejebak di balik kaca kayak dia punya masalah pribadi sama keluarganya.</p>\n\n<p><strong>“Mesin ini curang.”</strong></p>\n\n<p><strong>“Nggak kok,”</strong> suara kalem dari sampingnya nyaut.</p>\n\n<p>Dia nengok.</p>\n\n<p>Terus langsung lupa mau ngomong apa selama setengah detik.</p>\n\n<p>Cowok yang berdiri di situ tinggi, rapi, masih pake seragam sekolah dengan lengan digulung santai. Alis tegas. Mata tajam. Tipe muka yang pasti ada di grup chat cewek-cewek tapi dibahas diam-diam.</p>\n\n<p>Dan yang paling nyebelin—</p>\n\n<p>Dia lagi senyum.</p>\n\n<p>Bukan sombong.</p>\n\n<p>Bukan ngeledek.</p>\n\n<p>Ya… natural aja, hangat.</p>\n\n<p>Lin Xiaoran langsung sadar lagi.</p>\n\n<p><strong>“Kamu yang bikin mesin ini emangnya?”</strong></p>\n\n<p>Cowok itu ketawa pelan.</p>\n\n<p><strong>“Nggak. Kamu aja yang salah cara ngambilnya.”</strong></p>\n\n<p><strong>“Aku udah nyoba sebelas kali.”</strong></p>\n\n<p><strong>“Nah itu masalahnya.”</strong></p>\n\n<p><strong>“Maksud lo apa?”</strong></p>\n\n<p><strong>“Kamu nggak sabaran.”</strong></p>\n\n<p>Dia langsung nyipitin mata.</p>\n\n<p>Ini anak siapa sih?</p>\n\n<p>Cowok itu melangkah mendekat.</p>\n\n<p><strong>“Geser.”</strong></p>\n\n<p><strong>“Hah?”</strong></p>\n\n<p><strong>“Mau bonekanya nggak?”</strong></p>\n\n<p>Dengan berat hati, Xiaoran minggir sambil curiga banget.</p>\n\n<p>Dia masukin koin pelan, atur claw sekali—</p>\n\n<p>dan langsung dapet.</p>\n\n<p>Xiaoran langsung kaget kayak dikhianatin semesta.</p>\n\n<p><strong>“Nggak mungkin.”</strong></p>\n\n<p>Dia ngambil kelincinya terus nyodorin.</p>\n\n<p><strong>“Nih.”</strong></p>\n\n<p>Dia peluk otomatis sebelum sadar.</p>\n\n<p><strong>“…Makasih.”</strong></p>\n\n<p><strong>“Sama-sama.”</strong></p>\n\n<p>Terus dia senyum lagi.</p>\n\n<p>Dan entah kenapa, jantungnya langsung aneh.</p>\n\n<p>Nyebelin.</p>\n\n<p>Banget.</p>\n\n<p><strong>“Nama lo siapa?”</strong></p>\n\n<p><strong>“Zhou Yichen.”</strong></p>\n\n<p>Oh.</p>\n\n<p>Jadi ini <em>si</em> Zhou Yichen.</p>\n\n<p>Top student. Kapten basket. Legenda sekolah. Cowok yang ditungguin cewek sekolah lain di luar pertandingan.</p>\n\n<p>Xiaoran langsung defensif.</p>\n\n<p><strong>“Hm. Overrated.”</strong></p>\n\n<p>Yichen kedip sekali.</p>\n\n<p>Terus ketawa.</p>\n\n<p>Beneran ketawa.</p>\n\n<p>Kayak dia baru denger hal paling lucu di dunia.</p>\n\n<p><strong>“Lo lucu,”</strong> katanya tanpa mikir.</p>\n\n<p>Lin Xiaoran hampir jatuhin kelinci.</p>\n\n<p><strong>“Hah?!”</strong></p>\n\n<p><strong>“Nggak apa-apa.”</strong></p>\n\n<p>Senyumnya malah makin jadi.</p>\n\n<p>Dan itu masalah pertama.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>Habis itu, mereka entah kenapa sering ketemu di mana-mana.</p>\n\n<p>Perpustakaan.</p>\n\n<p>Meiyijia.</p>\n\n<p>Halte.</p>\n\n<p>Acara sekolah.</p>\n\n<p>Sampai Tang Meilin mulai nuduh semesta lagi iseng.</p>\n\n<p><strong>“Lo suka dia,”</strong> kata Meilin.</p>\n\n<p><strong>“Enggak.”</strong></p>\n\n<p><strong>“Lo benerin rambut tiga kali pas dia lewat.”</strong></p>\n\n<p><strong>“Karena angin.”</strong></p>\n\n<p><strong>“Dih nyalahin angin.”</strong></p>\n\n<p>Xiaoran pura-pura nggak denger.</p>\n\n<p>Tapi diam-diam…</p>\n\n<p>dia sadar sesuatu.</p>\n\n<p>Yaitu gimana Yichen selalu kelihatan santai sama orang lain, tapi sama dia senyumnya lebih sering keluar.</p>\n\n<p>Gimana dia inget hal-hal kecil yang dia bilang.</p>\n\n<p>Gimana dia pernah beli strawberry milk dari luar cuma karena dia ngeluh kehabisan di kantin.</p>\n\n<p>Gimana dia nggak pernah kesel walau dia sering banget nyebelin.</p>\n\n<p>Padahal dia emang nyebelin.</p>\n\n<p><strong>“Geser,”</strong> katanya sambil dorong dia di lorong.</p>\n\n<p><strong>“Kamu yang nabrak aku.”</strong></p>\n\n<p><strong>“Kamu yang ada di jalur aku. Salah kamu.”</strong></p>\n\n<p><strong>“Hm.”</strong></p>\n\n<p>Dan anehnya… dia selalu ketawa, bukan marah.</p>\n\n<p>Bikin dada Xiaoran aneh.</p>\n\n<p>Suatu hari hujan, dia lupa payung.</p>\n\n<p>Pas sampai gerbang sekolah, hujan deras.</p>\n\n<p><strong>“…Nyebelin banget sih hujan.”</strong></p>\n\n<p><strong>“Nanti kamu sakit.”</strong></p>\n\n<p>Dia nengok.</p>\n\n<p>Yichen udah berdiri di belakangnya, bawa payung hitam.</p>\n\n<p>Lagi.</p>\n\n<p>Senyum.</p>\n\n<p>Selalu senyum.</p>\n\n<p><strong>“Nunggu siapa?”</strong></p>\n\n<p><strong>“Kamu.”</strong></p>\n\n<p>Jantungnya langsung jatuh hampir ke lantai.</p>\n\n<p><strong>“…Kenapa?”</strong></p>\n\n<p><strong>“Kamu chat di grup sambil ngeluh tentang hujan.”</strong></p>\n\n<p><strong>“Bukan berarti aku minta dijemput.”</strong></p>\n\n<p><strong>“Tapi nada kamu kayak menyedihkan banget.”</strong></p>\n\n<p><strong>“Aku nggak menyedihkan.”</strong></p>\n\n<p><strong>“Kamu pakai tiga emoji nangis.”</strong></p>\n\n<p><strong>“Itu namanya ekspresi.”</strong></p>\n\n<p>Yichen ketawa pelan, terus bukain payungnya.</p>\n\n<p><strong>“Ayo.”</strong></p>\n\n<p>Jalan pulang jadi bahaya buat emosi Lin Xiaoran.</p>\n\n<p>Soalnya Yichen terlalu lembut.</p>\n\n<p>Payungnya condong ke dia.</p>\n\n<p>Dia jalan di sisi luar biar Xiaoran nggak kena cipratan mobil.</p>\n\n<p>Dengerin Xiaoran ngomong random tanpa kesel.</p>\n\n<p>Dan yang paling parah—</p>\n\n<p>Dia ngeliatin Xiaoran kayak Xiaoran itu penting.</p>\n\n<p>Sampai depan apartemen, Xiaoran udah tahu hati dia kacau.</p>\n\n<p><strong>“…Kamu suka aku ya?”</strong></p>\n\n<p>Hening.</p>\n\n<p>Yichen kedip, agak kaget.</p>\n\n<p>Sayangnya, kalau Lin Xiaoran udah gugup, dia malah makin brutal.</p>\n\n<p><strong>“Soalnya kalau enggak,”</strong> dia lanjut cepat, <strong>“kamu jangan terlalu baik sama aku terus, soalnya aku jadi bingung.”</strong></p>\n\n<p>Yichen diem dua detik.</p>\n\n<p>Terus senyum lagi.</p>\n\n<p>Senyum itu.</p>\n\n<p><strong>“Kalau aku emang suka kamu gimana?”</strong></p>\n\n<p>Otak Xiaoran langsung error.</p>\n\n<p><strong>“…Oh.”</strong></p>\n\n<p>Respons paling pintar sejagat raya.</p>\n\n<p>Yichen maju sedikit di bawah payung.</p>\n\n<p><strong>“Kalau aku udah suka kamu dari dulu?”</strong></p>\n\n<p><strong>“…Pas kita ketemu di arcade?”</strong></p>\n\n<p><strong>“Kamu bilang aku overrated dalam 30 detik.”</strong></p>\n\n<p><strong>“Terus itu bikin kamu jatuh cinta?”</strong></p>\n\n<p><strong>“Aku suka aja.”</strong></p>\n\n<p>Dia diem, telinganya mulai merah.</p>\n\n<p>Gawat.</p>\n\n<p>Dia juga suka.</p>\n\n<p>Tapi dia nggak mau keliatan kalah.</p>\n\n<p>Jadi setelah hening lama, dia gumam:</p>\n\n<p><strong>“…Aku juga suka.”</strong></p>\n\n<p>Yichen langsung berubah lembut.</p>\n\n<p><strong>“Iya?”</strong></p>\n\n<p><strong>“Aku kepikiran kamu terus, ganggu belajar.”</strong></p>\n\n<p>Dia ketawa pelan.</p>\n\n<p>Dan Xiaoran sadar sesuatu yang bikin panik.</p>\n\n<p>Yichen kelihatan paling bahagia kalau sama dia.</p>\n\n<p><strong>“Lin Xiaoran,”</strong> katanya pelan.</p>\n\n<p><strong>“…Apa?”</strong></p>\n\n<p><strong>“Mau pacaran sama aku?”</strong></p>\n\n<p>Dia melotot.</p>\n\n<p><strong>“Tiba-tiba banget.”</strong></p>\n\n<p><strong>“Kamu yang duluan confess.”</strong></p>\n\n<p><strong>“Iya sih.”</strong></p>\n\n<p><strong>“Dan aku nggak mau orang lain duluan.”</strong></p>\n\n<p>Jantungnya meledak.</p>\n\n<p>Dia coba cool.</p>\n\n<p><strong>“Hm. Aku pikirin dulu.”</strong></p>\n\n<p>Yichen ngangkat alis.</p>\n\n<p><strong>“Kamu duluan yang confess dua menit lalu.”</strong></p>\n\n<p><strong>“Beda. Sekarang namanya negosiasi.”</strong></p>\n\n<p>Dia ketawa lagi, makin deket.</p>\n\n<p><strong>“Kalau gitu… jadi pacarku ya.”</strong></p>\n\n<p>Xiaoran bertahan tiga detik.</p>\n\n<p><strong>“…Oke.”</strong></p>\n\n<p><strong>“Oke aja?”</strong></p>\n\n<p><strong>“Jangan sombong, Zhou Yichen.”</strong></p>\n\n<p><strong>“Iya, pacar.”</strong></p>\n\n<p>Dan entah kenapa, itu lebih hangat dari hujan di sekitar mereka.</p>\n"
           }
-        }
+        },
+        "publishStatus": "published"
       },
       {
         "desc": "Zhou Yichen noticed her long before she noticed him, loud, chaotic, unforgettable, and somehow decided, without telling anyone, that she would become his favorite coincidence.",
@@ -2842,13 +2930,13 @@ const NOVELS = [
         "publishDate": "2026-05-13",
         "scheduleDate": "2026-05-14",
         "scheduleTime": "12:00",
-        "publishStatus": "published",
         "translations": {
           "id": {
-            "title": "",
+            "title": "Semua 'Kebetulan' Kita itu Ternyata Disengaja.",
             "content": "<p>Sebelum Zhou Yichen pernah ngomong sama Lin Xiaoran, dia udah tahu tiga hal tentang dia.</p>\n\n<p>Pertama—</p>\n\n<p>Dia berisik.</p>\n\n<p>Kedua—</p>\n\n<p>Dia drama banget.</p>\n\n<p>Ketiga—</p>\n\n<p>Dia gampang banget nangis.</p>\n\n<p>Pertama kali dia ngeh sama Xiaoran itu di depan ruang guru.</p>\n\n<p>Seorang cewek dengan seragam agak berantakan lagi debat sama guru gara-gara jajanan yang disita.</p>\n\n<p><strong>“Tapi mie instan itu kebutuhan emosional, Pak,”</strong> dia protes serius.</p>\n\n<p><strong>“Enggak.”</strong></p>\n\n<p><strong>“Kalau Saya pingsan karena disakiti sama pelajaran matematika gimana?”</strong></p>\n\n<p><strong>“Nggak bakal.”</strong></p>\n\n<p><strong>“Kok yakin banget, Pak?”</strong></p>\n\n<p>Yichen awalnya cuma lewat santai.</p>\n\n<p>Terus cewek itu ngeluh pelan sambil gumam—</p>\n\n<p><strong>“Sekolah ini menekan jiwa bebas Saya.”</strong></p>\n\n<p>Guru di situ sampai hampir ketawa nahan diri.</p>\n\n<p>Yichen juga.</p>\n\n<p>Lucu.</p>\n\n<p>Bukan cuma lucu-cute biasa.</p>\n\n<p>Tapi tipe yang ekspresinya kebaca semua di muka.</p>\n\n<p>Harusnya berhenti di situ.</p>\n\n<p>Tapi entah kenapa, kalau udah ngeh sama satu orang, dia jadi sering muncul di mana-mana.</p>\n\n<p>Di kantin karena pudingnya habis.</p>\n\n<p>Di lorong pura-pura nangis karena Tang Meilin nggak mau minjemin lip gloss.</p>\n\n<p>Di kelas presentasi ngomong ngawur tapi pede banget.</p>\n\n<p><strong>“Dia receh banget,”</strong> Chen Yuhao komentar suatu hari waktu tim basket lewat halaman sekolah.</p>\n\n<p>Di bawah, Lin Xiaoran lagi duduk manyun dramatis, sementara Meilin pura-pura nggak peduli.</p>\n\n<p><strong>“Kenapa?”</strong> Yichen tanya santai.</p>\n\n<p><strong>“Dia kalah suit.”</strong></p>\n\n<p><strong>“…Itu alasan dia sedih?”</strong></p>\n\n<p><strong>“Kompetitif banget orangnya.”</strong></p>\n\n<p>Yichen lihat Xiaoran tiba-tiba narik lengan Meilin sambil ngeluh nggak tahu malu sampai akhirnya didorong sampai terjungkal.</p>\n\n<p>Tapi dia malah ketawa.</p>\n\n<p>Terang banget. Kayak matahari.</p>\n\n<p>Yichen buang pandangan lagi.</p>\n\n<p>Tapi entah kenapa—</p>\n\n<p>Dia senyum.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>Kedua kalinya dia bener-bener ngeh itu pas minggu piket hujan.</p>\n\n<p>Anak-anak lari-larian di lorong, guru teriak soal lantai licin.</p>\n\n<p>Yichen lagi bawa alat olahraga balik ke gym pas dia lihat sosok familiar jongkok di dekat taman sekolah.</p>\n\n<p>Lin Xiaoran lagi nggendong anak kucing yang basah kuyup.</p>\n\n<p><strong>“Ngapain sih?”</strong> Meilin nanya di sebelahnya.</p>\n\n<p><strong>“Dia kedinginan.”</strong></p>\n\n<p><strong>“Kamu juga kedinginan.”</strong></p>\n\n<p><strong>“Aku lebih kuat dari dia.”</strong></p>\n\n<p>Anak kucingnya mengeong pelan.</p>\n\n<p>Xiaoran langsung keliatan hancur.</p>\n\n<p><strong>“Aduh,”</strong> dia bisik sambil peluk pelan. <strong>“Jangan kelihatan sedih gitu dong.”</strong></p>\n\n<p>Yichen ketawa pelan tanpa sadar.</p>\n\n<p>Xiaoran langsung nengok.</p>\n\n<p>Untuk pertama kali mereka ketemu pandangan.</p>\n\n<p>Yichen lihat dia dengan jelas.</p>\n\n<p>Wajah lembut, mata terang, bibir sedikit terbuka karena kaget.</p>\n\n<p>Cute.</p>\n\n<p>Keterlaluan cute.</p>\n\n<p>Satu detik mereka cuma saling lihat.</p>\n\n<p>Terus Xiaoran nyipit curiga.</p>\n\n<p><strong>“…Ngapain ketawa?”</strong></p>\n\n<p><strong>“Nggak apa-apa.”</strong></p>\n\n<p><strong>“Pasti ketawain aku.”</strong></p>\n\n<p><strong>“Sedikit.”</strong></p>\n\n<p><strong>“Hm. Gak sopan.”</strong></p>\n\n<p>Tapi dia nggak marah beneran.</p>\n\n<p>Yichen pergi setelah itu.</p>\n\n<p>Tapi entah kenapa, dia kepikiran terus.</p>\n\n<p>Tentang cara dia peluk kucingnya.</p>\n\n<p>Tentang ekspresinya yang hidup banget.</p>\n\n<p>Tentang dia yang beda dari orang lain di sekitarnya.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>Ketemu di arcade seminggu kemudian itu sebenarnya bukan kebetulan.</p>\n\n<p>Ya… nggak sepenuhnya.</p>\n\n<p>Tim basket lagi menang sparing, dan Yuhao ngajak ke arcade.</p>\n\n<p>Yichen awalnya mau nolak.</p>\n\n<p>Tapi pas lewat mesin capit, dia berhenti.</p>\n\n<p>Di sana dia lagi.</p>\n\n<p>Lin Xiaoran.</p>\n\n<p>Ngeliatin mesin itu kayak musuh pribadi.</p>\n\n<p><strong>“Aku udah keluar 27 ribu,”</strong> dia bilang dramatis ke Meilin.</p>\n\n<p><strong>“Ya udah stop.”</strong></p>\n\n<p><strong>“Nggak.”</strong></p>\n\n<p><strong>“Kelinci itu jelek.”</strong></p>\n\n<p><strong>“Jangan hina dia.”</strong></p>\n\n<p>Yichen lihat dari jauh.</p>\n\n<p>Gagal.</p>\n\n<p>Gagal lagi.</p>\n\n<p>Terus dia jongkok depan mesin.</p>\n\n<p><strong>“Kamu dan aku musuh sekarang.”</strong></p>\n\n<p>Meilin capek banget mukanya.</p>\n\n<p><strong>“Itu mesin, bukan orang.”</strong></p>\n\n<p><strong>“Dia mulai duluan.”</strong></p>\n\n<p>Yichen ketawa pelan.</p>\n\n<p>Terus tanpa sadar—</p>\n\n<p>dia jalan ke sana.</p>\n\n<p><strong>“Kamu salah cara ngambilnya.”</strong></p>\n\n<p>Xiaoran langsung nengok.</p>\n\n<p>Dan Yichen hampir senyum karena ekspresinya persis kayak waktu debat mie instan di depan guru.</p>\n\n<p>Kepancing.</p>\n\n<p>Drama.</p>\n\n<p>Cute.</p>\n\n<p><strong>“Kamu yang bikin mesin ini emangnya?”</strong> dia curiga.</p>\n\n<p>Dan dari situ—</p>\n\n<p>obrolannya mulai.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>Habis itu, 'kebetulan' makin sering.</p>\n\n<p>Padahal sebagian besar… bukan kebetulan.</p>\n\n<p>Seperti di kantin.</p>\n\n<p>Xiaoran pengen strawberry milk, tapi ternyata kosong.</p>\n\n<p><strong>“Setiap hari selalu ada aja yang bikin kecewa,”</strong> dia ngeluh dramatis.</p>\n\n<p>Terus ada tangan nyodorin botol dari samping.</p>\n\n<p><strong>“Minum punyaku aja.”</strong></p>\n\n<p>Dia nengok.</p>\n\n<p>Yichen berdiri santai kayak ini takdir, bukan dia yang cari minuman ini sepuluh menit lalu dari luar.</p>\n\n<p><strong>“…Kok kamu di sini?”</strong></p>\n\n<p><strong>“Beli air.”</strong></p>\n\n<p><strong>“Itu strawberry milk.”</strong></p>\n\n<p><strong>“Tadi lagi kepengen aja.”</strong></p>\n\n<p>Xiaoran ketawa tanpa sadar.</p>\n\n<p>Dan Yichen langsung sadar satu hal: bikin dia ketawa itu bahaya.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>Lalu di perpustakaan.</p>\n\n<p>Yang jelas-jelas bukan kebetulan.</p>\n\n<p>Yichen tahu dari Yuhao kalau Xiaoran selalu belajar hari Rabu disana karena katanya WiFi rumahnya selalu 'hilang secara misterius' setiap hari Rabu.</p>\n\n<p>Ternyata itu tetangga yang numpang WiFi buat download game ilegal.</p>\n\n<p>Jadi Yichen mulai datang juga tiap Rabu.</p>\n\n<p>Pertama kali ketemu, Xiaoran curiga.</p>\n\n<p><strong>“Kamu ada di mana-mana.”</strong></p>\n\n<p><strong>“Kayak takdir ya?”</strong></p>\n\n<p><strong>“Lebih ke creepy sih.”</strong></p>\n\n<p>Dia senyum santai.</p>\n\n<p><strong>“Kalau gitu aku pergi.”</strong></p>\n\n<p><strong>“…Aku nggak bilang gitu kok.”</strong></p>\n\n<p>Dia duduk lagi.</p>\n\n<p>Xiaoran langsung panik sendiri.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>Habis itu ada halte, kafe, lorong, festival sekolah.</p>\n\n<p>Awalnya Xiaoran pikir itu takdir.</p>\n\n<p>Sementara Yuhao lihat Yichen sengaja muter jalan biar 'kebetulan' ketemu Xiaoran di dekat gedung C.</p>\n\n<p><strong>“Lo nggak tahu malu banget,”</strong> Yuhao bilang.</p>\n\n<p><strong>“Maksud?”</strong></p>\n\n<p><strong>“Lo ubah jadwal makan siang cuma karena dia makan lebih awal.”</strong></p>\n\n<p><strong>“Kebetulan aja.”</strong></p>\n\n<p><strong>“Lo benci ke kantin sebelum jam 12.”</strong></p>\n\n<p><strong>“Orang juga bisa berubah kali.”</strong></p>\n\n<p>Yuhao cuma bisa melotot.</p>\n\n<p>Karena Zhou Yichen—</p>\n\n<p>si kalem, si rasional itu—</p>\n\n<p>lagi ngatur 'kebetulan' kayak tokoh utama romansa.</p>\n\n<p>Dan parahnya?</p>\n\n<p>Dia kelihatan senang.</p>\n\n<p>Setiap kali Xiaoran muncul, wajahnya langsung melunak.</p>\n\n<p>Senyumnya jadi lembut.</p>\n\n<p>Hangat.</p>\n\n<p>Kayak Xiaoran tanpa sadar bawa matahari khusus buat dia.</p>\n\n<p>Suatu hari Yuhao akhirnya nanya.</p>\n\n<p><strong>“Sebenernya lo suka apa sih dari dia?”</strong></p>\n\n<p>Yichen lihat ke bawah halaman.</p>\n\n<p>Xiaoran lagi ribut sendiri, Meilin pura-pura nggak peduli.</p>\n\n<p>Drama biasa.</p>\n\n<p>Dia senyum tanpa sadar.</p>\n\n<p><strong>“Hidupnya bahagia banget.”</strong></p>\n\n<p>Yuhao diam.</p>\n\n<p>Xiaoran lihat ke atas.</p>\n\n<p>Mata mereka ketemu.</p>\n\n<p>Dia langsung cerah.</p>\n\n<p>Dan Yichen tahu—</p>\n\n<p>dia udah jatuh terlalu dalam.</p>\n"
           }
-        }
+        },
+        "publishStatus": "published"
       },
       {
         "desc": "Lin Xiaoran thought she understood Zhou Yichen completely… until she saw what his silence looked like when someone else tried to take her place.",
@@ -2869,7 +2957,7 @@ const NOVELS = [
       "synopsis": {
         "icon": "📖",
         "title": "Synopsis",
-        "content": "<p>Lin Xiaoran never does anything quietly.<p>\n\n<p>She complains dramatically over tiny inconveniences, gets jealous too easily, cries the moment she’s seriously scolded, and somehow turns every peaceful situation into chaos within minutes. Most people can only tolerate her in small doses.<p>\n\n<p>Unfortunately for Zhou Yichen, he fell in love with her almost immediately.<p>\n\n<p>Calm, dependable, and endlessly patient, Yichen spends most of his days cleaning up Xiaoran’s messes, carrying extra drinks for her without being asked, and pretending he’s unaffected whenever she clings to his sleeve with that dangerous look in her eyes. Their friends think he spoils her too much.<p>\n\n<p>They’re absolutely right.<p>\n\n<p>But love isn’t always soft in easy ways.<p>\n\n<p>As their relationship deepens, Xiaoran and Yichen slowly learn that affection alone cannot fix everything. Jealousy, insecurity, hurt feelings, and unspoken emotions begin slipping between their quiet everyday moments, forcing them to grow—not apart, but together.<p>\n\n<p>Told through interconnected standalone chapters across different stages of their relationship, *The Softest Kind of Love* is a warm school romance about accidental confessions, winter rooftops, convenience store dates, emotional healing, and two people learning how to love each other more gently with every passing day.<p>",
+        "content": "<p>Lin Xiaoran never does anything quietly.<p>\n\n<p>She complains dramatically over tiny inconveniences, gets jealous too easily, cries the moment she’s seriously scolded, and somehow turns every peaceful situation into chaos within minutes. Most people can only tolerate her in small doses.<p>\n\n<p>Unfortunately for Zhou Yichen, he fell in love with her almost immediately.<p>\n\n<p>Calm, dependable, and endlessly patient, Yichen spends most of his days cleaning up Xiaoran’s messes, carrying extra drinks for her without being asked, and pretending he’s unaffected whenever she clings to his sleeve with that dangerous look in her eyes. Their friends think he spoils her too much.<p>\n\n<p>They’re absolutely right.<p>\n\n<p>But love isn’t always soft in easy ways.<p>\n\n<p>As their relationship deepens, Xiaoran and Yichen slowly learn that affection alone cannot fix everything. Jealousy, insecurity, hurt feelings, and unspoken emotions begin slipping between their quiet everyday moments, forcing them to grow—not apart, but together.<p>\n\n<p>Told through interconnected standalone chapters across different stages of their relationship, <strong>The Softest Kind of Love</strong> is a warm school romance about accidental confessions, winter rooftops, convenience store dates, emotional healing, and two people learning how to love each other more gently with every passing day.<p>",
         "visible": true
       },
       "authorNote": {
