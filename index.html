@@ -817,16 +817,91 @@ nav {
   color: #2a2018;
 }
 .fm-block-text p { margin-bottom: 1.2em; }
-.char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 1rem; }
+
+/* ── CHARACTER CARDS ── */
+.char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1rem; }
 .char-card {
   background: var(--cream-dark);
   border: 2px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem;
-  box-shadow: 2px 2px 0 var(--border);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 var(--border);
+  overflow: hidden;
+  transition: box-shadow 0.15s, transform 0.15s;
 }
-.char-name { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
-.char-role { font-family: 'Syne', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--coral); margin-bottom: 0.5rem; }
+.char-card:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--border); }
+.char-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  user-select: none;
+  background: var(--cream-dark);
+}
+.char-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  color: white;
+  font-weight: 700;
+  font-family: 'Fraunces', serif;
+}
+.char-header-info { flex: 1; min-width: 0; }
+.char-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.15rem; line-height: 1.2; }
+.char-role { font-family: 'Syne', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--coral); }
+.char-toggle-icon {
+  font-size: 0.8rem;
+  color: #8a7a60;
+  transition: transform 0.25s cubic-bezier(0.22,1,0.36,1);
+  flex-shrink: 0;
+}
+.char-card.expanded .char-toggle-icon { transform: rotate(180deg); }
+.char-body {
+  display: none;
+  padding: 0 1.1rem 1.1rem;
+  border-top: 2px solid rgba(26,26,16,0.1);
+  margin-top: 0;
+  animation: charSlideDown 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.char-card.expanded .char-body { display: block; }
+@keyframes charSlideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.char-field { margin-top: 0.75rem; }
+.char-field-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--olive);
+  margin-bottom: 0.2rem;
+}
+.char-field-val {
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.92rem;
+  color: #3a2a18;
+  line-height: 1.55;
+}
+.char-field-val em { font-style: italic; color: #6a5a40; }
+.char-badge {
+  display: inline-block;
+  background: var(--pink-bg);
+  border: 1px solid var(--pink);
+  border-radius: 20px;
+  padding: 0.1rem 0.6rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--coral);
+  margin: 0.1rem 0.2rem 0.1rem 0;
+}
+.char-tag-row { display: flex; flex-wrap: wrap; gap: 0.2rem; margin-top: 0.3rem; }
 .char-desc { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 0.9rem; color: #6a5a40; line-height: 1.5; }
 .ch-hidden-badge {
   font-family: 'Syne', sans-serif;
@@ -1596,8 +1671,13 @@ body.dark-read .fm-block { background: #1e1a14; border-color: #2a2418; }
 body.dark-read .fm-block-text { color: #c0b0a0; }
 body.dark-read .fm-block-title { color: var(--cream-dark); }
 body.dark-read .char-card { background: #252018; border-color: #2a2418; }
+body.dark-read .char-card-header { background: #252018; }
 body.dark-read .char-name { color: var(--cream-dark); }
 body.dark-read .char-desc { color: #7a6a50; }
+body.dark-read .char-field-val { color: #c0b0a0; }
+body.dark-read .char-badge { background: #1a1610; border-color: #554433; color: var(--coral); }
+body.dark-read .char-field-label { color: var(--olive-light); }
+body.dark-read .char-body { border-top-color: #3a3020; }
 
 /* Chapter reader */
 body.dark-read .chapter-reader { background: #16130e; }
@@ -2534,7 +2614,7 @@ body.dark-read .fmt-btn:hover { background: var(--coral); color: white; border-c
 <!-- ABOUT OVERLAY -->
 <div id="aboutOverlay" onclick="closeAbout(event)">
   <div class="about-card">
-    <button class="about-close" onclick="document.getElementById('aboutOverlay').classList.remove('open')">✕</button>
+    <button class="about-close" onclick="document.getElementById('aboutOverlay').classList.remove('open')" title="Close">✕</button>
     <div class="about-header">
       <div class="about-eyebrow">The Mind Behind the Stories</div>
       <div class="about-name">甜慕</div>
@@ -2550,6 +2630,11 @@ body.dark-read .fmt-btn:hover { background: var(--coral); color: white; border-c
         <p>If something here feels familiar in a way you cannot explain, that is not coincidence. It means we share a particular kind of wildness.</p>
       </div>
       <div class="about-sig">— 甜慕, somewhere between midnight and morning ✿</div>
+      <!-- Action buttons -->
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.12)">
+        <button onclick="document.getElementById('aboutOverlay').classList.remove('open');scrollToLibrary();" style="flex:1;min-width:140px;background:var(--coral);color:white;border:2px solid rgba(255,255,255,0.2);border-radius:30px;padding:0.75rem 1.4rem;font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;box-shadow:3px 3px 0 rgba(0,0,0,0.2);transition:all 0.15s" onmouseover="this.style.transform='translate(-2px,-2px)'" onmouseout="this.style.transform=''">📖 Read My Novels</button>
+        <button onclick="document.getElementById('aboutOverlay').classList.remove('open')" style="flex:1;min-width:120px;background:rgba(255,255,255,0.08);color:var(--cream-dark);border:2px solid rgba(255,255,255,0.2);border-radius:30px;padding:0.75rem 1.4rem;font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">✕ Close</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2584,273 +2669,242 @@ body.dark-read .fmt-btn:hover { background: var(--coral); color: white; border-c
 /*NOVELS_START*/
 const NOVELS = [
   {
-    id: 'crimson-veil',
-    genre: 'Fantasy Romance',
-    color: '#8b3a2a',
-    coverAccent: '#c96050',
-    badge: 'NEW',
-    chapters: [
+    "id": "paper-crane",
+    "badge": "NEW",
+    "color": "#ce5082",
+    "descs": {
+      "en": "Lin Xiaoran is dramatic, affectionate, and impossible to handle. Zhou Yichen is patient, gentle, and hopelessly weak against her tears. Somehow, despite all their flaws, they fit together perfectly.",
+      "es": "Seis años de cartas sin enviar. Una página caída. El comienzo de todo.",
+      "fr": "Six ans de lettres non envoyées. Une page tombée. Le début de tout.",
+      "ja": "6年間の未送信の手紙。落とした一枚の紙。すべての始まり。",
+      "ko": "6년간의 보내지 않은 편지들. 떨어진 한 장. 모든 것의 시작.",
+      "ms": "Enam tahun surat yang tidak dihantar. Satu halaman yang jatuh. Permulaan segalanya.",
+      "zh": "六年未寄出的信。一页飘落的纸。一切的开始。"
+    },
+    "genre": "School Romance",
+    "status": "active",
+    "titles": {
+      "en": "The Softest Kind of Love",
+      "es": "Cartas de Grulla de Papel",
+      "fr": "Lettres de Grue en Papier",
+      "ja": "折り鶴の手紙",
+      "ko": "종이학 편지",
+      "ms": "Surat Burung Kertas",
+      "zh": "纸鹤书信"
+    },
+    "chapters": [
       {
-        title: 'The Girl Who Swallowed Stars',
-        desc: 'A chance encounter beneath a lantern-lit bridge.',
-        epigraph: '"Some meetings are not accidents — they are appointments the universe kept."',
-        content: `<p>The night Shen Wei discovered she could swallow stars, she was standing barefoot on the cold stone of the Wulong Bridge, trying very hard not to cry.</p>
-<p>It had been three years since her mother disappeared into the mountains and twelve days since she had last eaten a proper meal. The city stretched behind her, brilliant with light she could not afford, and ahead of her the river ran dark and indifferent between its banks.</p>
-<p>She tilted her head back. The sky was clear. One star — small, orange, almost hesitant — seemed to lean toward her.</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>She did not remember opening her mouth. She remembered only the warmth, like swallowing a sip of the tea her mother used to make, sweet with dried longan and rock sugar. The star settled in her chest like a small coal. She felt the crying ease. She felt, for the first time in months, that she was not entirely alone in her own body.</p>
-<p>"That's an unusual thing to do," said a voice behind her.</p>
-<p>She turned. A young man leaned against the bridge railing with an expression that managed to be both deeply unimpressed and intensely curious. He wore a grey coat two sizes too large for him and he was looking at her the way one looks at something that has just broken an important law of physics.</p>
-<p>"You can see that?" she said.</p>
-<p>"Only people with star-debt can see star-eating," he said. "Which means we have a problem." He paused. "My name is Lu Mianchen. And I'm afraid the star you just swallowed belongs to someone else."</p>`
+        "desc": "He knew she was trouble the moment she started crying—and he still loved her too much to stop spoiling her.",
+        "title": "The Boy Who Always Smiled at Her",
+        "content": "<p>The winter sunlight spilled across the school rooftop, pale gold against the chilly afternoon air.</p>\n\n<p><strong>“Zhou Yichen, move.”</strong></p>\n\n<p>The boy sitting lazily on the bench looked up with his usual smile already waiting.</p>\n\n<p><strong>“You’re the one who came late, Xiaoran.”</strong></p>\n\n<p>Lin Xiaoran huffed dramatically and squeezed herself beside him anyway, shoulder shoving him hard enough that he nearly lost balance.</p>\n\n<p><strong>“You did that on purpose.”</strong></p>\n\n<p><strong>“You’re too weak.”</strong></p>\n\n<p><strong>“You literally attacked me.”</strong></p>\n\n<p><strong>“But you’re still smiling.”</strong></p>\n\n<p>Because he always did.</p>\n\n<p>Whenever Lin Xiaoran was around, Zhou Yichen smiled like he forgot how to stop.</p>\n\n<p>He was the kind of boy girls whispered about in hallways—tall, calm, unfairly handsome, top student, captain of the basketball team. Yet the moment his girlfriend appeared, all that composed coolness disappeared into helpless indulgence.</p>\n\n<p>Especially when she pouted.</p>\n\n<p>Especially when she cried.</p>\n\n<p>And unfortunately for him, Lin Xiaoran cried very easily.</p>\n\n<p><strong>“You brought milk tea?”</strong> she asked immediately, eyes brightening.</p>\n\n<p>Yichen handed her the warm cup from his coat pocket.</p>\n\n<p><strong>“Half sugar. No pearls.”</strong></p>\n\n<p><strong>“Good boyfriend.”</strong> She pinched his cheek with satisfaction.</p>\n\n<p><strong>“You say that like you’re reviewing customer service.”</strong></p>\n\n<p><strong>“I am.”</strong></p>\n\n<p>He laughed softly while she drank happily beside him, kicking her legs against the bench.</p>\n\n<p>From the rooftop door, their friends watched with disgust.</p>\n\n<p><strong>“Every day,”</strong> sighed Chen Yuhao dramatically.</p>\n\n<p>Beside him, Tang Meilin rolled her eyes.</p>\n\n<p><strong>“You’re just jealous because you don’t have a girlfriend.”</strong></p>\n\n<p>Yuhao instantly straightened.</p>\n\n<p><strong>“That’s rude.”</strong></p>\n\n<p>Meanwhile, Xiaoran noticed them and waved.</p>\n\n<p><strong>“Why are you both standing there like divorced parents?”</strong></p>\n\n<p><strong>“Because watching you two gives me diabetes,”</strong> Yuhao replied.</p>\n\n<p>Yichen only smiled again.</p>\n\n<p>Meilin crossed her arms.</p>\n\n<p><strong>“Actually, Xiaoran, you should appreciate him more. If my future boyfriend tolerated even half your nonsense, I’d build him a temple.”</strong></p>\n\n<p><strong>“I’m perfectly appreciative,”</strong> Xiaoran declared confidently.</p>\n\n<p>Yichen raised a brow.</p>\n\n<p><strong>“Really?”</strong></p>\n\n<p><strong>“Yes.”</strong></p>\n\n<p>She was cute in the kind of dangerous way that made people forgive her too easily.</p>\n\n<p>Including Yichen.</p>\n\n<p>Especially Yichen.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>The problem started a week later.</p>\n\n<p>Basketball practice had just ended when Xiaoran came to the gym carrying snacks for Yichen.</p>\n\n<p>But the moment she entered, she saw a girl from Class 2 handing him a towel.</p>\n\n<p>Pretty. Tall. Elegant.</p>\n\n<p>Exactly Xiaoran’s least favorite type.</p>\n\n<p>The girl smiled softly.</p>\n\n<p><strong>“Your game today was amazing.”</strong></p>\n\n<p><strong>“Thanks,”</strong> Yichen replied politely.</p>\n\n<p>That should have been the end.</p>\n\n<p>But jealousy was ugly, irrational, and unfortunately very loud inside Lin Xiaoran’s head.</p>\n\n<p>She walked over with a sweet smile that already made Yuhao—watching from nearby—mutter:</p>\n\n<p><strong>“Oh no.”</strong></p>\n\n<p>Xiaoran wrapped herself around Yichen’s arm possessively.</p>\n\n<p><strong>“Yichen,”</strong> she said brightly, <strong>“who’s this?”</strong></p>\n\n<p>The girl introduced herself politely.</p>\n\n<p>Xiaoran smiled even wider.</p>\n\n<p><strong>“Ohhh, you’re the girl who confessed to him last semester, right?”</strong></p>\n\n<p>Silence.</p>\n\n<p>The girl’s face immediately stiffened.</p>\n\n<p>Yuhao physically covered his face.</p>\n\n<p>Even Yichen’s smile disappeared.</p>\n\n<p>Xiaoran continued casually:</p>\n\n<p><strong>“You’re still trying?”</strong></p>\n\n<p><strong>“Xiaoran,”</strong> Yichen said quietly.</p>\n\n<p>That tone alone made her pause.</p>\n\n<p>The girl looked embarrassed enough to cry before quickly leaving.</p>\n\n<p>And suddenly the gym felt cold.</p>\n\n<p>Yichen gently removed Xiaoran’s arms from his sleeve.</p>\n\n<p><strong>“You went too far.”</strong></p>\n\n<p>Her chest tightened instantly.</p>\n\n<p><strong>“What? I was joking.”</strong></p>\n\n<p><strong>“It wasn’t funny.”</strong></p>\n\n<p><strong>“She likes you.”</strong></p>\n\n<p><strong>“And?”</strong> His voice stayed calm, which somehow felt worse. <strong>“That doesn’t mean you get to humiliate her.”</strong></p>\n\n<p>Xiaoran’s eyes reddened almost immediately.</p>\n\n<p>Yichen sighed internally the second he saw it.</p>\n\n<p>Because there it was.</p>\n\n<p>The tears.</p>\n\n<p>Always so fast.</p>\n\n<p><strong>“I’m not scolding you,”</strong> he softened slightly.</p>\n\n<p><strong>“But you’re angry.”</strong></p>\n\n<p><strong>“I dislike what you did.”</strong></p>\n\n<p><strong>“You care more about her feelings than mine?”</strong></p>\n\n<p><strong>“That’s not what I said.”</strong></p>\n\n<p>But Xiaoran already looked devastated.</p>\n\n<p><strong>“I was jealous,”</strong> she whispered.</p>\n\n<p>Yichen rubbed his forehead tiredly.</p>\n\n<p><strong>“I know. But jealousy isn’t an excuse to hurt someone.”</strong></p>\n\n<p>She bit her lip hard, eyes watery.</p>\n\n<p>And then the worst possible thing happened.</p>\n\n<p><strong>“You’re being mean to me…”</strong></p>\n\n<p>Yichen nearly lost the argument right there.</p>\n\n<p>Because Lin Xiaoran crying was his greatest weakness.</p>\n\n<p>Unfortunately, he forced himself to stay firm.</p>\n\n<p><strong>“Xiaoran. Don’t avoid the point.”</strong></p>\n\n<p>Her tears fell immediately.</p>\n\n<p>Great.</p>\n\n<p>Now he felt like the villain in a tragic romance drama.</p>\n\n<p>She turned and ran out of the gym before he could stop her.</p>\n\n<p>Yuhao walked over slowly.</p>\n\n<p><strong>“…You survived longer than expected.”</strong></p>\n\n<p><strong>“Shut up.”</strong></p>\n\n<p><strong>“You made her cry.”</strong></p>\n\n<p><strong>“I KNOW.”</strong></p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>Lin Xiaoran ignored him for two days.</p>\n\n<p>Which meant:</p>\n\n<p>No waiting outside his classroom.</p>\n\n<p>No stealing his drinks.</p>\n\n<p>No dramatic good morning voice messages.</p>\n\n<p>No random <strong>“Do you love me more today or yesterday?”</strong> questions.</p>\n\n<p>The entire school noticed Zhou Yichen becoming visibly miserable.</p>\n\n<p><strong>“He looks like a divorced father of two,”</strong> Yuhao commented.</p>\n\n<p><strong>“Go apologize already,”</strong> Meilin said.</p>\n\n<p><strong>“I’m not apologizing for telling her she was wrong.”</strong></p>\n\n<p><strong>“But you’re suffering.”</strong></p>\n\n<p>Yichen leaned back in frustration.</p>\n\n<p>Because the worst part?</p>\n\n<p>He missed her terribly.</p>\n\n<p>Even when she annoyed him.</p>\n\n<p>Especially when she annoyed him.</p>\n\n<p>That evening, he finally found her sitting alone behind the library, hugging her knees dramatically.</p>\n\n<p>The moment she saw him, she looked away.</p>\n\n<p><strong>“I’m still angry.”</strong></p>\n\n<p><strong>“You’ve said that in seventeen unread messages.”</strong></p>\n\n<p><strong>“You counted?”</strong></p>\n\n<p><strong>“Of course I counted.”</strong></p>\n\n<p>Her lips twitched slightly before she hid it again.</p>\n\n<p>Yichen sat beside her quietly.</p>\n\n<p>For a moment, neither spoke.</p>\n\n<p>Then he sighed softly.</p>\n\n<p><strong>“Xiaoran.”</strong></p>\n\n<p>Silence.</p>\n\n<p><strong>“I’m sorry for sounding harsh.”</strong></p>\n\n<p>She sniffed immediately.</p>\n\n<p>Here we go again.</p>\n\n<p><strong>“But,”</strong> he continued gently, <strong>“you really hurt her feelings.”</strong></p>\n\n<p><strong>“I know…”</strong></p>\n\n<p><strong>“And if someone treated you like that?”</strong></p>\n\n<p><strong>“I’d cry for ten business days.”</strong></p>\n\n<p>Despite himself, Yichen laughed.</p>\n\n<p>Xiaoran finally looked at him, eyes still watery.</p>\n\n<p><strong>“I just hated seeing her near you.”</strong></p>\n\n<p><strong>“I know.”</strong></p>\n\n<p><strong>“She looked so pretty.”</strong></p>\n\n<p><strong>“You’re prettier.”</strong></p>\n\n<p><strong>“That answer was too fast.”</strong></p>\n\n<p><strong>“Because it’s true.”</strong></p>\n\n<p>Her ears turned pink.</p>\n\n<p>Yichen reached over and pulled her closer by the sleeve.</p>\n\n<p><strong>“You can be jealous,”</strong> he murmured. <strong>“But don’t become cruel because of it.”</strong></p>\n\n<p>Xiaoran lowered her head guiltily.</p>\n\n<p><strong>“…Okay.”</strong></p>\n\n<p><strong>“And no more embarrassing people publicly.”</strong></p>\n\n<p><strong>“…Okay.”</strong></p>\n\n<p><strong>“And no crying every time I correct you.”</strong></p>\n\n<p><strong>“I can’t control that.”</strong></p>\n\n<p><strong>“You absolutely can.”</strong></p>\n\n<p><strong>“I’m delicate.”</strong></p>\n\n<p><strong>“You’re evil.”</strong></p>\n\n<p>She gasped dramatically.</p>\n\n<p><strong>“You said you wouldn’t scold me anymore.”</strong></p>\n\n<p>Yichen sighed with complete defeat before pulling her into his arms anyway.</p>\n\n<p>Instantly, she melted against him like a satisfied cat.</p>\n\n<p><strong>“You spoil her too much,”</strong> Meilin’s voice suddenly called from nearby.</p>\n\n<p>The two looked up to find Yuhao and Meilin holding convenience store snacks while spying openly.</p>\n\n<p>Yuhao pointed accusingly.</p>\n\n<p><strong>“See? THIS is why she acts like a menace.”</strong></p>\n\n<p>Yichen didn’t even deny it.</p>\n\n<p>Xiaoran looked extremely pleased with herself.</p>\n\n<p>Then she tilted her head up at Yichen sweetly.</p>\n\n<p><strong>“You still love me?”</strong></p>\n\n<p>He looked down at her helplessly.</p>\n\n<p>Too cute.</p>\n\n<p>Far too cute.</p>\n\n<p><strong>“Unfortunately,”</strong> he said, kissing her forehead lightly, <strong>“way too much.”</strong></p>\n",
+        "epigraph": "“Some people are impossible to handle—and impossible not to love.”",
+        "type": "chapter",
+        "publishStatus": "published",
+        "scheduleDate": "",
+        "scheduleTime": "12:00",
+        "publishDate": "2026-05-13",
+        "visible": true
       },
       {
-        title: 'The Debt of Light',
-        desc: 'Every star has an owner. Every owner has a price.',
-        epigraph: '"Borrowed light must be returned — but the interest is paid in something far more precious than gold."',
-        content: `<p>The Star Bureau occupied the top three floors of a building that did not appear on any city map and could only be entered by people who already knew where it was. Shen Wei followed Lu Mianchen through a door disguised as a boarded-up noodle shop, up stairs that smelled of incense and old paper, and into an office that contained more filing cabinets than she had ever seen in one place.</p>
-<p>An elderly woman sat behind a desk the size of a small boat. She was reading a ledger through spectacles that were, Shen Wei noticed, made of what appeared to be compressed moonlight.</p>
-<p>"Unauthorized ingestion," said Lu Mianchen. "Star class minor, orange spectrum, Cassiopeia cluster."</p>
-<p>The woman looked up. Her eyes were the color of an overcast sky and contained approximately the same amount of weather.</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>"Shen Wei," she said. It was not a question. "We've been expecting you."</p>
-<p>Shen Wei looked at Lu Mianchen. He had the expression of a person who has been keeping a secret for a long time and is beginning to find it heavy.</p>
-<p>"The star you swallowed," said the old woman, setting down her ledger, "was registered to a young man who died before he could collect his warmth debt. When a star goes unclaimed, it seeks the person with the most compatible grief." She folded her hands. "It found you."</p>
-<p>"What does that mean?" Shen Wei asked.</p>
-<p>"It means," said Lu Mianchen quietly, "that you've inherited both the light and the obligation that came with it." He did not look at her. "Which means you'll be working with me until we settle the account."</p>`
+        "title": "Strawberry Milk Confession",
+        "desc": "A claw machine, a chance meeting, and one boy who smiled like he already knew she was meant to stay.",
+        "epigraph": "“He found her in chaos, and stayed like it was home.”",
+        "content": "<p>It started with a claw machine.</p>\n\n<p>Lin Xiaoran stood in the arcade with her arms crossed, glaring at the stupid plush bunny trapped behind glass like it had personally offended her family bloodline.</p>\n\n<p><strong>“This machine is rigged.”</strong></p>\n\n<p><strong>“It’s not,”</strong> said a calm voice beside her.</p>\n\n<p>She turned.</p>\n\n<p>And immediately forgot what she was going to say for half a second.</p>\n\n<p>The boy standing there was tall, clean-looking, dressed in their school uniform with his sleeves casually rolled up. Sharp brows. Pretty eyes. The kind of face girls definitely wrote about in private group chats.</p>\n\n<p>Most annoyingly—</p>\n\n<p>He was smiling.</p>\n\n<p>Not the arrogant type.</p>\n\n<p>Not teasing.</p>\n\n<p>Just naturally warm.</p>\n\n<p>Lin Xiaoran recovered quickly.</p>\n\n<p><strong>“You work for the machine company or something?”</strong></p>\n\n<p>The boy laughed softly.</p>\n\n<p><strong>“No. You’re just grabbing the bunny wrong.”</strong></p>\n\n<p><strong>“I’ve tried eleven times.”</strong></p>\n\n<p><strong>“That explains the problem.”</strong></p>\n\n<p><strong>“What does THAT mean?”</strong></p>\n\n<p><strong>“You’re impatient.”</strong></p>\n\n<p>She narrowed her eyes instantly.</p>\n\n<p>Who even was this guy?</p>\n\n<p>The boy stepped beside her.</p>\n\n<p><strong>“Move.”</strong></p>\n\n<p><strong>“Excuse me?”</strong></p>\n\n<p><strong>“You want the bunny or not?”</strong></p>\n\n<p>Reluctantly, Xiaoran shuffled aside while watching suspiciously.</p>\n\n<p>He inserted coins calmly, adjusted the claw once—</p>\n\n<p>And won the plush immediately.</p>\n\n<p>Xiaoran gasped in betrayal.</p>\n\n<p><strong>“That’s impossible.”</strong></p>\n\n<p>He picked up the bunny and handed it to her.</p>\n\n<p><strong>“There.”</strong></p>\n\n<p>She hugged the plush automatically before catching herself.</p>\n\n<p><strong>“…Thank you.”</strong></p>\n\n<p><strong>“You’re welcome.”</strong></p>\n\n<p>Then he smiled again.</p>\n\n<p>And for some reason, her heartbeat skipped strangely.</p>\n\n<p>Annoying.</p>\n\n<p>Very annoying.</p>\n\n<p><strong>“What’s your name?”</strong></p>\n\n<p><strong>“Zhou Yichen.”</strong></p>\n\n<p>Oh.</p>\n\n<p>So this was <em>THE</em> Zhou Yichen.</p>\n\n<p>Top student. Basketball captain. Third-year legend. Girls from other schools literally waited outside games for him.</p>\n\n<p>Xiaoran immediately became defensive.</p>\n\n<p><strong>“Hm. You’re overrated.”</strong></p>\n\n<p>Yichen blinked once.</p>\n\n<p>Then laughed.</p>\n\n<p>Actually laughed.</p>\n\n<p>Like she had said something genuinely funny.</p>\n\n<p><strong>“You’re cute,”</strong> he said absentmindedly.</p>\n\n<p>Lin Xiaoran nearly dropped the bunny.</p>\n\n<p><strong>“What?!”</strong></p>\n\n<p><strong>“Nothing.”</strong></p>\n\n<p>His smile only deepened.</p>\n\n<p>And that was the first problem.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>After that, they somehow kept meeting everywhere.</p>\n\n<p>Library.</p>\n\n<p>Convenience store.</p>\n\n<p>Bus stop.</p>\n\n<p>School festival prep.</p>\n\n<p>It became suspicious enough that Tang Meilin accused fate of being too obvious.</p>\n\n<p><strong>“You like him,”</strong> Meilin declared.</p>\n\n<p><strong>“I absolutely do not.”</strong></p>\n\n<p><strong>“You brushed your hair three times when he walked past.”</strong></p>\n\n<p><strong>“That was wind maintenance.”</strong></p>\n\n<p><strong>“That’s not a thing.”</strong></p>\n\n<p>Lin Xiaoran ignored her dramatically.</p>\n\n<p>But secretly…</p>\n\n<p>She noticed things.</p>\n\n<p>Like how Zhou Yichen always looked relaxed around everyone else, but around her, he smiled more.</p>\n\n<p>How he remembered every tiny thing she said.</p>\n\n<p>How he bought strawberry milk for her once after hearing her complain the cafeteria sold out three days earlier.</p>\n\n<p>How he never got annoyed even when she acted bratty on purpose.</p>\n\n<p>Which she did frequently.</p>\n\n<p><strong>“Move,”</strong> she’d complain while shoving him aside dramatically in hallways.</p>\n\n<p><strong>“You walked into me.”</strong></p>\n\n<p><strong>“You exist in my path.”</strong></p>\n\n<p><strong>“That sounds like a personal issue.”</strong></p>\n\n<p><strong>“Hm.”</strong></p>\n\n<p>And somehow, he always looked amused instead of offended.</p>\n\n<p>It made her chest feel weird.</p>\n\n<p>One rainy afternoon, Xiaoran forgot her umbrella after cram school.</p>\n\n<p>By the time she reached the school gate, heavy rain poured everywhere.</p>\n\n<p><strong>“…Great.”</strong></p>\n\n<p><strong>“You’ll get sick.”</strong></p>\n\n<p>She turned to find Zhou Yichen standing behind her holding a black umbrella.</p>\n\n<p>Again.</p>\n\n<p>Smiling.</p>\n\n<p>Always smiling.</p>\n\n<p><strong>“Were you waiting for someone?”</strong></p>\n\n<p><strong>“You.”</strong></p>\n\n<p>Her heart stumbled so hard it was humiliating.</p>\n\n<p><strong>“…Why?”</strong></p>\n\n<p><strong>“You texted the class group complaining about the rain.”</strong></p>\n\n<p><strong>“That doesn’t mean come rescue me.”</strong></p>\n\n<p><strong>“But you sounded pitiful.”</strong></p>\n\n<p><strong>“I was NOT pitiful.”</strong></p>\n\n<p><strong>“You used three crying emojis.”</strong></p>\n\n<p><strong>“That’s expressive communication.”</strong></p>\n\n<p>Yichen laughed quietly before opening the umbrella over her head.</p>\n\n<p><strong>“Come on.”</strong></p>\n\n<p>The walk home became dangerous for Lin Xiaoran’s emotional stability.</p>\n\n<p>Because Zhou Yichen was unfairly gentle.</p>\n\n<p>He tilted the umbrella toward her side more.</p>\n\n<p>Walked closer to the road so passing cars wouldn’t splash her.</p>\n\n<p>Listened carefully even when she rambled nonsense.</p>\n\n<p>And worst of all—</p>\n\n<p>He looked at her like she mattered.</p>\n\n<p>By the time they reached her apartment building, Xiaoran already knew she was doomed.</p>\n\n<p>Yichen looked down at her.</p>\n\n<p><strong>“You should go inside before you catch a cold.”</strong></p>\n\n<p><strong>“…Okay.”</strong></p>\n\n<p>But neither moved.</p>\n\n<p>Rain poured softly around them.</p>\n\n<p>Xiaoran clutched the plush bunny still attached to her bag.</p>\n\n<p>Then suddenly blurted—</p>\n\n<p><strong>“Do you like me?”</strong></p>\n\n<p>Silence.</p>\n\n<p>Yichen blinked, clearly surprised.</p>\n\n<p>Unfortunately for her pride, once Lin Xiaoran got nervous, she only became more reckless.</p>\n\n<p><strong>“Because if you DON’T,”</strong> she rushed out, <strong>“then you should stop acting so nice to me all the time because it’s confusing.”</strong></p>\n\n<p>Yichen stared at her for two seconds.</p>\n\n<p>Then slowly—</p>\n\n<p>Very slowly—</p>\n\n<p>He smiled again.</p>\n\n<p>That smile.</p>\n\n<p>The one that always made her heart weak.</p>\n\n<p><strong>“What if I do like you?”</strong></p>\n\n<p>Xiaoran’s brain immediately stopped functioning.</p>\n\n<p><strong>“Oh.”</strong></p>\n\n<p>Very intelligent response.</p>\n\n<p>Yichen stepped slightly closer beneath the umbrella.</p>\n\n<p><strong>“What if I’ve liked you since the arcade?”</strong></p>\n\n<p><strong>“…That fast?”</strong></p>\n\n<p><strong>“You called me overrated within thirty seconds.”</strong></p>\n\n<p><strong>“And that made you fall in love?”</strong></p>\n\n<p><strong>“I found it refreshing.”</strong></p>\n\n<p>She stared at him, ears turning pink.</p>\n\n<p>This was bad.</p>\n\n<p>Very bad.</p>\n\n<p>Because now she wanted to say it too.</p>\n\n<p>And Lin Xiaoran hated being vulnerable.</p>\n\n<p>But she also hated lying.</p>\n\n<p>So after a full minute of internal suffering, she mumbled quietly—</p>\n\n<p><strong>“…I like you too.”</strong></p>\n\n<p>Yichen’s expression softened instantly.</p>\n\n<p><strong>“Yeah?”</strong></p>\n\n<p><strong>“I think about you too much,”</strong> she confessed with deep annoyance. <strong>“It’s affecting my studies.”</strong></p>\n\n<p>He laughed softly.</p>\n\n<p>And suddenly Xiaoran realized something terrifying.</p>\n\n<p>Zhou Yichen looked happiest whenever he was with her.</p>\n\n<p>Like genuinely happiest.</p>\n\n<p><strong>“Lin Xiaoran,”</strong> he said gently.</p>\n\n<p><strong>“…What?”</strong></p>\n\n<p><strong>“Do you want to go out with me?”</strong></p>\n\n<p>Her eyes widened.</p>\n\n<p><strong>“So suddenly?”</strong></p>\n\n<p><strong>“You confessed first.”</strong></p>\n\n<p><strong>“That’s true.”</strong></p>\n\n<p><strong>“And I don’t want anyone else asking you before I do.”</strong></p>\n\n<p>Her heart exploded.</p>\n\n<p>Actually exploded.</p>\n\n<p>She tried acting calm anyway.</p>\n\n<p><strong>“Hm. I’ll consider it.”</strong></p>\n\n<p>Yichen raised a brow.</p>\n\n<p><strong>“You just confessed love two minutes ago.”</strong></p>\n\n<p><strong>“That was before. This is negotiation.”</strong></p>\n\n<p>He laughed again, lowering his head slightly closer to hers.</p>\n\n<p><strong>“Okay then,”</strong> he murmured. <strong>“Please let me be your boyfriend.”</strong></p>\n\n<p>Xiaoran lasted exactly three seconds before smiling shyly.</p>\n\n<p><strong>“…Fine.”</strong></p>\n\n<p><strong>“Fine?”</strong></p>\n\n<p><strong>“Don’t push your luck, Zhou Yichen.”</strong></p>\n\n<p><strong>“Yes, girlfriend.”</strong></p>\n\n<p>And somehow, hearing that for the first time felt warmer than the umbrella shielding them from the rain.</p>",
+        "publishStatus": "published",
+        "visible": true,
+        "type": "chapter",
+        "publishDate": "2026-05-13",
+        "scheduleDate": "2026-05-14",
+        "scheduleTime": "12:00"
       },
       {
-        title: 'What the River Keeps',
-        desc: 'Some secrets run deeper than water.',
-        epigraph: '"The river does not explain itself. Neither does the heart."',
-        content: `<p>Three weeks into her employment at the Star Bureau, Shen Wei learned three things: that Lu Mianchen took his tea without sugar, that he had not slept in what appeared to be a very long time, and that he was lying about something important.</p>
-<p>She could not have said how she knew. Perhaps it was the way he paused before answering questions about his own history. Perhaps it was the photograph she had found by accident in his desk drawer — a girl who looked like him, younger, laughing, in front of a river she didn't recognize.</p>
-<p>She did not ask. She had her own secrets. She thought this was perhaps why they managed to work together without too much friction: two people with things they did not say, moving carefully around the shape of them.</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>But the river did not stay quiet forever.</p>
-<p>On the night of the autumn equinox, when the star inventory was conducted and the sky was briefly audible if you stood in the right silence, she heard him say a name to himself that was not her name and not his own. She heard it and filed it away the way she was learning to file everything: carefully, in the dark, for later.</p>
-<p>The warmth in her chest, the borrowed star, pulsed once. Like a question.</p>`
+        "title": "All Our Coincidences Were Intentional",
+        "desc": "Zhou Yichen noticed her long before she noticed him, loud, chaotic, unforgettable, and somehow decided, without telling anyone, that she would become his favorite coincidence.",
+        "epigraph": "“Before he ever spoke to her, he had already started choosing her.”",
+        "content": "<p>Before Zhou Yichen ever spoke to Lin Xiaoran, he already knew three things about her.</p>\n\n<p>First—</p>\n\n<p>She was loud.</p>\n\n<p>Second—</p>\n\n<p>She was dramatic.</p>\n\n<p>Third—</p>\n\n<p>She cried unbelievably fast.</p>\n\n<p>The first time he noticed her was outside the teachers’ office.</p>\n\n<p>A girl in a slightly messy uniform stood there arguing with a teacher over confiscated snacks.</p>\n\n<p><strong>“But instant noodles are emotionally necessary,”</strong> she protested seriously.</p>\n\n<p><strong>“They are not.”</strong></p>\n\n<p><strong>“What if I faint from heartbreak during math class?”</strong></p>\n\n<p><strong>“You won’t.”</strong></p>\n\n<p><strong>“How can you be so sure?”</strong></p>\n\n<p>Yichen had only walked past casually at first.</p>\n\n<p>Then the girl sighed dramatically and muttered under her breath—</p>\n\n<p><strong>“This school suppresses artistic souls.”</strong></p>\n\n<p>The teacher nearly laughed despite herself.</p>\n\n<p>Yichen did too.</p>\n\n<p>The girl was cute.</p>\n\n<p>Not just pretty-cute.</p>\n\n<p>Dangerously expressive cute.</p>\n\n<p>The kind where every emotion showed clearly on her face.</p>\n\n<p>That should’ve been the end of it.</p>\n\n<p>But after noticing someone once, somehow you kept seeing them everywhere.</p>\n\n<p>In the cafeteria complaining because her pudding was sold out.</p>\n\n<p>In the hallway fake-crying because her friend Tang Meilin refused to lend her lip gloss.</p>\n\n<p>In class presentations confidently speaking nonsense with full conviction.</p>\n\n<p><strong>“She’s ridiculous,”</strong> Chen Yuhao commented one afternoon while the basketball team walked past the courtyard.</p>\n\n<p>Below them, Lin Xiaoran sat on a bench dramatically sulking while Meilin ignored her.</p>\n\n<p><strong>“What happened?”</strong> Yichen asked casually.</p>\n\n<p><strong>“She lost rock-paper-scissors.”</strong></p>\n\n<p><strong>“…That’s why she looks heartbroken?”</strong></p>\n\n<p><strong>“She takes competition seriously.”</strong></p>\n\n<p>Yichen watched as Xiaoran suddenly grabbed Meilin’s sleeve and whined something shameless enough to make Meilin physically shove her away.</p>\n\n<p>Instead of getting angry, Xiaoran only laughed.</p>\n\n<p>Brightly.</p>\n\n<p>Carelessly.</p>\n\n<p>Like sunshine that didn’t know how to behave properly.</p>\n\n<p>Yichen looked away after a second.</p>\n\n<p>But for some reason—</p>\n\n<p>He smiled.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>The second time she truly caught his attention was during rain duty week.</p>\n\n<p>Students rushed through the corridors while teachers yelled about slippery floors.</p>\n\n<p>Yichen carried sports equipment back toward the gym when he noticed a familiar figure crouching beside the school garden.</p>\n\n<p>Lin Xiaoran was holding a tiny soaked kitten.</p>\n\n<p><strong>“What are you doing?”</strong> Meilin asked beside her.</p>\n\n<p><strong>“It looked cold.”</strong></p>\n\n<p><strong>“You’re also cold.”</strong></p>\n\n<p><strong>“I’m emotionally stronger than him.”</strong></p>\n\n<p>The kitten meowed pitifully.</p>\n\n<p>Xiaoran immediately looked devastated.</p>\n\n<p><strong>“Oh no,”</strong> she whispered, hugging it carefully. <strong>“Don’t sound unemployed.”</strong></p>\n\n<p>Yichen laughed quietly before he could stop himself.</p>\n\n<p>Xiaoran looked up immediately.</p>\n\n<p>Their eyes met for the first time.</p>\n\n<p>Yichen saw her properly then.</p>\n\n<p>Soft features. Bright eyes. Pink lips slightly parted in surprise.</p>\n\n<p>Cute.</p>\n\n<p>Too cute.</p>\n\n<p>For one second, Xiaoran simply stared.</p>\n\n<p>Then she narrowed her eyes suspiciously.</p>\n\n<p><strong>“…Why are you laughing?”</strong></p>\n\n<p><strong>“Nothing.”</strong></p>\n\n<p><strong>“You definitely laughed at me.”</strong></p>\n\n<p><strong>“A little.”</strong></p>\n\n<p><strong>“Hm. Rude.”</strong></p>\n\n<p>But she didn’t actually sound offended.</p>\n\n<p>Yichen walked away afterward.</p>\n\n<p>Yet strangely enough, he kept thinking about her.</p>\n\n<p>About how she held the kitten so gently.</p>\n\n<p>About how expressive her face was.</p>\n\n<p>About how alive she felt compared to everyone else around him.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>The arcade encounter one week later wasn’t exactly coincidence.</p>\n\n<p>Well.</p>\n\n<p>Not entirely.</p>\n\n<p>The basketball team had won a practice match nearby, and Yuhao suggested going to the shopping center arcade afterward.</p>\n\n<p>Yichen normally would’ve refused.</p>\n\n<p>But while walking past the claw machines, he suddenly froze.</p>\n\n<p>There she was again.</p>\n\n<p>Lin Xiaoran.</p>\n\n<p>Standing before a claw machine with absolute fury on her face.</p>\n\n<p><strong>“I spent twenty-seven yuan already,”</strong> she informed Meilin dramatically.</p>\n\n<p><strong>“Then stop.”</strong></p>\n\n<p><strong>“No.”</strong></p>\n\n<p><strong>“The bunny looks ugly anyway.”</strong></p>\n\n<p><strong>“Don’t insult him.”</strong></p>\n\n<p>Yichen watched silently from several machines away.</p>\n\n<p>Xiaoran failed again.</p>\n\n<p>And again.</p>\n\n<p>Then she crouched in front of the machine and pointed accusingly.</p>\n\n<p><strong>“You and I are enemies now.”</strong></p>\n\n<p>Meilin looked exhausted.</p>\n\n<p><strong>“You’re talking to a machine.”</strong></p>\n\n<p><strong>“It started first.”</strong></p>\n\n<p>Yichen laughed quietly.</p>\n\n<p>Before he realized it—</p>\n\n<p>He was already walking toward her.</p>\n\n<p><strong>“You’re grabbing the bunny wrong.”</strong></p>\n\n<p>Xiaoran turned immediately.</p>\n\n<p>And Yichen almost smiled right there because her expression was exactly the same as when she defended instant noodles to the teacher.</p>\n\n<p>Offended.</p>\n\n<p>Dramatic.</p>\n\n<p>Cute.</p>\n\n<p><strong>“You work for the machine company or something?”</strong> she asked suspiciously.</p>\n\n<p>And just like that—</p>\n\n<p>The conversation started.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>After the arcade, the “coincidences” increased suspiciously.</p>\n\n<p>Except most of them were caused by Zhou Yichen himself.</p>\n\n<p>He simply never admitted it.</p>\n\n<p>Like the convenience store encounter.</p>\n\n<p>Xiaoran entered after school craving strawberry milk only to discover the shelf empty.</p>\n\n<p><strong>“This country has failed me,”</strong> she sighed dramatically.</p>\n\n<p>Then a hand suddenly extended from beside her holding the exact drink.</p>\n\n<p><strong>“You can have mine.”</strong></p>\n\n<p>She turned.</p>\n\n<p>Zhou Yichen stood there casually like this was fate and not the fact he bought it ten minutes ago after seeing her walking toward the store through the window.</p>\n\n<p><strong>“…Why are you here?”</strong></p>\n\n<p><strong>“Buying water.”</strong></p>\n\n<p><strong>“You bought strawberry milk.”</strong></p>\n\n<p><strong>“I changed spiritually.”</strong></p>\n\n<p>She laughed despite herself.</p>\n\n<p>Yichen immediately decided that making her laugh was dangerously addictive.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>Then came the library coincidence.</p>\n\n<p>Which was definitely not coincidence.</p>\n\n<p>Yichen had discovered from Yuhao that Xiaoran studied there every Wednesday because her house lost WiFi every week due to “mysterious causes.”</p>\n\n<p>The mysterious cause was later revealed to be her younger brother downloading games illegally.</p>\n\n<p>So naturally—</p>\n\n<p>Yichen began studying there every Wednesday too.</p>\n\n<p>The first time Xiaoran spotted him, she blinked suspiciously.</p>\n\n<p><strong>“You’re everywhere.”</strong></p>\n\n<p><strong>“That sounds romantic.”</strong></p>\n\n<p><strong>“That sounds creepy.”</strong></p>\n\n<p>He smiled lazily.</p>\n\n<p><strong>“Then I’ll leave.”</strong></p>\n\n<p><strong>“…I didn’t say leave.”</strong></p>\n\n<p>Yichen sat down again immediately.</p>\n\n<p>Xiaoran looked horrified at herself for saying that out loud.</p>\n\n<p>He nearly laughed.</p>\n\n<div class=\"scene-break\">✦   ✦   ✦</div>\n\n<p>Then came the bus stop coincidence.</p>\n\n<p>The café coincidence.</p>\n\n<p>The hallway coincidence.</p>\n\n<p>The school festival coincidence.</p>\n\n<p>At first, Xiaoran genuinely believed fate kept pushing them together.</p>\n\n<p>Meanwhile, Yuhao watched Yichen intentionally choosing longer routes between classes just to “accidentally” meet Xiaoran near Building C.</p>\n\n<p><strong>“You’re actually shameless,”</strong> Yuhao said.</p>\n\n<p><strong>“I don’t know what you mean.”</strong></p>\n\n<p><strong>“You changed your entire lunch schedule because she eats earlier.”</strong></p>\n\n<p><strong>“Coincidence.”</strong></p>\n\n<p><strong>“You hate the cafeteria before noon.”</strong></p>\n\n<p><strong>“People change.”</strong></p>\n\n<p>Yuhao stared at him in disbelief.</p>\n\n<p>Because Zhou Yichen—</p>\n\n<p>The calm, rational, untouchable Zhou Yichen—</p>\n\n<p>Was deliberately orchestrating encounters like a romance drama protagonist.</p>\n\n<p>And the worst part?</p>\n\n<p>He looked happy doing it.</p>\n\n<p>Especially every time Lin Xiaoran appeared.</p>\n\n<p>The moment she walked into view, his expression softened automatically.</p>\n\n<p>His smile became real.</p>\n\n<p>Warm.</p>\n\n<p>Easy.</p>\n\n<p>Like she unknowingly carried sunlight around specifically for him.</p>\n\n<p>One afternoon, Yuhao finally asked the obvious question.</p>\n\n<p><strong>“What exactly do you like about her so much?”</strong></p>\n\n<p>Yichen looked toward the courtyard below.</p>\n\n<p>Lin Xiaoran was there complaining loudly while Meilin ignored her existence.</p>\n\n<p>Probably another dramatic crisis.</p>\n\n<p>Yichen watched her for a moment before smiling unconsciously.</p>\n\n<p><strong>“She makes everything feel less tiring.”</strong></p>\n\n<p>Yuhao blinked.</p>\n\n<p>Below them, Xiaoran suddenly looked up accidentally.</p>\n\n<p>Their eyes met across the courtyard.</p>\n\n<p>Immediately, her expression changed.</p>\n\n<p>Brightened.</p>\n\n<p>Like she was unconsciously happy to see him too.</p>\n\n<p>Yichen smiled wider.</p>\n\n<p>And right then—</p>\n\n<p>He already knew he was completely doomed.</p>\n",
+        "publishStatus": "published",
+        "visible": true,
+        "type": "chapter",
+        "publishDate": "2026-05-13",
+        "scheduleDate": "2026-05-14",
+        "scheduleTime": "12:00"
       }
     ],
-    titles: {
-      en: 'The Crimson Veil',
-      zh: '绯红面纱',
-      ms: 'Tirai Merah Padam',
-      ja: '深紅のヴェール',
-      ko: '진홍빛 베일',
-      es: 'El Velo Carmesí',
-      fr: 'Le Voile Cramoisi'
-    },
-    descs: {
-      en: 'A girl who can swallow stars. A boy who keeps the accounts of light. A debt that was never supposed to be hers.',
-      zh: '一个能吞噬星星的女孩，一个守护光之账册的男孩，一段本不属于她的债。',
-      ms: 'Seorang gadis yang boleh menelan bintang. Seorang pemuda yang menjaga catatan cahaya. Hutang yang sepatutnya bukan miliknya.',
-      ja: '星を飲み込む少女。光の帳簿を管理する少年。本来は彼女のものではなかった借り。',
-      ko: '별을 삼킬 수 있는 소녀. 빛의 장부를 지키는 소년. 원래 그녀의 것이 아니었던 빚.',
-      es: 'Una chica que puede tragarse estrellas. Un chico que lleva las cuentas de la luz. Una deuda que nunca debió ser suya.',
-      fr: 'Une fille qui peut avaler des étoiles. Un garçon qui tient les comptes de la lumière. Une dette qui n\'aurait jamais dû être la sienne.'
+    "ideaNote": "",
+    "coverAccent": "#d685a8",
+    "publishDate": "2026-05-13",
+    "updatedDate": "2026-05-13",
+    "frontMatter": {
+      "synopsis": {
+        "content": "<p>Lin Xiaoran never does anything quietly.<p>\n\n<p>She complains dramatically over tiny inconveniences, gets jealous too easily, cries the moment she’s seriously scolded, and somehow turns every peaceful situation into chaos within minutes. Most people can only tolerate her in small doses.<p>\n\n<p>Unfortunately for Zhou Yichen, he fell in love with her almost immediately.<p>\n\n<p>Calm, dependable, and endlessly patient, Yichen spends most of his days cleaning up Xiaoran’s messes, carrying extra drinks for her without being asked, and pretending he’s unaffected whenever she clings to his sleeve with that dangerous look in her eyes. Their friends think he spoils her too much.<p>\n\n<p>They’re absolutely right.<p>\n\n<p>But love isn’t always soft in easy ways.<p>\n\n<p>As their relationship deepens, Xiaoran and Yichen slowly learn that affection alone cannot fix everything. Jealousy, insecurity, hurt feelings, and unspoken emotions begin slipping between their quiet everyday moments, forcing them to grow—not apart, but together.<p>\n\n<p>Told through interconnected standalone chapters across different stages of their relationship, *The Softest Kind of Love* is a warm school romance about accidental confessions, winter rooftops, convenience store dates, emotional healing, and two people learning how to love each other more gently with every passing day.<p>",
+        "visible": true,
+        "title": "Synopsis",
+        "icon": "📖"
+      },
+      "authorNote": {
+        "content": "<p>Thank you for embarking on this romantic journey with Lin Xiaoran and Zhou Yichen.<p>\n<p>This compilation captures the delicate evolution of two teenagers discovering love—not through grand gestures or perfect moments, but through the quiet certainty of choosing each other repeatedly.<p>\n<p>Xiaoran taught me that vulnerability wrapped in humor is still bravery. That crying easily doesn't make you weak; it makes you honest. That love doesn't require perfection; it requires showing up.<p>\n<p>Yichen showed me that patience isn't passive. That holding someone's hand matters as much as grand confessions. That the smallest gestures—fixing a crooked ribbon, remembering an old plushie, kissing a forehead—can contain entire universes of tenderness.<p>\n<p>Their story isn't about fate or destiny.<p>\n<p>It's about two people who became each other's home.<p>\n<p>One messy, dramatic, beautiful piece at a time.<p>\n<p>To everyone who has loved someone who annoys them constantly: your story matters too.<p>\n<p>To everyone who has quietly loved without asking for recognition: you are seen.<p>\n<p>To everyone building a future with someone else: may you find your middle ground between dreams.<p>",
+        "visible": true,
+        "title": "Author Note",
+        "icon": "✍️"
+      },
+      "characters": {
+        "content": "Lin Xiaoran | Female Lead | ENFP, 17, Bratty, affectionate, and emotionally expressive girl who gets jealous easily, cries when scolded, and loves deeply through words and physical affection.\nZhou Yichen | Male Lead | INFJ, 18, Calm, observant, and emotionally mature boy who quietly spoils Xiaoran, shows love through actions, and struggles most when she cries.\nTang Meilin | Female Lead’s Best Friend | ISTJ, 17, Sharp, rational, and emotionally perceptive girl who acts tired of Xiaoran’s chaos but consistently protects and cares for her.\nChen Yuhao | Male Lead’s Best Friend | ENTP, 18, Loud, chaotic, and teasing boy who enjoys provoking reactions and constantly exposes Yichen’s obvious softness for Xiaoran.",
+        "visible": true,
+        "title": "Characters",
+        "icon": "👥"
+      }
     }
   },
   {
-    id: 'paper-crane',
-    genre: 'Literary Romance',
-    color: '#2a5a6e',
-    coverAccent: '#4a8aa0',
-    badge: 'ONGOING',
-    chapters: [
+    "id": "midnight-garden",
+    "badge": "IDEA",
+    "color": "#2d1a4a",
+    "descs": {
+      "en": "A garden that only exists at midnight. Flowers that archive grief. A keeper who must learn to let things go.",
+      "es": "Un jardín que solo existe a medianoche. Flores que archivan el dolor. Una guardiana que debe aprender a soltar.",
+      "fr": "Un jardin qui n'existe qu'à minuit. Des fleurs qui archivent le chagrin. Une gardienne qui doit apprendre à lâcher prise.",
+      "ja": "真夜中だけに存在する庭。悲しみを記録する花々。手放すことを学ばなければならない番人。",
+      "ko": "자정에만 존재하는 정원. 슬픔을 기록하는 꽃들. 놓아주는 법을 배워야 하는 수호자.",
+      "ms": "Sebuah taman yang hanya wujud di tengah malam. Bunga-bunga yang menyimpan kesedihan. Seorang penjaga yang perlu belajar melepaskan.",
+      "zh": "一座只在午夜存在的花园。储存悲伤的花朵。一位必须学会放手的守护者。"
+    },
+    "genre": "Dark Fantasy",
+    "status": "idea",
+    "titles": {
+      "en": "The Midnight Garden",
+      "es": "El Jardín de Medianoche",
+      "fr": "Le Jardin de Minuit",
+      "ja": "真夜中の庭園",
+      "ko": "한밤중의 정원",
+      "ms": "Taman Tengah Malam",
+      "zh": "午夜花园"
+    },
+    "chapters": [
       {
-        title: 'A Thousand Unwritten Letters',
-        desc: 'She writes letters she never sends. He finds the first one.',
-        epigraph: '"Every unsent letter is a conversation with a braver version of yourself."',
-        content: `<p>Yun Lihua had been writing letters to nobody for six years. She kept them in a lacquered box beneath her bed — one hundred and forty-seven of them, unsent, unsealed, addressed in her careful handwriting to a person who did not exist or had not yet arrived or was somewhere she could not reach.</p>
-<p>On the morning of her twenty-seventh birthday, she dropped one.</p>
-<p>She did not know she had dropped it. She walked to work through the grey October streets, past the dumpling stall and the florist who always put chrysanthemums in the window in autumn, and she did not look back. The letter lay on the pavement in the wind, open like a small confession.</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>Jiang Zeyu almost walked past it. He was already late and his coffee was going cold and he had approximately seventeen things to think about. But something in the handwriting — the careful loops, the ink that had gone slightly silver where it had been exposed to air — made him stop.</p>
-<p>He picked it up. He read the first line. He stood on the pavement for a long time after that, very still, while the city moved around him, reading a letter that was not addressed to him and that contained, inexplicably, a description of a feeling he had always had and never found words for.</p>
-<p>He folded it carefully. He put it in his inside pocket, where it sat against his chest all day like something that needed to be returned but also, he thought, like something that had always been meant to arrive.</p>`
+        "desc": "She tends flowers that should not exist.",
+        "title": "The Garden That Blooms at the End of the World",
+        "content": "<p>The garden existed in the hour between midnight and one, and only Mei Ruolan could find it.</p>\n<p>She had discovered it the winter she turned nineteen, following a smell she could not name — not quite jasmine, not quite rain, not quite the particular silence that falls after someone leaves. She had pushed through a gap in a stone wall behind the old pharmacy and found: flowers. Dozens of them. All varieties that had been extinct for a hundred years or had never been catalogued or existed only in the imagination of painters who had never left their studios.</p>\n<p>She became the garden's keeper the way one becomes anything important: accidentally, then devotedly, then absolutely.</p>\n<div class=\"scene-break\">✦ &nbsp; ✦ &nbsp; ✦</div>\n<p>The first time Xiao Shang appeared, he was sitting on a stone bench in the middle of the night garden eating a tangerine with an air of complete ownership.</p>\n<p>\"You're trespassing,\" said Mei Ruolan.</p>\n<p>\"You're both trespassing,\" he said. \"This garden belongs to someone who hasn't been born yet.\" He peeled another segment. \"I've been waiting for you to find it. You took longer than expected.\"</p>\n<p>\"Who are you?\"</p>\n<p>He looked at her the way a person looks at someone they have known a very long time across a distance of time that cannot be adequately described.</p>\n<p>\"That,\" he said, \"is the question the garden brought you here to answer.\"</p>",
+        "epigraph": "\"Every impossible thing begins as someone's refusal to accept the possible.\""
       },
       {
-        title: 'The Language of Margins',
-        desc: 'Two readers. One secondhand book. Notes in different inks.',
-        epigraph: '"To annotate is to leave proof that someone was here, thinking, feeling, alive."',
-        content: `<p>The book was called <em>Atlas of Small Distances</em> and it had been owned, evidently, by at least three people before Yun Lihua found it in the secondhand section of a shop that smelled of damp and possibility.</p>
-<p>The first owner had used pencil. Light, tentative marks — question marks beside passages she apparently found unclear, the occasional underline, two words in the margin of chapter four: <em>this. exactly.</em></p>
-<p>The second owner had used red ink. More decisive. Crossings-out, disagreements argued in small handwriting, a long note on the final page that began: <em>I don't think that's what he meant at all.</em></p>
-<p>The third owner had used blue. And the third owner, Yun Lihua realized with a feeling she could not immediately name, had been responding to the second.</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>She read the whole book that night with her heart doing something irregular. The conversation in the margins was — she searched for the word and found only this: <em>intimate</em>. Two people who had never met, disagreeing and agreeing and pushing back and yielding, across a hundred and sixty pages, about love and distance and whether it was possible to truly know another person.</p>
-<p>She turned to the last page. The blue ink had written, below the red ink's final note: <em>I think you're wrong about this. I'd like to discuss it. If you ever find this — I'm serious.</em></p>
-<p>Below that, a name. Jiang Zeyu. And a number.</p>`
+        "desc": "Plants that remember. A boy who sees tomorrow.",
+        "title": "What Flowers Know",
+        "content": "<p>The flowers in the midnight garden were not merely decorative. Mei Ruolan understood this in her second month as keeper, when the black iris in the eastern corner began to hum.</p>\n<p>It was not the humming of something mechanical. It was the humming of something remembering — low, rhythmic, in a key that did not correspond to any note on any instrument she knew. She pressed her ear to the soil beside its roots and heard, or felt, the vibration of very old grief.</p>\n<p>\"The flowers are archives,\" Xiao Shang told her. He had taken to appearing without announcement at hours she could not predict, and she had taken to no longer being surprised by this. \"Every feeling a person has suppressed long enough passes into the ground and eventually into a root.\" He crouched beside the iris. \"This one has been holding someone's sorrow for approximately sixty years.\"</p>\n<div class=\"scene-break\">✦ &nbsp; ✦ &nbsp; ✦</div>\n<p>\"Can it be released?\" she asked.</p>\n<p>\"That's why you're here,\" he said simply.</p>\n<p>She looked at him. \"You keep saying I was brought here for a reason. But you won't tell me what the reason is.\"</p>\n<p>\"Because,\" he said, and for the first time she heard something beneath his composure — something careful and private and worn smooth with long keeping — \"if I tell you the ending, you might not take the steps that lead to it.\" He stood. \"And I have worked very hard,\" he said quietly, \"to make sure you arrive.\"</p>",
+        "epigraph": "\"The root does not know the flower. The flower does not know the fruit. And yet they are the same continuous thing.\""
+      },
+      {
+        "desc": "Some endings are also beginnings. Some losses are also gifts.",
+        "title": "The Last Bloom",
+        "content": "<p>The garden bloomed one final time on the night of the winter solstice, and every flower in it opened simultaneously, which was not a thing that happened in nature or in magic, but happened then.</p>\n<p>Mei Ruolan stood in the center of it and felt the accumulated grief of sixty years move through her like a tide going out — not painless, but purposeful. She understood, standing there, that she had been a vessel for something she had not chosen, in the way that all important things arrive unchosen.</p>\n<p>Xiao Shang stood at the edge of the garden. She looked at him across the blooming and the light.</p>\n<div class=\"scene-break\">✦ &nbsp; ✦ &nbsp; ✦</div>\n<p>\"You're leaving,\" she said. It was not a question.</p>\n<p>\"The garden is complete,\" he said. \"The debt is settled. The grief is released.\" He paused. \"I was only ever here to bring you to the moment where you could do what you were meant to do.\"</p>\n<p>\"And what was that?\"</p>\n<p>He smiled. It was the first time, she realized, that she had seen him smile without the weight of knowing behind it. Just a smile. Just a person, briefly, in a garden at the end of a winter, glad.</p>\n<p>\"You let things be held,\" he said. \"You let old sorrow become something that could finally breathe.\" He stepped back toward the gap in the wall. \"Not everyone can do that. Almost no one can.\" He paused once more. \"The garden will be here. It will have a new keeper. But it will remember you.\"</p>\n<p>She watched him go. The flowers held their light a little longer, and then, one by one, in the slow and dignified way of things that have completed their purpose, they closed.</p>\n<p style=\"text-align:center; font-family:'Syne',sans-serif; font-size:0.7rem; letter-spacing:0.4em; color:var(--coral); opacity:0.7; margin-top:3rem; text-transform:uppercase;\">— Complete —</p>"
       }
     ],
-    titles: {
-      en: 'Paper Crane Letters',
-      zh: '纸鹤书信',
-      ms: 'Surat Burung Kertas',
-      ja: '折り鶴の手紙',
-      ko: '종이학 편지',
-      es: 'Cartas de Grulla de Papel',
-      fr: 'Lettres de Grue en Papier'
-    },
-    descs: {
-      en: 'Six years of unsent letters. One dropped page. The beginning of everything.',
-      zh: '六年未寄出的信。一页飘落的纸。一切的开始。',
-      ms: 'Enam tahun surat yang tidak dihantar. Satu halaman yang jatuh. Permulaan segalanya.',
-      ja: '6年間の未送信の手紙。落とした一枚の紙。すべての始まり。',
-      ko: '6년간의 보내지 않은 편지들. 떨어진 한 장. 모든 것의 시작.',
-      es: 'Seis años de cartas sin enviar. Una página caída. El comienzo de todo.',
-      fr: 'Six ans de lettres non envoyées. Une page tombée. Le début de tout.'
-    }
+    "ideaNote": "",
+    "coverAccent": "#6a3a8a",
+    "publishDate": "",
+    "updatedDate": ""
   },
   {
-    id: 'midnight-garden',
-    genre: 'Dark Fantasy',
-    color: '#2d1a4a',
-    coverAccent: '#6a3a8a',
-    badge: 'COMPLETE',
-    chapters: [
+    "id": "salt-silk",
+    "badge": "IDEA",
+    "color": "#5a4020",
+    "descs": {
+      "en": "A merchant's daughter who keeps the books in secret. An auditor sent to find the errors. A dynasty-era love story built on trust and ledgers.",
+      "es": "La hija de un mercader que lleva los libros en secreto. Un auditor enviado a encontrar los errores. Una historia de amor de la era dinástica construida sobre confianza y libros contables.",
+      "fr": "La fille d'un marchand qui tient les livres en secret. Un auditeur envoyé pour trouver les erreurs. Une histoire d'amour de l'ère dynastique construite sur la confiance et les registres.",
+      "ja": "秘密で帳簿をつける商人の娘。誤りを見つけるために派遣された検査官。信頼と台帳で築かれた王朝時代の恋愛物語。",
+      "ko": "비밀리에 장부를 적는 상인의 딸. 오류를 찾기 위해 파견된 감사관. 신뢰와 원장으로 세워진 왕조 시대 러브스토리.",
+      "ms": "Seorang anak perempuan saudagar yang merahsiakan pembukuan. Seorang juruaudit yang dihantar mencari kesilapan. Kisah cinta era dinasti yang dibina atas kepercayaan dan lejar.",
+      "zh": "一个秘密记账的商人之女。一个被派来查账的审计员。一段以信任与账本为基础的朝代爱情故事。"
+    },
+    "genre": "Historical Drama",
+    "status": "idea",
+    "titles": {
+      "en": "Salt & Silk",
+      "es": "Sal y Seda",
+      "fr": "Sel et Soie",
+      "ja": "塩と絹",
+      "ko": "소금과 비단",
+      "ms": "Garam & Sutera",
+      "zh": "盐与丝"
+    },
+    "chapters": [
       {
-        title: 'The Garden That Blooms at the End of the World',
-        desc: 'She tends flowers that should not exist.',
-        epigraph: '"Every impossible thing begins as someone\'s refusal to accept the possible."',
-        content: `<p>The garden existed in the hour between midnight and one, and only Mei Ruolan could find it.</p>
-<p>She had discovered it the winter she turned nineteen, following a smell she could not name — not quite jasmine, not quite rain, not quite the particular silence that falls after someone leaves. She had pushed through a gap in a stone wall behind the old pharmacy and found: flowers. Dozens of them. All varieties that had been extinct for a hundred years or had never been catalogued or existed only in the imagination of painters who had never left their studios.</p>
-<p>She became the garden's keeper the way one becomes anything important: accidentally, then devotedly, then absolutely.</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>The first time Xiao Shang appeared, he was sitting on a stone bench in the middle of the night garden eating a tangerine with an air of complete ownership.</p>
-<p>"You're trespassing," said Mei Ruolan.</p>
-<p>"You're both trespassing," he said. "This garden belongs to someone who hasn't been born yet." He peeled another segment. "I've been waiting for you to find it. You took longer than expected."</p>
-<p>"Who are you?"</p>
-<p>He looked at her the way a person looks at someone they have known a very long time across a distance of time that cannot be adequately described.</p>
-<p>"That," he said, "is the question the garden brought you here to answer."</p>`
+        "desc": "She was taught to be invisible. She refused.",
+        "title": "The Merchant's Daughter",
+        "content": "<p>In the fourth year of the Minghua reign, when the silk trade ran from the eastern ports to the desert crossings and back again in a river of coin and cloth and carefully managed debt, Zhou Yinghua did her father's accounts in secret and better than he did them himself.</p>\n<p>She was twenty-two. She had been taught to pour tea, to embroider, to walk with the particular contained grace expected of a merchant's daughter of good family. She had learned all of these things and performed them when required and found them, in honest moments, insufficient.</p>\n<p>The accounts were different. The accounts were a language she had taught herself from her father's discarded ledgers, and in them she had found something that felt less like a skill and more like a native tongue returned to after long absence.</p>\n<div class=\"scene-break\">✦ &nbsp; ✦ &nbsp; ✦</div>\n<p>She was rewriting a particularly egregious miscalculation when the door opened and a voice said: \"Those numbers are wrong.\"</p>\n<p>She looked up. A man she did not know stood in the doorway — dusty from travel, plainly dressed, with the particular quality of stillness that belongs to people who have spent long periods of time in places where movement is unwise.</p>\n<p>\"I know,\" she said. \"I'm correcting them.\"</p>\n<p>He looked at the ledger. He looked at her. Something shifted in his expression — not surprise exactly, but the adjustment a person makes when the situation turns out to be more interesting than expected.</p>\n<p>\"Your father sent me to review the accounts,\" he said.</p>\n<p>\"Then we'll be working together,\" said Zhou Yinghua, and turned back to the columns, and did not let him see that her hands were shaking, not from fear but from the feeling — unfamiliar, extraordinary — of being caught doing something true.</p>",
+        "epigraph": "\"A woman who knows the price of silk knows the price of everything — including herself.\""
       },
       {
-        title: 'What Flowers Know',
-        desc: 'Plants that remember. A boy who sees tomorrow.',
-        epigraph: '"The root does not know the flower. The flower does not know the fruit. And yet they are the same continuous thing."',
-        content: `<p>The flowers in the midnight garden were not merely decorative. Mei Ruolan understood this in her second month as keeper, when the black iris in the eastern corner began to hum.</p>
-<p>It was not the humming of something mechanical. It was the humming of something remembering — low, rhythmic, in a key that did not correspond to any note on any instrument she knew. She pressed her ear to the soil beside its roots and heard, or felt, the vibration of very old grief.</p>
-<p>"The flowers are archives," Xiao Shang told her. He had taken to appearing without announcement at hours she could not predict, and she had taken to no longer being surprised by this. "Every feeling a person has suppressed long enough passes into the ground and eventually into a root." He crouched beside the iris. "This one has been holding someone's sorrow for approximately sixty years."</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>"Can it be released?" she asked.</p>
-<p>"That's why you're here," he said simply.</p>
-<p>She looked at him. "You keep saying I was brought here for a reason. But you won't tell me what the reason is."</p>
-<p>"Because," he said, and for the first time she heard something beneath his composure — something careful and private and worn smooth with long keeping — "if I tell you the ending, you might not take the steps that lead to it." He stood. "And I have worked very hard," he said quietly, "to make sure you arrive."</p>`
-      },
-      {
-        title: 'The Last Bloom',
-        desc: 'Some endings are also beginnings. Some losses are also gifts.',
-        content: `<p>The garden bloomed one final time on the night of the winter solstice, and every flower in it opened simultaneously, which was not a thing that happened in nature or in magic, but happened then.</p>
-<p>Mei Ruolan stood in the center of it and felt the accumulated grief of sixty years move through her like a tide going out — not painless, but purposeful. She understood, standing there, that she had been a vessel for something she had not chosen, in the way that all important things arrive unchosen.</p>
-<p>Xiao Shang stood at the edge of the garden. She looked at him across the blooming and the light.</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>"You're leaving," she said. It was not a question.</p>
-<p>"The garden is complete," he said. "The debt is settled. The grief is released." He paused. "I was only ever here to bring you to the moment where you could do what you were meant to do."</p>
-<p>"And what was that?"</p>
-<p>He smiled. It was the first time, she realized, that she had seen him smile without the weight of knowing behind it. Just a smile. Just a person, briefly, in a garden at the end of a winter, glad.</p>
-<p>"You let things be held," he said. "You let old sorrow become something that could finally breathe." He stepped back toward the gap in the wall. "Not everyone can do that. Almost no one can." He paused once more. "The garden will be here. It will have a new keeper. But it will remember you."</p>
-<p>She watched him go. The flowers held their light a little longer, and then, one by one, in the slow and dignified way of things that have completed their purpose, they closed.</p>
-<p style="text-align:center; font-family:'Syne',sans-serif; font-size:0.7rem; letter-spacing:0.4em; color:var(--coral); opacity:0.7; margin-top:3rem; text-transform:uppercase;">— Complete —</p>`
+        "desc": "The mathematics of trade, trust, and risk.",
+        "title": "Silk Road Arithmetic",
+        "content": "<p>His name was Wei Congming and he had been, variously, a soldier, an inspector, a translator, and a man who could calculate the true value of a shipment by smell alone. He did not say these things. Zhou Yinghua learned them the way she learned most important things: by watching, cataloguing, and drawing conclusions that she kept to herself until they were certain.</p>\n<p>They worked together for three weeks before either of them said anything that wasn't strictly about the accounts. In those three weeks, she corrected four of his calculations (tactfully) and he acknowledged three of the corrections (tersely) and they developed between them, without discussion, a system for dividing the work that was more efficient than anything her father had previously managed.</p>\n<div class=\"scene-break\">✦ &nbsp; ✦ &nbsp; ✦</div>\n<p>\"Why do you do it in secret?\" he asked on the seventeenth evening, without looking up from his column.</p>\n<p>She did not pretend to misunderstand. \"Because if my father knew I was better at this than he is, he would stop letting me do it.\"</p>\n<p>Wei Congming set down his brush. He looked at her with an expression she couldn't read — not quite admiration, not quite recognition, something more complicated than either.</p>\n<p>\"That,\" he said, \"is the most pragmatic thing I've heard in three months.\"</p>\n<p>She looked at him. \"Is that a compliment?\"</p>\n<p>\"In my experience,\" he said, picking up his brush again, \"pragmatism is the highest compliment there is.\"</p>",
+        "epigraph": "\"Every calculation is also a wager. The wise merchant knows which is which.\""
       }
     ],
-    titles: {
-      en: 'The Midnight Garden',
-      zh: '午夜花园',
-      ms: 'Taman Tengah Malam',
-      ja: '真夜中の庭園',
-      ko: '한밤중의 정원',
-      es: 'El Jardín de Medianoche',
-      fr: 'Le Jardin de Minuit'
+    "ideaNote": "",
+    "coverAccent": "#8a6030",
+    "publishDate": "",
+    "updatedDate": ""
+  },
+  {
+    "id": "glass-lantern",
+    "badge": "IDEA",
+    "color": "#1a3a4a",
+    "descs": {
+      "en": "A detective who can see the last moments of the dead. A city that buries its secrets in light. Chapter 1 is almost ready.",
+      "es": "Un detective que puede ver los últimos momentos de los muertos. Una ciudad que entierra sus secretos en la luz. El capítulo 1 está casi listo.",
+      "fr": "Un détective qui peut voir les derniers instants des morts. Une ville qui enterre ses secrets dans la lumière. Le chapitre 1 est presque prêt.",
+      "ja": "死者の最後の瞬間を見ることができる探偵。光の中に秘密を埋める都市。第1章はもうすぐ準備完了。",
+      "ko": "죽은 자의 마지막 순간을 볼 수 있는 탐정. 빛 속에 비밀을 묻는 도시. 1장이 거의 준비됐습니다.",
+      "ms": "Seorang detektif yang dapat melihat detik terakhir orang mati. Sebuah kota yang mengubur rahsianya dalam cahaya. Bab 1 hampir siap.",
+      "zh": "一个能看见死者最后时刻的侦探。一座将秘密埋葬在光中的城市。第一章即将准备好。"
     },
-    descs: {
-      en: 'A garden that only exists at midnight. Flowers that archive grief. A keeper who must learn to let things go.',
-      zh: '一座只在午夜存在的花园。储存悲伤的花朵。一位必须学会放手的守护者。',
-      ms: 'Sebuah taman yang hanya wujud di tengah malam. Bunga-bunga yang menyimpan kesedihan. Seorang penjaga yang perlu belajar melepaskan.',
-      ja: '真夜中だけに存在する庭。悲しみを記録する花々。手放すことを学ばなければならない番人。',
-      ko: '자정에만 존재하는 정원. 슬픔을 기록하는 꽃들. 놓아주는 법을 배워야 하는 수호자.',
-      es: 'Un jardín que solo existe a medianoche. Flores que archivan el dolor. Una guardiana que debe aprender a soltar.',
-      fr: 'Un jardin qui n\'existe qu\'à minuit. Des fleurs qui archivent le chagrin. Une gardienne qui doit apprendre à lâcher prise.'
-    }
-  },
-  {
-    id: 'salt-silk',
-    genre: 'Historical Drama',
-    color: '#5a4020',
-    coverAccent: '#8a6030',
-    badge: 'ONGOING',
-    chapters: [
-      {
-        title: 'The Merchant\'s Daughter',
-        desc: 'She was taught to be invisible. She refused.',
-        epigraph: '"A woman who knows the price of silk knows the price of everything — including herself."',
-        content: `<p>In the fourth year of the Minghua reign, when the silk trade ran from the eastern ports to the desert crossings and back again in a river of coin and cloth and carefully managed debt, Zhou Yinghua did her father's accounts in secret and better than he did them himself.</p>
-<p>She was twenty-two. She had been taught to pour tea, to embroider, to walk with the particular contained grace expected of a merchant's daughter of good family. She had learned all of these things and performed them when required and found them, in honest moments, insufficient.</p>
-<p>The accounts were different. The accounts were a language she had taught herself from her father's discarded ledgers, and in them she had found something that felt less like a skill and more like a native tongue returned to after long absence.</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>She was rewriting a particularly egregious miscalculation when the door opened and a voice said: "Those numbers are wrong."</p>
-<p>She looked up. A man she did not know stood in the doorway — dusty from travel, plainly dressed, with the particular quality of stillness that belongs to people who have spent long periods of time in places where movement is unwise.</p>
-<p>"I know," she said. "I'm correcting them."</p>
-<p>He looked at the ledger. He looked at her. Something shifted in his expression — not surprise exactly, but the adjustment a person makes when the situation turns out to be more interesting than expected.</p>
-<p>"Your father sent me to review the accounts," he said.</p>
-<p>"Then we'll be working together," said Zhou Yinghua, and turned back to the columns, and did not let him see that her hands were shaking, not from fear but from the feeling — unfamiliar, extraordinary — of being caught doing something true.</p>`
-      },
-      {
-        title: 'Silk Road Arithmetic',
-        desc: 'The mathematics of trade, trust, and risk.',
-        epigraph: '"Every calculation is also a wager. The wise merchant knows which is which."',
-        content: `<p>His name was Wei Congming and he had been, variously, a soldier, an inspector, a translator, and a man who could calculate the true value of a shipment by smell alone. He did not say these things. Zhou Yinghua learned them the way she learned most important things: by watching, cataloguing, and drawing conclusions that she kept to herself until they were certain.</p>
-<p>They worked together for three weeks before either of them said anything that wasn't strictly about the accounts. In those three weeks, she corrected four of his calculations (tactfully) and he acknowledged three of the corrections (tersely) and they developed between them, without discussion, a system for dividing the work that was more efficient than anything her father had previously managed.</p>
-<div class="scene-break">✦ &nbsp; ✦ &nbsp; ✦</div>
-<p>"Why do you do it in secret?" he asked on the seventeenth evening, without looking up from his column.</p>
-<p>She did not pretend to misunderstand. "Because if my father knew I was better at this than he is, he would stop letting me do it."</p>
-<p>Wei Congming set down his brush. He looked at her with an expression she couldn't read — not quite admiration, not quite recognition, something more complicated than either.</p>
-<p>"That," he said, "is the most pragmatic thing I've heard in three months."</p>
-<p>She looked at him. "Is that a compliment?"</p>
-<p>"In my experience," he said, picking up his brush again, "pragmatism is the highest compliment there is."</p>`
-      }
-    ],
-    titles: {
-      en: 'Salt & Silk',
-      zh: '盐与丝',
-      ms: 'Garam & Sutera',
-      ja: '塩と絹',
-      ko: '소금과 비단',
-      es: 'Sal y Seda',
-      fr: 'Sel et Soie'
+    "genre": "Supernatural Mystery",
+    "status": "idea",
+    "titles": {
+      "en": "The Glass Lantern",
+      "es": "La Linterna de Cristal",
+      "fr": "La Lanterne de Verre",
+      "ja": "ガラスの提灯",
+      "ko": "유리 등불",
+      "ms": "Lentera Kaca",
+      "zh": "玻璃灯笼"
     },
-    descs: {
-      en: 'A merchant\'s daughter who keeps the books in secret. An auditor sent to find the errors. A dynasty-era love story built on trust and ledgers.',
-      zh: '一个秘密记账的商人之女。一个被派来查账的审计员。一段以信任与账本为基础的朝代爱情故事。',
-      ms: 'Seorang anak perempuan saudagar yang merahsiakan pembukuan. Seorang juruaudit yang dihantar mencari kesilapan. Kisah cinta era dinasti yang dibina atas kepercayaan dan lejar.',
-      ja: '秘密で帳簿をつける商人の娘。誤りを見つけるために派遣された検査官。信頼と台帳で築かれた王朝時代の恋愛物語。',
-      ko: '비밀리에 장부를 적는 상인의 딸. 오류를 찾기 위해 파견된 감사관. 신뢰와 원장으로 세워진 왕조 시대 러브스토리.',
-      es: 'La hija de un mercader que lleva los libros en secreto. Un auditor enviado a encontrar los errores. Una historia de amor de la era dinástica construida sobre confianza y libros contables.',
-      fr: 'La fille d\'un marchand qui tient les livres en secret. Un auditeur envoyé pour trouver les erreurs. Une histoire d\'amour de l\'ère dynastique construite sur la confiance et les registres.'
-    }
+    "chapters": [],
+    "ideaNote": "",
+    "coverAccent": "#2a6070",
+    "publishDate": "",
+    "updatedDate": ""
   },
   {
-    id: 'glass-lantern',
-    genre: 'Supernatural Mystery',
-    color: '#1a3a4a',
-    coverAccent: '#2a6070',
-    badge: 'COMING SOON',
-    status: 'coming-soon',
-    chapters: [],
-    titles: { en: 'The Glass Lantern', zh: '玻璃灯笼', ms: 'Lentera Kaca', ja: 'ガラスの提灯', ko: '유리 등불', es: 'La Linterna de Cristal', fr: 'La Lanterne de Verre' },
-    descs: { en: 'A detective who can see the last moments of the dead. A city that buries its secrets in light. Chapter 1 is almost ready.', zh: '一个能看见死者最后时刻的侦探。一座将秘密埋葬在光中的城市。第一章即将准备好。', ms: 'Seorang detektif yang dapat melihat detik terakhir orang mati. Sebuah kota yang mengubur rahsianya dalam cahaya. Bab 1 hampir siap.', ja: '死者の最後の瞬間を見ることができる探偵。光の中に秘密を埋める都市。第1章はもうすぐ準備完了。', ko: '죽은 자의 마지막 순간을 볼 수 있는 탐정. 빛 속에 비밀을 묻는 도시. 1장이 거의 준비됐습니다.', es: 'Un detective que puede ver los últimos momentos de los muertos. Una ciudad que entierra sus secretos en la luz. El capítulo 1 está casi listo.', fr: 'Un détective qui peut voir les derniers instants des morts. Une ville qui enterre ses secrets dans la lumière. Le chapitre 1 est presque prêt.' }
-  },
-  {
-    id: 'echo-hollow',
-    genre: 'Fantasy',
-    color: '#3a2a5a',
-    coverAccent: '#6a4a9a',
-    badge: 'IDEA',
-    status: 'idea',
-    ideaNote: 'A world where music is illegal and one girl hums anyway.',
-    chapters: [],
-    titles: { en: 'Echo Hollow', zh: '回声空谷', ms: 'Lembah Gema', ja: 'エコーホロウ', ko: '에코 할로우', es: 'Eco Hueco', fr: 'Écho Creux' },
-    descs: { en: 'In a kingdom that outlawed sound, silence is power. She forgot to be silent.', zh: '在一个将声音列为非法的王国，沉默即是权力。她忘记了保持沉默。', ms: 'Dalam sebuah kerajaan yang mengharamkan bunyi, senyap adalah kuasa. Dia terlupa untuk berdiam diri.', ja: '音が違法とされる王国で、沈黙は力だ。彼女は黙ることを忘れた。', ko: '소리를 불법화한 왕국에서 침묵은 권력이다. 그녀는 침묵하는 것을 잊었다.', es: 'En un reino que prohibió el sonido, el silencio es poder. Ella olvidó guardar silencio.', fr: 'Dans un royaume qui a banni le son, le silence est pouvoir. Elle a oublié de se taire.' }
+    "id": "echo-hollow",
+    "badge": "IDEA",
+    "color": "#3a2a5a",
+    "descs": {
+      "en": "In a kingdom that outlawed sound, silence is power. She forgot to be silent.",
+      "es": "En un reino que prohibió el sonido, el silencio es poder. Ella olvidó guardar silencio.",
+      "fr": "Dans un royaume qui a banni le son, le silence est pouvoir. Elle a oublié de se taire.",
+      "ja": "音が違法とされる王国で、沈黙は力だ。彼女は黙ることを忘れた。",
+      "ko": "소리를 불법화한 왕국에서 침묵은 권력이다. 그녀는 침묵하는 것을 잊었다.",
+      "ms": "Dalam sebuah kerajaan yang mengharamkan bunyi, senyap adalah kuasa. Dia terlupa untuk berdiam diri.",
+      "zh": "在一个将声音列为非法的王国，沉默即是权力。她忘记了保持沉默。"
+    },
+    "genre": "Fantasy",
+    "status": "idea",
+    "titles": {
+      "en": "Echo Hollow",
+      "es": "Eco Hueco",
+      "fr": "Écho Creux",
+      "ja": "エコーホロウ",
+      "ko": "에코 할로우",
+      "ms": "Lembah Gema",
+      "zh": "回声空谷"
+    },
+    "chapters": [],
+    "ideaNote": "A world where music is illegal and one girl hums anyway.",
+    "coverAccent": "#6a4a9a",
+    "publishDate": "",
+    "updatedDate": ""
   }
 ];
 /*NOVELS_END*/
@@ -3363,20 +3417,20 @@ async function changePassword() {
 
 // ── Site config (editable via admin) ──
 let SITE_CONFIG = {
-  siteTitle: '甜慕 Tián Mù — Novel Library',
-  authorName: '甜慕 Tián Mù',
-  navLogo: '甜慕 Tián Mù',
-  heroSub: 'Stories of longing, magic, and the spaces between hearts. Updated regularly.',
-  heroBtn: 'Browse All Novels'
+  "siteTitle": "甜慕 Tián Mù — Novel Library",
+  "authorName": "甜慕 Tián Mù",
+  "navLogo": "甜慕 Tián Mù",
+  "heroSub": "Stories of longing, magic, and the spaces between hearts. Updated regularly.",
+  "heroBtn": "Browse All Novels"
 };
 
 let ABOUT_CONFIG = {
-  eyebrow: 'The Mind Behind the Stories',
-  name: '甜慕',
-  namesub: 'Tián Mù — Sweet Longing',
-  quote: '"I don\'t write stories. I open a door — and whatever has been collecting in the dark comes through."',
-  body: '<p>甜慕 is a pen name for a mind that refuses to stay quiet. These pages are where the overflow goes — the characters who wouldn\'t leave, the worlds that arrived without invitation, the feelings too strange and too specific to fit anywhere else.</p><p>There is no grand method here. No outline, no blueprint. Only imagination, unfiltered and unashamed, poured out until the container is empty — and then filled again.</p><p>If something here feels familiar in a way you cannot explain, that is not coincidence. It means we share a particular kind of wildness.</p>',
-  sig: '— 甜慕, somewhere between midnight and morning ✿'
+  "eyebrow": "The Mind Behind the Stories",
+  "name": "甜慕",
+  "namesub": "Tián Mù — Sweet Longing",
+  "quote": "\"I don't write stories. I open a door — and whatever has been collecting in the dark comes through.\"",
+  "body": "<p>甜慕 is a pen name for a mind that refuses to stay quiet. These pages are where the overflow goes — the characters who wouldn't leave, the worlds that arrived without invitation, the feelings too strange and too specific to fit anywhere else.</p><p>There is no grand method here. No outline, no blueprint. Only imagination, unfiltered and unashamed, poured out until the container is empty — and then filled again.</p><p>If something here feels familiar in a way you cannot explain, that is not coincidence. It means we share a particular kind of wildness.</p>",
+  "sig": "— 甜慕, somewhere between midnight and morning ✿"
 };
 
 function switchAdminTab(tab) {
@@ -3463,7 +3517,26 @@ function renderAdminNovelList() {
       <div class="admin-novel-dot" style="background:${n.coverAccent}"></div>
       <div class="admin-novel-name">${n.titles.en}</div>
       <div class="admin-novel-meta">${n.chapters.length} ch · ${n.badge||'no badge'}</div>
+      <div style="display:flex;flex-direction:column;gap:0.2rem;margin-left:auto;flex-shrink:0" onclick="event.stopPropagation()">
+        <button title="Move up" onclick="moveNovel(${i},-1)" style="background:#1a1810;border:1px solid #333;border-radius:4px;color:#887766;cursor:pointer;font-size:0.7rem;padding:0.1rem 0.4rem;line-height:1" ${i===0?'disabled style="opacity:0.3;cursor:default;background:#1a1810;border:1px solid #333;border-radius:4px;color:#887766;font-size:0.7rem;padding:0.1rem 0.4rem;line-height:1"':''}>▲</button>
+        <button title="Move down" onclick="moveNovel(${i},1)" style="background:#1a1810;border:1px solid #333;border-radius:4px;color:#887766;cursor:pointer;font-size:0.7rem;padding:0.1rem 0.4rem;line-height:1" ${i===NOVELS.length-1?'disabled style="opacity:0.3;cursor:default;background:#1a1810;border:1px solid #333;border-radius:4px;color:#887766;font-size:0.7rem;padding:0.1rem 0.4rem;line-height:1"':''}>▼</button>
+      </div>
     </div>`).join('');
+}
+
+function moveNovel(idx, dir) {
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= NOVELS.length) return;
+  const tmp = NOVELS[idx];
+  NOVELS[idx] = NOVELS[newIdx];
+  NOVELS[newIdx] = tmp;
+  // Update selection if the selected novel moved
+  if (adminNovelIdx === idx) adminNovelIdx = newIdx;
+  else if (adminNovelIdx === newIdx) adminNovelIdx = idx;
+  renderAdminNovelList();
+  renderGrid();
+  saveAllData();
+  showToast('✓ Novel order updated!');
 }
 
 function toggleIdeaNote() {
@@ -3515,7 +3588,11 @@ function addNewNovel() {
 function saveNovel() {
   if (adminNovelIdx === null) return;
   const n = NOVELS[adminNovelIdx];
-  n.titles.en = document.getElementById('ne-title').value || 'Untitled';
+  const newTitle = document.getElementById('ne-title').value || 'Untitled';
+  n.titles.en = newTitle;
+  // Auto-update novel id/slug from title so links stay consistent
+  const newSlug = newTitle.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  if (newSlug) n.id = newSlug;
   n.genre = document.getElementById('ne-genre').value;
   n.descs.en = document.getElementById('ne-desc').value;
   n.color = document.getElementById('ne-color').value;
@@ -3804,10 +3881,30 @@ function loadFMEditor() {
     const field = document.createElement('div');
     field.className = 'fm-admin-field' + (i===0?' active':'');
     field.id = 'fmf-' + fm.key;
+
+    // Build toolbar for text fields (not characters/glossary which have special syntax)
+    let toolbarHtml = '';
+    if (!['characters','glossary'].includes(fm.key)) {
+      toolbarHtml = `<div class="format-toolbar" style="border-radius:8px 8px 0 0;border-bottom:none">
+        <span class="fmt-toolbar-label">Format</span>
+        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<p>','</p>')" title="Paragraph">¶ &lt;p&gt;</button>
+        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<strong>','</strong>')" title="Bold"><strong>B</strong></button>
+        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<em>','</em>')" title="Italic"><em>I</em></button>
+        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<u>','</u>')" title="Underline"><u>U</u></button>
+        <div class="fmt-btn-sep"></div>
+        <button class="fmt-btn" onclick="fmtInsert('fmcontent-${fm.key}','<div class=&quot;scene-break&quot;>✦ &nbsp; ✦ &nbsp; ✦</div>')" title="Scene break">✦ Break</button>
+        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<blockquote style=&quot;border-left:3px solid var(--coral);padding-left:1rem;font-style:italic;color:#6a5a40&quot;>','</blockquote>')" title="Quote">❝ Quote</button>
+        <div class="fmt-btn-sep"></div>
+        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<span style=&quot;color:var(--coral)&quot;>','</span>')" title="Coral color">🎨 Coral</button>
+        <button class="fmt-btn" onclick="fmtWrap('fmcontent-${fm.key}','<span style=&quot;color:var(--olive)&quot;>','</span>')" title="Olive color">🎨 Olive</button>
+      </div>`;
+    }
+
     field.innerHTML = `
       <div class="admin-field">
         <label class="admin-label">${fm.icon} ${fm.label} Content</label>
-        <textarea class="admin-textarea" id="fmcontent-${fm.key}" style="min-height:180px" placeholder="${fm.placeholder}">${novel.frontMatter[fm.key]?.content || ''}</textarea>
+        ${toolbarHtml}
+        <textarea class="admin-textarea" id="fmcontent-${fm.key}" style="min-height:180px${toolbarHtml ? ';border-radius:0 0 8px 8px;border-top:none' : ''}" placeholder="${fm.placeholder}">${novel.frontMatter[fm.key]?.content || ''}</textarea>
       </div>
       ${fm.key === 'custom' ? `<div class="admin-field"><label class="admin-label">Custom Page Title</label><input class="admin-input" id="fmtitle-custom" value="${novel.frontMatter.custom?.title||''}" placeholder="e.g. Playlist, Maps, Notes..."></div>` : ''}`;
     fieldsEl.appendChild(field);
@@ -3897,13 +3994,160 @@ function renderFrontMatterReader(novelIdx) {
     let innerHtml = '';
 
     if (fm.key === 'characters') {
-      // Parse Name | Role | Description lines
-      const cards = data.content.split('\n').filter(l=>l.trim()).map(line => {
-        const parts = line.split('|').map(p=>p.trim());
-        return `<div class="char-card">
-          <div class="char-name">${parts[0]||'Character'}</div>
-          ${parts[1]?`<div class="char-role">${parts[1]}</div>`:''}
-          ${parts[2]?`<div class="char-desc">${parts[2]}</div>`:''}
+      // Parse rich character format. Each character block starts with a line containing
+      // the name (optionally ✦ Name (chinese) number pattern) and may have:
+      // Key: Value lines, or Name | Role | Desc pipe-separated lines.
+      // We auto-detect the format per block.
+      const rawText = data.content;
+
+      // Split into character blocks by blank lines or ✦ markers
+      const blocks = rawText.split(/\n\s*\n/).filter(b => b.trim());
+
+      const cards = blocks.map(block => {
+        const lines = block.split('\n').map(l => l.trim()).filter(l => l);
+        if (!lines.length) return '';
+
+        // Try pipe-separated format first: Name | Role | Desc
+        if (lines.length === 1 && lines[0].includes('|')) {
+          const parts = lines[0].split('|').map(p => p.trim());
+          const name = parts[0] || 'Character';
+          const role = parts[1] || '';
+          const desc = parts[2] || '';
+          const initials = name.replace(/[^a-zA-Z\u4e00-\u9fff]/g,'').slice(0,2).toUpperCase() || name.slice(0,1);
+          const hue = [...name].reduce((h,c)=>h+c.charCodeAt(0),0) % 360;
+          return `<div class="char-card" onclick="toggleCharCard(this)">
+            <div class="char-card-header">
+              <div class="char-avatar" style="background:hsl(${hue},40%,45%)">${initials}</div>
+              <div class="char-header-info">
+                <div class="char-name">${name}</div>
+                ${role?`<div class="char-role">${role}</div>`:''}
+              </div>
+              <div class="char-toggle-icon">▾</div>
+            </div>
+            ${desc?`<div class="char-body"><div class="char-field"><div class="char-field-val">${desc}</div></div></div>`:''}
+          </div>`;
+        }
+
+        // Rich key:value format
+        // First line is the character name/header
+        let headerLine = lines[0].replace(/^✦\s*/, '').trim();
+        // Strip trailing number (like "6" on its own line becomes part of header accidentally — skip it)
+        const fields = {};
+        let currentKey = null;
+        let nameLine = headerLine;
+
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i];
+          // Match "Key: Value" or "Key:" patterns
+          const colonIdx = line.indexOf(':');
+          if (colonIdx > 0 && colonIdx < 30) {
+            const potentialKey = line.slice(0, colonIdx).trim();
+            // If it looks like a label (not too long, no spaces except compound words)
+            if (potentialKey.length < 25) {
+              currentKey = potentialKey;
+              const val = line.slice(colonIdx + 1).trim();
+              fields[currentKey] = val;
+              continue;
+            }
+          }
+          // Continuation of current key (indented or next line of multi-line value)
+          if (currentKey && !line.match(/^[A-Z][a-z]+\s*:/)) {
+            fields[currentKey] += '\n' + line;
+          } else if (!currentKey) {
+            // could be a sub-header or number — skip lone numbers
+            if (!line.match(/^\d+$/)) nameLine = nameLine + ' ' + line;
+          }
+        }
+
+        // Parse the name line: "Lin Xiaoran (林晓冉)" etc
+        const nameMatch = nameLine.match(/^(.+?)(?:\s*\(([^)]+)\))?$/);
+        const displayName = nameMatch ? nameMatch[1].trim() : nameLine;
+        const subName = nameMatch && nameMatch[2] ? nameMatch[2].trim() : '';
+
+        const role = fields['Role'] || fields['role'] || '';
+        const age = fields['Age'] || fields['age'] || '';
+        const mbti = fields['MBTI'] || fields['mbti'] || '';
+        const birthday = fields['Birthday'] || fields['birthday'] || '';
+        const loveLanguage = fields['Love Language'] || fields['Love language'] || '';
+        const appearance = fields['Appearance'] || fields['appearance'] || '';
+        const personality = fields['Personality'] || fields['personality'] || '';
+        const strengths = fields['Strengths'] || fields['strengths'] || '';
+        const weaknesses = fields['Weaknesses'] || fields['weaknesses'] || '';
+        const nickname = fields['Nickname by Yichen'] || fields['Nickname'] || fields['nickname'] || '';
+        const favDrink = fields['Favorite Drink'] || fields['Favorite drink'] || '';
+        const favHabit = fields['Favorite Habit'] || fields['Favorite habit'] || '';
+        const desc = fields['Description'] || fields['description'] || fields['Desc'] || '';
+
+        const initials = displayName.replace(/[^a-zA-Z\u4e00-\u9fff]/g,'').slice(0,2).toUpperCase() || displayName.slice(0,1);
+        const hue = [...displayName].reduce((h,c)=>h+c.charCodeAt(0),0) % 360;
+
+        // Build body fields
+        let bodyHtml = '';
+
+        // Quick stats row
+        const stats = [];
+        if (age) stats.push({ label: 'Age', val: age });
+        if (birthday) stats.push({ label: 'Birthday', val: birthday });
+        if (mbti) stats.push({ label: 'MBTI', val: mbti });
+        if (loveLanguage) stats.push({ label: 'Love Language', val: loveLanguage });
+
+        if (stats.length) {
+          bodyHtml += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:0.8rem">` +
+            stats.map(s => `<div class="char-field">
+              <div class="char-field-label">${s.label}</div>
+              <div class="char-field-val">${s.val}</div>
+            </div>`).join('') + '</div>';
+        }
+
+        const formatList = txt => {
+          if (!txt) return '';
+          return txt.split('\n').filter(l=>l.trim()).map(l => {
+            const clean = l.replace(/^[-•*]\s*/, '').trim();
+            return `<div style="display:flex;align-items:flex-start;gap:0.3rem;margin-bottom:0.2rem"><span style="color:var(--coral);flex-shrink:0">✦</span><span>${clean}</span></div>`;
+          }).join('');
+        };
+
+        if (appearance) bodyHtml += `<div class="char-field"><div class="char-field-label">Appearance</div><div class="char-field-val">${appearance}</div></div>`;
+        if (desc) bodyHtml += `<div class="char-field"><div class="char-field-val"><em>${desc}</em></div></div>`;
+
+        if (personality) {
+          bodyHtml += `<div class="char-field"><div class="char-field-label">Personality</div><div class="char-field-val">${formatList(personality)}</div></div>`;
+        }
+        if (strengths) {
+          bodyHtml += `<div class="char-field"><div class="char-field-label">Strengths</div><div class="char-field-val">${formatList(strengths)}</div></div>`;
+        }
+        if (weaknesses) {
+          bodyHtml += `<div class="char-field"><div class="char-field-label">Weaknesses</div><div class="char-field-val">${formatList(weaknesses)}</div></div>`;
+        }
+
+        const extras = [];
+        if (nickname) extras.push({ label: 'Nickname', val: nickname });
+        if (favDrink) extras.push({ label: 'Fave Drink', val: favDrink });
+        if (favHabit) extras.push({ label: 'Habit', val: favHabit });
+
+        if (extras.length) {
+          bodyHtml += `<div class="char-field"><div class="char-field-label">Details</div><div class="char-tag-row">` +
+            extras.map(e => `<span class="char-badge">${e.label}: ${e.val}</span>`).join('') + '</div></div>';
+        }
+
+        // Other unknown fields
+        const knownKeys = new Set(['Role','Age','Birthday','MBTI','Love Language','Love language','Appearance','Personality','Strengths','Weaknesses','Nickname by Yichen','Nickname','Favorite Drink','Favorite drink','Favorite Habit','Favorite habit','Description','Desc','role','age','birthday','mbti','appearance','personality','strengths','weaknesses','nickname','description','desc']);
+        Object.entries(fields).forEach(([key, val]) => {
+          if (!knownKeys.has(key) && val) {
+            bodyHtml += `<div class="char-field"><div class="char-field-label">${key}</div><div class="char-field-val">${val.replace(/\n/g,'<br>')}</div></div>`;
+          }
+        });
+
+        return `<div class="char-card" onclick="toggleCharCard(this)">
+          <div class="char-card-header">
+            <div class="char-avatar" style="background:hsl(${hue},40%,45%)">${initials}</div>
+            <div class="char-header-info">
+              <div class="char-name">${displayName}${subName ? ` <span style="font-size:0.8em;opacity:0.7">(${subName})</span>` : ''}</div>
+              ${role ? `<div class="char-role">${role}</div>` : ''}
+            </div>
+            <div class="char-toggle-icon">▾</div>
+          </div>
+          ${bodyHtml ? `<div class="char-body">${bodyHtml}</div>` : ''}
         </div>`;
       }).join('');
       innerHtml = `<div class="char-grid">${cards}</div>`;
@@ -3916,9 +4160,12 @@ function renderFrontMatterReader(novelIdx) {
       }).join('');
       innerHtml = `<div class="fm-block-text">${items}</div>`;
     } else {
-      // Treat content as plain text paragraphs
-      const paras = data.content.split('\n').filter(l=>l.trim()).map(l=>`<p>${l}</p>`).join('');
-      innerHtml = `<div class="fm-block-text">${paras}</div>`;
+      // Support HTML content (from formatting toolbar) or plain text paragraphs
+      const content = data.content.trim();
+      // Check if it already contains HTML tags
+      const hasHtml = /<[a-zA-Z]/.test(content);
+      const rendered = hasHtml ? content : content.split('\n').filter(l=>l.trim()).map(l=>`<p>${l}</p>`).join('');
+      innerHtml = `<div class="fm-block-text">${rendered}</div>`;
     }
 
     return `<div class="fm-content ${i===0?'active':''}" id="fmread-${fm.key}">
@@ -3937,6 +4184,10 @@ function switchFMTab(key, btn) {
   document.querySelectorAll('.fm-content').forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('fmread-' + key)?.classList.add('active');
+}
+
+function toggleCharCard(card) {
+  card.classList.toggle('expanded');
 }
 
 // ── TRANSLATIONS ──
@@ -5287,7 +5538,12 @@ function importData() {
 
             <div class="admin-section" style="background:#0a0808">
               <div class="admin-section-title" style="color:#555">💡 Tip</div>
-              <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#554;line-height:1.6">Pages with content appear as tabs before the chapter list. Toggle them off to hide from readers without deleting. Character List uses a special card layout — enter each character on a new line as: <code style="color:var(--yellow);font-size:0.8rem">Name | Role | Description</code></p>
+              <p style="font-family:'Instrument Serif',serif;font-size:0.9rem;color:#554;line-height:1.6">Pages with content appear as tabs before the chapter list. Toggle them off to hide from readers without deleting.<br><br>
+              <strong style="color:var(--yellow)">Character List</strong> — supports two formats:<br>
+              <code style="color:var(--yellow);font-size:0.75rem">Name | Role | Description</code> (simple, one per line)<br>
+              <strong>— or rich format (one character per blank line):</strong><br>
+              <code style="color:var(--yellow);font-size:0.75rem">✦ Lin Xiaoran (林晓冉)<br>Role: Female Lead<br>Age: 17<br>MBTI: ENFP<br>Appearance: ...<br>Personality:<br>Bratty but lovable<br>Strengths:<br>Brightens every room</code><br><br>
+              <strong style="color:var(--yellow)">Synopsis / Author Note</strong> — use the formatting toolbar above the text area for bold, italic, scene breaks, and color styling. HTML tags like &lt;p&gt;, &lt;strong&gt;, &lt;em&gt; are all supported.</p>
             </div>
           </div>
         </div>
